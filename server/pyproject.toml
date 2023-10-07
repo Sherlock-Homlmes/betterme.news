@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "server"
+version = "0.1.0"
+description = ""
+authors = ["Ta Minh Khoi <khoitm@codenet.jp>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+fastapi = "^0.103.2"
+pydantic = "^2.4.2"
+uvicorn = "^0.23.2"
+python-dotenv = "^1.0.0"
+beanie = "^1.22.6"
+pydantic-settings = "^2.0.3"
+
+
+[tool.poetry.group.dev.dependencies]
+mypy = "^1.5.1"
+ruff = "^0.0.292"
+black = "^23.9.1"
+pre-commit = "^3.4.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

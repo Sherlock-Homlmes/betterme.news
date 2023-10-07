@@ -1,0 +1,29 @@
+{
+    // Fix pylint not working correctly
+    "python.analysis.extraPaths": ["${workspaceFolder}/server/.venv/lib/python3.12/site-packages"],
+    "files.exclude": {
+        "**/__pycache__": true,
+        "**/.DS_Store": true,
+        "**/.git": true,
+        "**/.hg": true,
+        "**/.mypy_cache": true,
+        "**/.pytest_cache": true,
+        "**/.svn": true,
+        "**/CVS": true,
+        "api": true,
+        "web": true,
+        "services/business/order-notification": true,
+        "services/business/consolidator-api": true,
+        "services/business/consolidator-ui": true
+    },
+    "files.watcherExclude": {
+        "**/.git/objects/**": true,
+        "**/.git/subtree-cache/**": true,
+        "**/node_modules/**": true,
+        "**/.hg/store/**": true,
+        "**/.venv/**": true,
+        "**/__pycache__/**": true,
+        "**/.pytest_cache/**": true,
+        "**/.mypy_cache/**": true,
+    }
+}
