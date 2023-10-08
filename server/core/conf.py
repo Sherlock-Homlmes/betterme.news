@@ -45,6 +45,8 @@ allow_origins = (
         "http://betterme.study",
         "https://betterme.news",
         "http://betterme.news",
+        "https://admin.betterme.news",
+        "http://admin.betterme.news",
     ]
 )
 
