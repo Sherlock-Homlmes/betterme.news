@@ -23,8 +23,8 @@ get_env = os.environ.get
 
 # env var
 class Settings(BaseSettings):
-    is_dev_env: bool = False
-    database_url: str
+    IS_DEV_ENV: bool = False
+    DATABASE_URL: str
 
 
 settings = Settings()
@@ -39,8 +39,13 @@ app = FastAPI(
 
 allow_origins = (
     ["*"]
-    if settings.is_dev_env
-    else ["https://betterme.study", "http://betterme.study"]
+    if settings.IS_DEV_ENV
+    else [
+        "https://betterme.study",
+        "http://betterme.study",
+        "https://betterme.news",
+        "http://betterme.news",
+    ]
 )
 
 app.add_middleware(
