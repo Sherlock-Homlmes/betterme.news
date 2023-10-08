@@ -24,6 +24,7 @@ get_env = os.environ.get
 # env var
 class Settings(BaseSettings):
     is_dev_env: bool = False
+    database_url: str
 
 
 settings = Settings()
