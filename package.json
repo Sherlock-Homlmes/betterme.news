@@ -8,9 +8,6 @@
     "json-schema-to-typescript": "^13.1.1",
     "jsonschema": "^1.4.1"
   },
-  "scripts": {
-    "prepare": "husky install"
-  },
   "devDependencies": {
     "@commitlint/cli": "^17.3.0",
     "@commitlint/config-conventional": "^17.3.0",
