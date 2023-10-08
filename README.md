@@ -1,5 +1,5 @@
 
-### PORT: http://localhost
+* Port: http://localhost
 * All bash command in `others/` must be use in project root directory
 ## REQUIREMENTS:
     - Linux
@@ -14,4 +14,4 @@
     - docker compose logs <service_name> -f --tails=50
 
 ## RUN TOOLS:
-    - bash others/model2ts.sh
+    - Model to typescript: bash others/model2ts.sh
