@@ -1,17 +1,22 @@
+### REQUIREMENTS:
+
+    - Linux
+    - Python >= 3.12
+    - Bunjs >= 1.0.4
+
 ### SETUP:
 
-    - docker compose build
-    - docker compose run --rm server poetry install
-    - docker compose run --rm server pre-commmit install
-    - docker compose run --rm client npm install
+    * This command must be use in project root directory
+    bash others/model_to_ts/setup.sh
 
 ### RUN:
+
+## Services
 
     - docker compose up -d
     - docker compose logs <service_name> -f --tails=50
 
-### CONVERT RESPONSE MODEL TO TYPESCRIPT
+## Convert response model to typescript
 
     * This command must be use in project root directory
-    - Setup: bash others/model_to_ts/setup.sh
-    - Run: bash others/model_to_ts/run.sh
+    bash others/model2ts.sh
