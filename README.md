@@ -1,4 +1,5 @@
 
+### PORT: http://localhost
 * All bash command in `others/` must be use in project root directory
 ## REQUIREMENTS:
 
@@ -19,4 +20,4 @@
 
 * Convert response model to typescript
 
-    bash others/model2ts.sh
+    - bash others/model2ts.sh

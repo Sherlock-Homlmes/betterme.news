@@ -10,6 +10,8 @@ services:
     depends_on:
       - client
       - server
+    networks:
+      - nginx-net
     restart: on-failure
 
   server:
@@ -28,6 +30,7 @@ services:
     depends_on:
       - mongo
     networks:
+      - nginx-net
       - mongo-database
     command:
       ["uvicorn", "main:app", "--reload", "--host=0.0.0.0", "--port=8080"]
@@ -42,8 +45,8 @@ services:
     volumes:
       - .:/var/task
     working_dir: /var/task/client
-    # environment:
-    #   - ENVIRONMENT=docker
+    networks:
+      - nginx-net
     command:
       ["npm", "run", "start", "--", "--host", "0.0.0.0", "--port", "4321"]
 
@@ -82,5 +85,11 @@ services:
   #   entrypoint: redis-server --appendonly yes
 
 networks:
+  nginx-net:
+    driver: bridge
   mongo-database:
+    driver: bridge
+  redis-cache:
+    driver: bridge
+  meilisearch-search-engine:
     driver: bridge
