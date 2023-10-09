@@ -1,5 +1,7 @@
 - User port: http://localhost
+- User api docs port: http://localhost/api/docs
 - Admin port: http://localhost:81
+- Database: http://localhost:8081
 - All bash command in `others/` must be use in project root directory
 
 ## REQUIREMENTS:
