@@ -1432,6 +1432,16 @@ files = [
 ]
 
 [[package]]
+name = "wget"
+version = "3.2"
+description = "pure python download utility"
+optional = false
+python-versions = "*"
+files = [
+    {file = "wget-3.2.zip", hash = "sha256:35e630eca2aa50ce998b9b1a127bb26b30dfee573702782aa982f875e3f16061"},
+]
+
+[[package]]
 name = "zope-interface"
 version = "6.1"
 description = "Interfaces for Python"
@@ -1487,4 +1497,4 @@ testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "1e502e7e2305448975ec5e1ed7240ab1165ee22df9ca358bba958cbcdb23f742"
+content-hash = "6aeff9f83a2f628a24102ec8e10143bbfcdb0932e887c63d00fe59f157219c80"

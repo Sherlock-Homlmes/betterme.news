@@ -20,8 +20,6 @@
         "**/CVS": true,
         "api": true,
         "web": true,
-        ".venv": true,
-        "node_modules/": true,
     },
     "files.watcherExclude": {
         "**/.git/objects/**": true,

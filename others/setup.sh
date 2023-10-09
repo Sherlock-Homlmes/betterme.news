@@ -1,5 +1,6 @@
 docker compose build
 docker compose run --rm server poetry install
+docker compose run --rm admin-server poetry install
 docker compose run --rm client npm install
 
 bun install

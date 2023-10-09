@@ -152,7 +152,11 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 
-others/data
+others/data/
+admin_server/scrap/data/*/discord/*
+admin_server/scrap/data/*/media/*
+admin_server/scrap/data/*/pages/*
+admin_server/scrap/data/*/posts/*
 
 # ---------- Client ----------
 # build output
