@@ -1,13 +1,13 @@
 {
     // Fix pylint not working correctly
     "python.analysis.extraPaths": ["${workspaceFolder}/server/.venv/lib/python3.12/site-packages"],
-    "[python]": {
-        "editor.formatOnSave": true,
-        "editor.codeActionsOnSave": {
-        "source.fixAll": true
-        },
-        "editor.defaultFormatter": "ms-python.black-formatter"
-    },
+    // "[python]": {
+    //     "editor.formatOnSave": true,
+    //     "editor.codeActionsOnSave": {
+    //     "source.fixAll": true
+    //     },
+    //     "editor.defaultFormatter": "ms-python.black-formatter"
+    // },
     "files.exclude": {
         "**/__pycache__": true,
         "**/.DS_Store": true,

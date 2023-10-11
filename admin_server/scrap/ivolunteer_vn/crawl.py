@@ -30,18 +30,15 @@ def ivolunteer_crawl(url: str):
 
         def parse(self, response):
             # crawl
-            title: str = (
-                response.css("h1::text").get().replace("  ", "").replace("\n", "")
-            )
-            dealine: str = (
+            title = response.css("h1::text").get().replace("  ", "").replace("\n", "")
+            dealine = (
                 response.css(".mvp-post-cat::text").get().replace("Deadline: ", "")
             )
-            banner: str = (
-                response.css("#mvp-content-main").css("img::attr(data-src)").get()
-            )
+            dealine = "-".join(dealine.split("/")[::-1])
+            banner = response.css("#mvp-content-main").css("img::attr(data-src)").get()
             banner = save_image(banner).split("/")[-1]
 
-            content: str = response.css("#mvp-content-main").css("h4, p, ul")
+            content = response.css("#mvp-content-main").css("h4, p, ul")
             content.pop(0)
             content.pop()
             content.pop()
@@ -97,13 +94,11 @@ def ivolunteer_page_crawl(content_type: str, page_number: int):
         start_urls = [f"{PAGE_URL}/{content_type}/page/{page_number}"]
 
         def parse(self, response):
-            data: list = (
-                response.css(".mvp-feat1-mid-wrap").css("a::attr(href)").getall()
-            )
+            data = response.css(".mvp-feat1-mid-wrap").css("a::attr(href)").getall()
             data.extend(
                 response.css(".mvp-feat1-left-wrap").css("a::attr(href)").getall()
             )
-            temp_data: list = (
+            temp_data = (
                 response.css(".mvp-feat1-right-wrap").css("a::attr(href)").getall()
             )
             temp_data.pop()

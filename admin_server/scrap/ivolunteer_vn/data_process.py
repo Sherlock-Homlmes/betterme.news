@@ -83,9 +83,9 @@ def process_detail_page_data_discord(content: list) -> list:
     new_content = [new_cont for new_cont in new_content if new_cont != ""]
 
     for index, new_cont in enumerate(new_content):
-        if type(new_cont) == list:
+        if isinstance(new_cont, list):
             new_content[index] = [x.replace("  ", " ") for x in new_cont]
-        elif type(new_cont) == str:
+        elif isinstance(new_cont, str):
             new_content[index] = new_cont.replace("\xa0", "")
             while "  " in new_content[index] or "** **" in new_content[index]:
                 new_content[index] = (

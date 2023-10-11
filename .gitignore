@@ -153,6 +153,7 @@ cython_debug/
 #.idea/
 
 others/data/
+store/
 admin_server/scrap/data/*/discord/*
 admin_server/scrap/data/*/media/*
 admin_server/scrap/data/*/pages/*
