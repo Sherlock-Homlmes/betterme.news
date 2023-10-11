@@ -18,9 +18,10 @@ class OriginCrawlPagesEnum(Enum):
     IVOLUNTEER_VN = "ivolunteer_vn"
 
 
+# TODO: REWRITE
 class OriginCrawlPageTagsEnum(Enum):
-    KHOAHOC_TV_TAGS = ()
-    IVOLUNTEER_VN_TAGS = (
+    KHOAHOC_TV_TAGS = ["something1", "something2"]
+    IVOLUNTEER_VN_TAGS = [
         "tinh-nguyen",
         "clb",
         "khoa-hoc",
@@ -28,7 +29,7 @@ class OriginCrawlPageTagsEnum(Enum):
         "hoc-bong",
         "su-kien",
         "viec-lam",
-    )
+    ]
 
 
 class ScrapDataResponseTypeEnum(Enum):

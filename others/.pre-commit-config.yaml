@@ -1,40 +1,42 @@
 repos:
-    -   repo: https://github.com/pre-commit/pre-commit-hooks
-        rev: v3.2.0
-        hooks:
-        -   id: trailing-whitespace
-        -   id: end-of-file-fixer
-        -   id: check-yaml
-        -   id: check-added-large-files
-        -   id: debug-statements
-            language_version: python3
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v3.2.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-added-large-files
+      - id: debug-statements
+        language_version: python3
 
+  # python
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.4.1
+    hooks:
+      - id: mypy
+        name: mypy-server
+        files: ^server/
+      - id: mypy
+        name: mypy-admin-server
+        files: ^admin_server/
 
-    # python
-    -   repo: https://github.com/pre-commit/mirrors-mypy
-        rev: v1.4.1
-        hooks:
-        -   id: mypy
+  - repo: https://github.com/psf/black
+    rev: 23.7.0
+    hooks:
+      - id: black
+        args: [--safe]
 
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.0.278
+    hooks:
+      - id: ruff
 
-    -   repo: https://github.com/psf/black
-        rev: 23.7.0
-        hooks:
-        -   id: black
-            args: [--safe]
-
-
-    -   repo: https://github.com/astral-sh/ruff-pre-commit
-        rev: v0.0.278
-        hooks:
-        -   id: ruff
-
-    # js
-    -   repo: local
-        hooks:
-        -   id: husky-run-pre-commit
-            name: husky
-            language: system
-            entry: .husky/pre-commit
-            pass_filenames: false
-            always_run: true
+  # js
+  - repo: local
+    hooks:
+      - id: husky-run-pre-commit
+        name: husky
+        language: system
+        entry: .husky/pre-commit
+        pass_filenames: false
+        always_run: true

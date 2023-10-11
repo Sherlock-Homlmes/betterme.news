@@ -1,5 +1,5 @@
 # mypy: disable-error-code="no-redef, assignment"
-from .types import *
+from .responses import *
 from .enums import *
 
 
