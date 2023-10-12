@@ -36,6 +36,8 @@ export interface ScrapPostParams {
   origin: string;
 }
 export interface ScrapPostResponse {
-  discord: KhoahocTvScrapDiscordPostResponse | IvolunteerVnScrapDiscordPostResponse;
+  discord:
+    | KhoahocTvScrapDiscordPostResponse
+    | IvolunteerVnScrapDiscordPostResponse;
   html: KhoahocTvScrapHtmlPostResponse | IvolunteerVnScrapHtmlPostResponse;
 }
