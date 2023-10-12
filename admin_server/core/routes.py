@@ -2,17 +2,24 @@
 from fastapi import APIRouter
 
 # local
-from backend import crawl
+from backend import crawlers as be_crawlers
+from frontend.routers import crawlers as fe_crawlers
 
-# from frontent import
-
-# create all api routers(for include in app and testing)
+# create all api routers
 api_router = APIRouter()
-for service in [
-    crawl,
+for be_service in [
+    be_crawlers,
 ]:
     api_router.include_router(
-        service.router,
+        be_service.router,
         prefix="/api",
+        responses={404: {"description": "Not found"}},
+    )
+
+for fe_service in [
+    fe_crawlers,
+]:
+    api_router.include_router(
+        fe_service.router,
         responses={404: {"description": "Not found"}},
     )

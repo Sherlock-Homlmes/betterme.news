@@ -4,6 +4,8 @@ import os
 # libraries
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.templating import Jinja2Templates
+from fastapi.staticfiles import StaticFiles
 from pydantic_settings import BaseSettings
 from dotenv import load_dotenv
 
@@ -50,3 +52,8 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+templates = Jinja2Templates(directory="frontend/templates")
+TemplateResponse = templates.TemplateResponse
+app.mount("/static", StaticFiles(directory="frontend/static"), name="static")
+app.mount("/scrap", StaticFiles(directory="scrap"), name="scrap")

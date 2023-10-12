@@ -36,8 +36,7 @@ def ivolunteer_crawl(url: str):
             )
             dealine = "-".join(dealine.split("/")[::-1])
             banner = response.css("#mvp-content-main").css("img::attr(data-src)").get()
-            banner = save_image(banner).split("/")[-1]
-
+            banner = None if banner is None else save_image(banner).split("/")[-1]
             content = response.css("#mvp-content-main").css("h4, p, ul")
             content.pop(0)
             content.pop()

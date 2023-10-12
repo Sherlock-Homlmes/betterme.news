@@ -11,7 +11,7 @@ from scrapy import Selector
 DATA_DIR = f"{Path(__file__).resolve().parent.parent}/data/ivolunteer_vn"
 
 
-def save_image(url):
+def save_image(url: str) -> str:
     image = wget.download(url, out=f"{DATA_DIR}/media")
     return image
 
