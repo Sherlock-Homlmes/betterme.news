@@ -19,6 +19,16 @@ repos:
   #       language: script
   #       pass_filenames: false
 
+  # js
+  - repo: local
+    hooks:
+      - id: husky-run-pre-commit
+        name: husky
+        language: system
+        entry: .husky/pre-commit
+        pass_filenames: false
+        always_run: true
+
   # python
   - repo: https://github.com/pre-commit/mirrors-mypy
     rev: v1.4.1
@@ -40,13 +50,3 @@ repos:
     rev: v0.0.278
     hooks:
       - id: ruff
-
-  # js
-  - repo: local
-    hooks:
-      - id: husky-run-pre-commit
-        name: husky
-        language: system
-        entry: .husky/pre-commit
-        pass_filenames: false
-        always_run: true

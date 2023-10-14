@@ -1,5 +1,11 @@
 // From export enums.py (5 Enums 14 Values)
 
+export enum CrawlerDataResponseTypeEnum {
+  HTML = "html",
+  DISCORD = "discord",
+  FACEBOOK = "facebook",
+}
+
 export enum IvolunteerPageTagsEnum {
   VOLUNTEER = "tinh-nguyen",
   CLUB = "clb",
@@ -21,9 +27,3 @@ export enum OriginCrawlPagesEnum {
 }
 
 export enum ResponseStatusEnum {}
-
-export enum ScrapDataResponseTypeEnum {
-  HTML = "html",
-  DISCORD = "discord",
-  FACEBOOK = "facebook",
-}

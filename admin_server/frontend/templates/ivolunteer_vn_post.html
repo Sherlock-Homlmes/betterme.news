@@ -11,8 +11,15 @@ head %}
   <h1 id="title">{{data.discord.title}}</h1>
   <p id="deadline">Deadline: {{data.discord.deadline}}</p>
 
+  <!-- TODO: remove -->
   <img
-    id="banner-image"
+    id="thumbnail-img"
+    src="/scrap/data/ivolunteer_vn/media/{{data.discord.banner}}"
+  />
+  <!--  -->
+
+  <img
+    id="banner-img"
     src="/scrap/data/ivolunteer_vn/media/{{data.discord.banner}}"
   />
   <input
@@ -48,7 +55,7 @@ head %}
   >
   {% for cont in data["discord"]["content"] %}
   <textarea
-    id="content-item-{{loop.index}}"
+    id="discord-content-item-{{loop.index}}"
     rows="4"
     placeholder="Content item"
     onchange="onContentChange()"
@@ -88,76 +95,12 @@ head %}
 </center>
 {% endblock body %} {% block script %}
 <script>
-  const contentLength = parseInt('{{data["content"]|length}}');
-  let isContentChanged = false;
-
-  const onContentChange = () => {
-    console.log("change");
-    isContentChanged = true;
-    document.getElementById("send-test-post-btn").style.display = "none";
-    document.getElementById("send-post-btn").style.display = "none";
-  };
-
-  const getImageFromElement = () => {
-    var file = document.getElementById("banner-input").files;
-    if (file.length > 0) {
-      return file[0];
-    }
-    return null;
-  };
-
-  const previewImage = () => {
-    const bannerImage = getImageFromElement();
-    if (bannerImage !== null) {
-      var fileReader = new FileReader();
-      fileReader.onload = (event) => {
-        document
-          .getElementById("banner-image")
-          .setAttribute("src", event.target.result);
-      };
-      fileReader.readAsDataURL(bannerImage);
-    }
-    onContentChange();
-  };
-
-  const sendTestPost = async () => {
-    await fetch(
-      "/admin/api/bot/news/ivolunteer_vn?post_name={{post_name}}&is_testing=true",
-      { method: "POST" },
-    );
-    document.getElementById("send-post-btn").style.display = "block";
-  };
-
-  const sendPost = async () => {};
-
-  const savePost = async () => {
-    const updatedContent = {
-      banner: getImageFromElement() === null ? null : getImageFromElement(),
-      description: document.getElementById("description").value,
-      content: [],
-    };
-    for (var i = 1; i <= contentLength; i++) {
-      updatedContent.content.push(
-        document.getElementById(`content-item-${i}`).value,
-      );
-    }
-
-    // data to form data
-    let formData = new FormData();
-    for (const [key, value] of Object.entries(updatedContent)) {
-      // remove unchange element
-      if (value !== null) {
-        formData.append(key, value);
-      }
-    }
-
-    // fetch data
-    await fetch("/admin/api/scrap/ivolunteer_vn/{{post_name}}/", {
-      method: "PATCH",
-      body: formData,
-    });
-    const isContentChanged = false;
-  };
+  const discordContentLength = parseInt(
+    '{{data["discord"]["content"]|length}}',
+  );
+  const origin = "{{origin}}";
+  const postName = "{{post_name}}";
 </script>
+<script type="text/javascript" src="/static/js/ivolunteer_vn_post.js"></script>
 
 {% endblock script %}

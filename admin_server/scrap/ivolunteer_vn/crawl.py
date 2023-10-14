@@ -5,7 +5,7 @@ from pathlib import Path
 
 # library
 import scrapy
-from scrapy.crawler import CrawlerProcess
+from scrapy.Crawler import CrawlerProcess
 
 # local
 from data_process import (

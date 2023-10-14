@@ -1,48 +1,90 @@
 # default
 import datetime
-from typing import List
+from typing import List, Optional, TypeAlias
 
 # libraries
 from pydantic import BaseModel, Field
 
 
-# CRAWL
-class ScrapListPostParams(BaseModel):
-    origin: str
-    page: int = Field(default=1, gt=0)
+### CrawlersData.PY
+# Types
+DiscordContentType: TypeAlias = List[str | List[str]]
+HtmlContentType: TypeAlias = str
+# Models
 
 
-class ScrapPostParams(BaseModel):
-    origin: str
+class DiscordContent(BaseModel):
+    content: DiscordContentType
 
 
-class KhoahocTvScrapPostResponse(BaseModel):
-    pass
+class HtmlContent(BaseModel):
+    content: HtmlContentType
 
 
-class KhoahocTvScrapDiscordPostResponse(KhoahocTvScrapPostResponse):
-    pass
-
-
-class KhoahocTvScrapHtmlPostResponse(KhoahocTvScrapPostResponse):
-    pass
-
-
-class IvolunteerVnScrapPostResponse(BaseModel):
+class CrawlersData(BaseModel):
     title: str
     deadline: datetime.date
     banner: str
     description: str
 
 
-class IvolunteerVnScrapDiscordPostResponse(IvolunteerVnScrapPostResponse):
-    content: List[str | List[str]]
+class IvolunteerDiscordPost(CrawlersData, DiscordContent):
+    pass
 
 
-class IvolunteerVnScrapHtmlPostResponse(IvolunteerVnScrapPostResponse):
-    content: str
+class IvolunteerHtmlPost(CrawlersData, HtmlContent):
+    pass
 
 
-class ScrapPostResponse(BaseModel):
-    discord: KhoahocTvScrapDiscordPostResponse | IvolunteerVnScrapDiscordPostResponse
-    html: KhoahocTvScrapHtmlPostResponse | IvolunteerVnScrapHtmlPostResponse
+class KhoahocTvDiscordPost(CrawlersData, DiscordContent):
+    pass
+
+
+class KhoahocTvHtmlPost(CrawlersData, HtmlContent):
+    pass
+
+
+# Params
+class CrawlerListParams(BaseModel):
+    origin: str
+    page: int = Field(default=1, gt=0)
+
+
+class CrawlersDataParams(BaseModel):
+    origin: str
+
+
+# Payloads
+class PostCrawlersDataPayload(BaseModel):
+    origin: str
+    post_name: str
+
+    banner: Optional[str]
+    thumbnail: Optional[str]
+
+    discord_content: DiscordContentType
+    discord_description: str
+
+    html_content: HtmlContentType
+    html_description: str
+
+    is_testing: Optional[bool] = False
+
+
+class PatchCrawlersDataPayload(BaseModel):
+    origin: str
+
+    banner: Optional[str]
+    thumbnail: Optional[str]
+
+    discord_content: DiscordContentType
+    discord_description: str
+
+    html_content: HtmlContentType
+    html_description: str
+
+
+# Responses
+class GetCrawlersDataResponse(BaseModel):
+    discord: KhoahocTvDiscordPost | IvolunteerDiscordPost
+    html: KhoahocTvHtmlPost | IvolunteerHtmlPost

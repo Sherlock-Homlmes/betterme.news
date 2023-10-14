@@ -8,9 +8,13 @@ from fastapi import APIRouter, Depends
 
 # local
 from core.schemas import (
-    ScrapPostParams,
-    OriginCrawlPagesEnum,
-    ScrapPostResponse,
+    # params
+    CrawlersDataParams,
+    # responses
+    GetCrawlersDataResponse,
+    PostCrawlersDataPayload,
+    PatchCrawlersDataPayload,
+    # enums
     ResponseStatusEnum,
 )
 from scrap.func import scrap_post_data
@@ -21,13 +25,30 @@ router = APIRouter(
 
 
 @router.get(
-    "crawlers/{post_name}",
+    "/crawlers/{post_name}",
     tags=["Admin-backend-scrap"],
     status_code=ResponseStatusEnum.OK.value,
-    response_model=ScrapPostResponse,
+    response_model=GetCrawlersDataResponse,
 )
-def crawl_post_content(
-    post_name: str, params: Annotated[dict, Depends(ScrapPostParams)]
-):
-    if params.origin in OriginCrawlPagesEnum:
-        return scrap_post_data(origin=params.origin, post_name=post_name)
+def get_crawler(post_name: str, params: Annotated[dict, Depends(CrawlersDataParams)]):
+    return scrap_post_data(origin=params.origin, post_name=post_name)
+
+
+@router.post(
+    "/crawlers",
+    tags=["Admin-backend-scrap"],
+    status_code=ResponseStatusEnum.CREATED.value,
+)
+def post_crawler(payload: PostCrawlersDataPayload):
+    print("---------------", payload)
+    return
+
+
+@router.patch(
+    "/crawlers/{post_name}",
+    tags=["Admin-backend-scrap"],
+    status_code=ResponseStatusEnum.CREATED.value,
+)
+def patch_crawler(post_name: str, payload: PatchCrawlersDataPayload):
+    print(payload)
+    return

@@ -3,9 +3,17 @@ from .responses import *
 from .enums import *
 
 
-class ScrapPostParams(ScrapPostParams):
+class CrawlersDataParams(CrawlersDataParams):
     origin: OriginCrawlPagesEnum
 
 
-class ScrapListPostParams(ScrapListPostParams):
+class CrawlerListParams(CrawlerListParams):
+    origin: OriginCrawlPagesEnum
+
+
+class PostCrawlersDataPayload(PostCrawlersDataPayload):
+    origin: OriginCrawlPagesEnum
+
+
+class PatchCrawlersDataPayload(PatchCrawlersDataPayload):
     origin: OriginCrawlPagesEnum

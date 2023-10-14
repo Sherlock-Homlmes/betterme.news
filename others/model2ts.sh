@@ -6,7 +6,7 @@ enumc ./server/core/schemas/enums.py --to typescript --out ./client/src/types/en
 sed -i "s/enum/export enum/" ./client/src/types/enums.ts
 
 ### admin server to admin frontend
-pydantic2ts --module ./admin_server/core/schemas/responses.py --output ./admin_server/frontend/types/responses.ts
-enumc ./admin_server/core/schemas/enums.py --to typescript --out ./admin_server/frontend/types/enums.ts --sort-enums asc
+pydantic2ts --module ./admin_server/core/schemas/responses.py --output ./admin_server/frontend/static/types/responses.ts
+enumc ./admin_server/core/schemas/enums.py --to typescript --out ./admin_server/frontend/static/types/enums.ts --sort-enums asc
 # replace enum with export enum to import from orther file
-sed -i "s/enum/export enum/" ./admin_server/frontend/types/enums.ts
+sed -i "s/enum/export enum/" ./admin_server/frontend/static/types/enums.ts

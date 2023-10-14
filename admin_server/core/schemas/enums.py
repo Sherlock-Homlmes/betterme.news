@@ -52,7 +52,7 @@ class KhoahocTvPageTagsEnum(Enum):
 #     pass
 
 
-class ScrapDataResponseTypeEnum(Enum):
+class CrawlerDataResponseTypeEnum(Enum):
     HTML = "html"
     DISCORD = "discord"
     FACEBOOK = "facebook"

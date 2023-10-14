@@ -7,13 +7,17 @@ from fastapi import HTTPException
 
 # local
 from core.schemas import (
+    # payload
+    PatchCrawlersDataPayload,
+    # response
+    IvolunteerDiscordPost,
+    IvolunteerHtmlPost,
+    KhoahocTvDiscordPost,
+    KhoahocTvHtmlPost,
+    GetCrawlersDataResponse,
+    # enums
+    CrawlerDataResponseTypeEnum,
     OriginCrawlPagesEnum,
-    IvolunteerVnScrapDiscordPostResponse,
-    IvolunteerVnScrapHtmlPostResponse,
-    KhoahocTvScrapDiscordPostResponse,
-    KhoahocTvScrapHtmlPostResponse,
-    ScrapDataResponseTypeEnum,
-    ScrapPostResponse,
     ResponseStatusEnum,
 )
 
@@ -26,7 +30,7 @@ def check_if_crawl_success(origin: OriginCrawlPagesEnum, post_name: str) -> bool
 
 def get_scrap_post_data(
     origin: OriginCrawlPagesEnum, post_name: str
-) -> ScrapPostResponse:
+) -> GetCrawlersDataResponse:
     with open(
         f"scrap/data/{origin.value}/discord/{post_name}.json", encoding="utf-8"
     ) as discord_json_file:
@@ -39,24 +43,24 @@ def get_scrap_post_data(
     # map return data to exact type
     data_map = {
         OriginCrawlPagesEnum.KHOAHOC_TV: {
-            ScrapDataResponseTypeEnum.HTML: KhoahocTvScrapHtmlPostResponse,
-            ScrapDataResponseTypeEnum.DISCORD: KhoahocTvScrapDiscordPostResponse,
+            CrawlerDataResponseTypeEnum.HTML: KhoahocTvHtmlPost,
+            CrawlerDataResponseTypeEnum.DISCORD: KhoahocTvDiscordPost,
         },
         OriginCrawlPagesEnum.IVOLUNTEER_VN: {
-            ScrapDataResponseTypeEnum.HTML: IvolunteerVnScrapHtmlPostResponse,
-            ScrapDataResponseTypeEnum.DISCORD: IvolunteerVnScrapDiscordPostResponse,
+            CrawlerDataResponseTypeEnum.HTML: IvolunteerHtmlPost,
+            CrawlerDataResponseTypeEnum.DISCORD: IvolunteerDiscordPost,
         },
     }
 
-    return ScrapPostResponse(
-        html=data_map[origin][ScrapDataResponseTypeEnum.HTML](**html_data),
-        discord=data_map[origin][ScrapDataResponseTypeEnum.DISCORD](**discord_data),
+    return GetCrawlersDataResponse(
+        html=data_map[origin][CrawlerDataResponseTypeEnum.HTML](**html_data),
+        discord=data_map[origin][CrawlerDataResponseTypeEnum.DISCORD](**discord_data),
     )
 
 
 def scrap_post_data(
     origin: OriginCrawlPagesEnum, post_name: str
-) -> ScrapPostResponse | None:
+) -> GetCrawlersDataResponse:
     # crawl post data
     os.system(f"python3 scrap/{origin.value}/__init__.py {post_name}")
     # check if
@@ -69,7 +73,11 @@ def scrap_post_data(
 
 def srap_post_data_find_or_create(
     origin: OriginCrawlPagesEnum, post_name: str
-) -> ScrapPostResponse | None:
+) -> GetCrawlersDataResponse:
     if check_if_crawl_success(origin=origin, post_name=post_name):
         return get_scrap_post_data(origin=origin, post_name=post_name)
     return scrap_post_data(origin=origin, post_name=post_name)
+
+
+def save_crawler_data(payload: PatchCrawlersDataPayload) -> None:
+    pass

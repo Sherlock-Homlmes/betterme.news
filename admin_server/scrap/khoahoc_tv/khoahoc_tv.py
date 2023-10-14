@@ -1,7 +1,7 @@
 import json
 import io
 import scrapy
-import scrapy.crawler as crawler
+import scrapy.Crawler as Crawler
 from multiprocessing import Process, Queue
 from twisted.internet import reactor
 
@@ -177,7 +177,7 @@ def khoahoc_tv_page_crawl(page_number: int):
 def run_spider(spider):
     def f(q):
         try:
-            runner = crawler.CrawlerRunner()
+            runner = Crawler.CrawlerRunner()
             deferred = runner.crawl(spider)
             deferred.addBoth(lambda _: reactor.stop())
             reactor.run()
