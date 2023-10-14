@@ -1,4 +1,4 @@
-FROM python:3.12
+FROM python:3.9.0
 
 RUN pip install --upgrade pip
 RUN pip install poetry

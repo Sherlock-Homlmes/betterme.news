@@ -1,6 +1,6 @@
 # default
 import datetime
-from typing import List, Optional, TypeAlias
+from typing import List, Optional, Union
 
 # libraries
 from pydantic import BaseModel, Field
@@ -8,8 +8,8 @@ from pydantic import BaseModel, Field
 
 ### CrawlersData.PY
 # Types
-DiscordContentType: TypeAlias = List[str | List[str]]
-HtmlContentType: TypeAlias = str
+DiscordContentType = List[Union[str, List[str]]]
+HtmlContentType = str
 # Models
 
 
@@ -86,5 +86,5 @@ class PatchCrawlersDataPayload(BaseModel):
 
 # Responses
 class GetCrawlersDataResponse(BaseModel):
-    discord: KhoahocTvDiscordPost | IvolunteerDiscordPost
-    html: KhoahocTvHtmlPost | IvolunteerHtmlPost
+    discord: Union[KhoahocTvDiscordPost, IvolunteerDiscordPost]
+    html: Union[KhoahocTvHtmlPost, IvolunteerHtmlPost]
