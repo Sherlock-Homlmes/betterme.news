@@ -3,7 +3,7 @@
 # default
 from typing import Annotated
 
-# library
+# libraries
 from fastapi import APIRouter, Depends
 
 # local

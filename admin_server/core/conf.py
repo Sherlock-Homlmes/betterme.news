@@ -27,6 +27,10 @@ get_env = os.environ.get
 class Settings(BaseSettings):
     IS_DEV_ENV: bool = False
     DATABASE_URL: str
+    DISCORD_BOT_TOKEN: str
+    AWS_ACCESS_KEY_ID: str
+    AWS_ACCESS_ACCESS_KEY: str
+    AWS_BUCKET: str
 
 
 settings = Settings()

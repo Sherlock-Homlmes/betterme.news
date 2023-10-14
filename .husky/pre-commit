@@ -11,6 +11,7 @@ bun prettier . --write
 
 # prettier & lint
 cd ..
-cd ./admin_server
+cd ./admin_server/frontend/static
 bun prettier . --write
-# npx lint-staged
+cd ../templates
+bun prettier . --write

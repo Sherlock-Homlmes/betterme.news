@@ -14,6 +14,8 @@ from core.models import (
 
 @app.on_event("startup")
 async def startup():
+    global is_discord_bot_started
+
     print("Connecting to database...")
     await beanie.init_beanie(
         database=client.betterme_news,
@@ -24,5 +26,6 @@ async def startup():
             Users,
         ],
     )
+    print("Connect to database success")
 
     print("Start up done")
