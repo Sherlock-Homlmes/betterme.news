@@ -647,6 +647,20 @@ files = [
 test = ["pytest (>=6)"]
 
 [[package]]
+name = "facebook-sdk"
+version = "3.1.0"
+description = "This client library is designed to support the Facebook Graph API and the official Facebook JavaScript SDK, which is the canonical way to implement Facebook authentication."
+optional = false
+python-versions = "*"
+files = [
+    {file = "facebook-sdk-3.1.0.tar.gz", hash = "sha256:cabcd2e69ea3d9f042919c99b353df7aa1e2be86d040121f6e9f5e63c1cf0f8d"},
+    {file = "facebook_sdk-3.1.0-py2.py3-none-any.whl", hash = "sha256:2e987b3e0f466a6f4ee77b935eb023dba1384134f004a2af21f1cfff7fe0806e"},
+]
+
+[package.dependencies]
+requests = "*"
+
+[[package]]
 name = "fastapi"
 version = "0.103.2"
 description = "FastAPI framework, high performance, easy to learn, fast to code, ready for production"
@@ -2287,4 +2301,4 @@ testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9.0"
-content-hash = "8b80219f1e5517252b00c5a781f41815da277822b69cf964b147dd89347c5c83"
+content-hash = "2a588438ffe0f0cba4bc8795d0a4c660516e7961273ff22e2f9cdca5375030e3"

@@ -26,11 +26,16 @@ get_env = os.environ.get
 # env var
 class Settings(BaseSettings):
     IS_DEV_ENV: bool = False
+
     DATABASE_URL: str
-    DISCORD_BOT_TOKEN: str
+
     AWS_ACCESS_KEY_ID: str
     AWS_ACCESS_ACCESS_KEY: str
     AWS_BUCKET: str
+
+    DISCORD_BOT_TOKEN: str
+
+    FACEBOOK_ACCESS_TOKEN: str
 
 
 settings = Settings()

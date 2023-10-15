@@ -4,9 +4,20 @@ from typing import Optional, List
 
 # libraries
 from beanie import Document, Link
+from pydantic import BaseModel
 
 # locals
 from .users import Users
+
+
+class FacebookPostInfo(BaseModel):
+    post_id: str
+    comment_id: str
+
+
+class DiscordPostInfo(BaseModel):
+    post_id: str
+    comment_id: str
 
 
 class Posts(Document):
@@ -17,8 +28,8 @@ class Posts(Document):
     updated_by: Link[Users]
 
     # other service
-    facebook_post_id: int
-    discord_post_id: int
+    facebook_post: FacebookPostInfo
+    discord_post: DiscordPostInfo
 
     # content
     title: str
