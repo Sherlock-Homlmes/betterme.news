@@ -32,6 +32,10 @@ pytest = "^7.4.2"
 "__init__.py" = ["F401", "F403", "F405"]
 "main.py" = ["F403"]
 
+[tool.mypy]
+ignore_missing_imports = true
+show_error_codes = true
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
