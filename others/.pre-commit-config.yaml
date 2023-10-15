@@ -9,16 +9,6 @@ repos:
       - id: debug-statements
         language_version: python3
 
-  # # custom bash
-  # - repo: local
-  #   hooks:
-  #     # model to ts
-  #     - id: model2ts-script
-  #       name: model2ts-script
-  #       entry: others/model2ts.sh
-  #       language: script
-  #       pass_filenames: false
-
   # js
   - repo: local
     hooks:
@@ -33,9 +23,11 @@ repos:
   - repo: https://github.com/pre-commit/mirrors-mypy
     rev: v1.4.1
     hooks:
+      # mypy for server
       - id: mypy
         name: mypy-server
         files: ^server/
+      # mypy for admin_server
       - id: mypy
         name: mypy-admin-server
         files: ^admin_server/
@@ -43,11 +35,16 @@ repos:
   - repo: https://github.com/psf/black
     rev: 23.7.0
     hooks:
+      # formatter
       - id: black
         args: [--safe]
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.0.278
+    rev: v0.0.292
     hooks:
+      # linter
       - id: ruff
         args: [--fix, --exit-non-zero-on-fix]
+      # formatter unsave(beta)
+      - id: ruff-format
+        args: [--check]
