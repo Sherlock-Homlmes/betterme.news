@@ -88,3 +88,9 @@ class PatchCrawlersDataPayload(BaseModel):
 class GetCrawlersDataResponse(BaseModel):
     discord: Union[KhoahocTvDiscordPost, IvolunteerDiscordPost]
     html: Union[KhoahocTvHtmlPost, IvolunteerHtmlPost]
+
+
+### bot.py
+class PatchBotPayload(BaseModel):
+    start: bool = False
+    stop: bool = True

@@ -56,6 +56,10 @@ export interface IvolunteerHtmlPost {
 export interface HtmlContent {
   content: string;
 }
+export interface PatchBotPayload {
+  start?: boolean;
+  stop?: boolean;
+}
 export interface PatchCrawlersDataPayload {
   origin: string;
   banner?: string;

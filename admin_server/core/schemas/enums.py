@@ -11,6 +11,7 @@ from fastapi import status
 class ResponseStatusEnum(Enum):
     OK = status.HTTP_200_OK
     CREATED = status.HTTP_201_CREATED
+    ACCEPTED = status.HTTP_202_ACCEPTED
     NO_CONTENT = status.HTTP_204_NO_CONTENT
 
     BAD_REQUEST = status.HTTP_400_BAD_REQUEST

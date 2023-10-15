@@ -1,9 +1,11 @@
 # libraries
-from fastapi import APIRouter
+from fastapi import APIRouter, BackgroundTasks
 
 # local
 from core.conf import settings
 from core.schemas import (
+    # payloads
+    PatchBotPayload,
     # enums
     ResponseStatusEnum,
 )
@@ -15,6 +17,16 @@ router = APIRouter(
 is_discord_bot_started = False
 
 
+async def start_bot():
+    global is_discord_bot_started
+    is_discord_bot_started = True
+
+    try:
+        await bot.start(settings.DISCORD_BOT_TOKEN)
+    except AttributeError:
+        print("Bot stop successfully")
+
+
 @router.get("/bot", tags=["Admin-backend-bot"], status_code=ResponseStatusEnum.OK.value)
 async def bot_status():
     return {
@@ -24,12 +36,21 @@ async def bot_status():
     }
 
 
-@router.post(
-    "/bot", tags=["Admin-backend-bot"], status_code=ResponseStatusEnum.CREATED.value
+@router.patch(
+    "/bot", tags=["Admin-backend-bot"], status_code=ResponseStatusEnum.ACCEPTED.value
 )
-async def start_bot():
+async def bot_actions(payloads: PatchBotPayload, background_tasks: BackgroundTasks):
     global is_discord_bot_started
 
-    if not is_discord_bot_started:
-        is_discord_bot_started = True
-        await bot.start(settings.DISCORD_BOT_TOKEN)
+    # if bot not start, start bot
+    # *Notice that start bot will block API so start bot background task
+    if not is_discord_bot_started and payloads.start:
+        background_tasks.add_task(start_bot)
+        return {"message": "Bot will start in seconds..."}
+    # if bot start, stop bot
+    elif is_discord_bot_started and not payloads.start:
+        is_discord_bot_started = False
+        bot.clear()
+        return {"message": "Bot close"}
+
+    return
