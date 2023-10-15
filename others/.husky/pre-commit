@@ -1,0 +1,15 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# model to typscript
+bash others/model2ts.sh
+
+# prettier & lint
+# cd ./client
+# bun prettier . --write
+# npx lint-staged
+# cd ..
+# cd ./admin_server/frontend/static
+# bun prettier . --write
+# cd ../templates
+# bun prettier . --write
