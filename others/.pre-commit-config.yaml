@@ -15,7 +15,7 @@ repos:
       - id: husky-run-pre-commit
         name: husky
         language: system
-        entry: .husky/pre-commit
+        entry: ./others/.husky/pre-commit
         pass_filenames: false
         always_run: true
 
