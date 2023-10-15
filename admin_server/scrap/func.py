@@ -1,6 +1,7 @@
 # default
 import json
 import os
+from PIL import Image
 
 # libraries
 from fastapi import HTTPException
@@ -81,3 +82,18 @@ def srap_post_data_find_or_create(
 
 def save_crawler_data(payload: PatchCrawlersDataPayload) -> None:
     pass
+
+
+def image_process(origin: OriginCrawlPagesEnum, image: str) -> None:
+    # Opens a image
+    if origin == OriginCrawlPagesEnum.IVOLUNTEER_VN:
+        frame_img = Image.open("scrap/media/betterme_news_ivolunteer.png")
+    else:
+        frame_img = Image.open("scrap/media/betterme_news.png")
+    img = Image.open(f"scrap/data/{origin.value}/media/{image}")
+
+    # Add foreground
+    img.paste(frame_img, (0, 0), frame_img)
+
+    # Save the image
+    img.save(f"scrap/data/{origin.value}/media/{image}")
