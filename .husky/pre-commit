@@ -5,13 +5,11 @@
 bash others/model2ts.sh
 
 # prettier & lint
-cd ./client
-bun prettier . --write
+# cd ./client
+# bun prettier . --write
 # npx lint-staged
-
-# prettier & lint
-cd ..
-cd ./admin_server/frontend/static
-bun prettier . --write
-cd ../templates
-bun prettier . --write
+# cd ..
+# cd ./admin_server/frontend/static
+# bun prettier . --write
+# cd ../templates
+# bun prettier . --write
