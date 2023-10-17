@@ -20,6 +20,23 @@ repos:
         always_run: true
 
   # python
+  - repo: https://github.com/python-poetry/poetry
+    # export poetry to requirements.txt(without python version after)
+    rev: 1.6.1
+    hooks:
+      - id: poetry-export
+        args:
+          [
+            "--without-hashes",
+            "--without-urls",
+            "|",
+            "awk",
+            "'{ print $1 }'",
+            "FS=';'",
+            ">",
+            "requirements.txt",
+          ]
+
   - repo: https://github.com/pre-commit/mirrors-mypy
     rev: v1.4.1
     hooks:
