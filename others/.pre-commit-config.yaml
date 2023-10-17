@@ -25,9 +25,10 @@ repos:
     rev: 1.6.1
     hooks:
       - id: poetry-export
-        files: ^server/
         args:
           [
+            "-C",
+            "./server",
             "--without-hashes",
             "--without-urls",
             "|",
