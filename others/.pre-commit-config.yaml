@@ -22,8 +22,8 @@ repos:
   # python
   - repo: local
     hooks:
-      - id: poetry-export-requirements.txt
-        name: poetry-export-requirements.txt
+      - id: poetry-export-requirements
+        name: poetry-export-requirements
         entry: other/poetry-export.sh
         language: script
         types: [python]
