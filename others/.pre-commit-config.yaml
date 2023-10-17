@@ -24,7 +24,7 @@ repos:
     hooks:
       - id: poetry-export-requirements
         name: poetry-export-requirements
-        entry: other/poetry-export.sh
+        entry: other/server-requirements.sh
         language: script
         types: [python]
         pass_filenames: false
