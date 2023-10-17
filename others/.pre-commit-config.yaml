@@ -20,29 +20,14 @@ repos:
         always_run: true
 
   # python
-  - repo: https://github.com/python-poetry/poetry
-    # export poetry to requirements.txt(without python version after)
-    rev: "1.6.1"
+  - repo: local
     hooks:
-      - id: poetry-check
-        args: ["-C", "./subdirectory"]
-      - id: poetry-lock
-        args: ["-C", "./subdirectory"]
-      - id: poetry-export
-        args:
-          [
-            "-C",
-            "./server",
-            "--without-hashes",
-            "--without-urls",
-            "|",
-            "awk",
-            "'{ print $1 }'",
-            "FS=';'",
-            ">",
-            "./server/requirements.txt",
-          ]
-
+      - id: poetry-export-requirements.txt
+        name: poetry-export-requirements.txt
+        entry: other/poetry-export.sh
+        language: script
+        types: [python]
+        pass_filenames: false
   - repo: https://github.com/pre-commit/mirrors-mypy
     rev: v1.4.1
     hooks:
