@@ -36,7 +36,7 @@ repos:
             "'{ print $1 }'",
             "FS=';'",
             ">",
-            "requirements.txt",
+            "./server/requirements.txt",
           ]
 
   - repo: https://github.com/pre-commit/mirrors-mypy
