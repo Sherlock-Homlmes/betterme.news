@@ -22,8 +22,12 @@ repos:
   # python
   - repo: https://github.com/python-poetry/poetry
     # export poetry to requirements.txt(without python version after)
-    rev: 1.6.1
+    rev: "1.6.1"
     hooks:
+      - id: poetry-check
+        args: ["-C", "./subdirectory"]
+      - id: poetry-lock
+        args: ["-C", "./subdirectory"]
       - id: poetry-export
         args:
           [
