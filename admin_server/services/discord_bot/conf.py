@@ -7,7 +7,10 @@ import discord
 from discord.ext import commands
 
 # local
+from core.conf import settings
 from services.discord_bot.func import get_channel
+
+is_app_running = True
 
 
 ####### BOT #######
@@ -16,7 +19,19 @@ class Bot(commands.Bot):
         super().__init__(*args, **kwargs)
 
     async def on_ready(self):
+        global is_app_running
+
         print(f"We have logged in as {self.user} news bot")
+        if settings.IS_DEV_ENV:
+            # Stop bot when reload
+            while is_app_running:
+                from core.event_handler import running
+
+                if running:
+                    await asyncio.sleep(1)
+                else:
+                    await self.close()
+                    is_app_running = False
 
     async def on_command_error(self, ctx, error):
         await ctx.reply(error, ephemeral=True)

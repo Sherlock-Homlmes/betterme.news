@@ -4,13 +4,14 @@ from fastapi import APIRouter
 # local
 from backend import (
     crawlers as be_crawlers,
-    bot as be_bot,
 )
 from frontend.routers import crawlers as fe_crawlers
 
 # create all api routers
 api_router = APIRouter()
-for be_service in [be_crawlers, be_bot]:
+for be_service in [
+    be_crawlers,
+]:
     api_router.include_router(
         be_service.router,
         prefix="/api",

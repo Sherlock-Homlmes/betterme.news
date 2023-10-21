@@ -23,9 +23,12 @@ class DiscordPostInfo(BaseModel):
 class Posts(Document):
     # info
     created_at: datetime.datetime
-    created_by: Link[Users]
+    # TODO: remove optional and None
+    created_by: Optional[Link[Users]] = None
     updated_at: datetime.datetime
-    updated_by: Link[Users]
+    # TODO: remove optional and None
+    updated_by: Optional[Link[Users]] = None
+    raw_data: None
 
     # other service
     facebook_post: FacebookPostInfo
@@ -37,7 +40,7 @@ class Posts(Document):
     banner_img: Optional[str]
     content: str
     author: str
-    writed_at: datetime.datetime
+    writed_at: datetime.date
     view: int
 
     # SEO
@@ -47,3 +50,5 @@ class Posts(Document):
 
     class Settings:
         validate_on_save = True
+
+    # event

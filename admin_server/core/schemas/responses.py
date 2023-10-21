@@ -13,14 +13,6 @@ HtmlContentType = str
 # Models
 
 
-class DiscordContent(BaseModel):
-    content: DiscordContentType
-
-
-class HtmlContent(BaseModel):
-    content: HtmlContentType
-
-
 class CrawlersData(BaseModel):
     title: str
     deadline: datetime.date
@@ -28,20 +20,20 @@ class CrawlersData(BaseModel):
     description: str
 
 
-class IvolunteerDiscordPost(CrawlersData, DiscordContent):
-    pass
+class IvolunteerDiscordPost(CrawlersData):
+    content: DiscordContentType
 
 
-class IvolunteerHtmlPost(CrawlersData, HtmlContent):
-    pass
+class IvolunteerHtmlPost(CrawlersData):
+    content: HtmlContentType
 
 
-class KhoahocTvDiscordPost(CrawlersData, DiscordContent):
-    pass
+class KhoahocTvDiscordPost(CrawlersData):
+    content: DiscordContentType
 
 
-class KhoahocTvHtmlPost(CrawlersData, HtmlContent):
-    pass
+class KhoahocTvHtmlPost(CrawlersData):
+    content: HtmlContentType
 
 
 # Params
@@ -68,7 +60,7 @@ class PostCrawlersDataPayload(BaseModel):
     html_content: HtmlContentType
     html_description: str
 
-    is_testing: Optional[bool] = False
+    is_testing: bool = False
 
 
 class PatchCrawlersDataPayload(BaseModel):
@@ -92,5 +84,4 @@ class GetCrawlersDataResponse(BaseModel):
 
 ### bot.py
 class PatchBotPayload(BaseModel):
-    start: bool = False
-    stop: bool = True
+    action: str

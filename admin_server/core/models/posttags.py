@@ -2,13 +2,13 @@
 from beanie import Document, Link
 
 # locals
+from core.schemas import TagsEnum
 from .posts import Posts
-from .tags import Tags
 
 
 class PostTags(Document):
     post: Link[Posts]
-    tag: Link[Tags]
+    tag: TagsEnum
 
     class Settings:
         validate_on_save = True

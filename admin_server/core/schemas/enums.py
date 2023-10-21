@@ -21,6 +21,12 @@ class ResponseStatusEnum(Enum):
     RATE_LIMIT = status.HTTP_429_TOO_MANY_REQUESTS
 
 
+class TagsEnum(Enum):
+    SOMETHING1 = "SOMETHING1"
+    SOMETHING2 = "SOMETHING2"
+    SOMETHING3 = "SOMETHING3"
+
+
 # CRAWL
 class OriginCrawlPagesEnum(Enum):
     KHOAHOC_TV = "khoahoc_tv"

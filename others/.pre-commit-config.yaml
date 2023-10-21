@@ -9,7 +9,18 @@ repos:
       - id: debug-statements
         language_version: python3
 
+  # common
+  # TODO: soon
+  # - repo: local
+  #   hooks:
+  #     - id: server-export-requirements
+  #       name: server-export-requirements
+  #       entry: bash -c 'bash others/server-requirements.sh'
+  #       language: system
+  #       pass_filenames: false
+
   # js
+
   # - repo: local
   #   hooks:
   #     - id: husky-run-pre-commit
@@ -35,28 +46,6 @@ repos:
         types: [file]
 
   # python
-  - repo: local
-    hooks:
-      - id: poetry-export-requirements
-        name: poetry-export-requirements
-        entry: other/server-requirements.sh
-        language: script
-        types: [python]
-        pass_filenames: false
-
-  - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.4.1
-    hooks:
-      # type checker
-      # mypy for server
-      - id: mypy
-        name: mypy-server
-        files: ^server/
-      # mypy for admin_server
-      - id: mypy
-        name: mypy-admin-server
-        files: ^admin_server/
-
   - repo: https://github.com/psf/black
     rev: 23.7.0
     hooks:

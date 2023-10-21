@@ -5,17 +5,21 @@ import json
 import discord
 
 # local
-from services.discord_bot.conf import server_info
+from core.schemas import OriginCrawlPagesEnum
+from .conf import server_info
 
 
-async def send_news(origin: str, post_name: str, is_testing: bool = True):
-    for tag in server_info.news_channel.available_tags:
-        print(tag)
+# TODO: tags, button more info
+async def send_news(
+    origin: OriginCrawlPagesEnum, post_name: str, is_testing: bool = True
+) -> int:
+    # for tag in server_info.news_channel.available_tags:
+    #     print(tag)
 
     # open json file to get data
     try:
         with open(
-            f"scrap/data/{origin}/discord/{post_name}.json", encoding="utf-8"
+            f"scrap/data/{origin.value}/discord/{post_name}.json", encoding="utf-8"
         ) as json_file:
             data = json.load(json_file)
     except Exception as e:
@@ -25,29 +29,10 @@ async def send_news(origin: str, post_name: str, is_testing: bool = True):
         color=discord.Colour.yellow(),
         description=data["description"],
     )
-    embed.add_field(name="DEADLINE", value=data["deadline"], inline=False)
-
-    is_end_description = False
-    for index, cont in enumerate(data["content"]):
-        if type(cont) == list:
-            field_content = ""
-            for li in cont:
-                field_content += f"- {li}\n"
-            embed.add_field(name="", value=field_content, inline=False)
-        elif "**" in cont:
-            # try:
-            #     if type(data["content"][index+1]) == list:
-            #         field_content = ""
-            #         for li in data["content"][index+1]:
-            #             field_content += f"- {li}\n"
-            #         embed.add_field(name=cont, value=field_content, inline=False)
-            #     elif type(data["content"][index+1]) == str:
-            #         embed.add_field(name=cont, value="", inline=False)
-            # except IndexError:
-            embed.add_field(name=cont, value="", inline=False)
-            is_end_description = True
-        elif is_end_description is False:
-            embed.description += f"\n{cont}"
+    embed.add_field(name="Deadline", value=data["deadline"], inline=False)
+    embed.add_field(
+        name="More info", value=f"https://betterme.news/{post_name}", inline=False
+    )
 
     post: discord.Thread = None
     if is_testing is True:
@@ -62,6 +47,5 @@ async def send_news(origin: str, post_name: str, is_testing: bool = True):
             # file=data["banner"],
             embed=embed,
         )
-    print(post)
 
-    return {"message": "Success"}
+    return post.thread.id
