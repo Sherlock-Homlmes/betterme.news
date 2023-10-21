@@ -10,14 +10,29 @@ repos:
         language_version: python3
 
   # js
-  - repo: local
+  # - repo: local
+  #   hooks:
+  #     - id: husky-run-pre-commit
+  #       name: husky
+  #       language: system
+  #       entry: ./others/.husky/pre-commit
+  #       pass_filenames: false
+  #       always_run: true
+
+  - repo: https://github.com/pre-commit/mirrors-prettier
+    rev: "" # Use the sha / tag you want to point at
     hooks:
-      - id: husky-run-pre-commit
-        name: husky
-        language: system
-        entry: ./others/.husky/pre-commit
-        pass_filenames: false
-        always_run: true
+      - id: prettier
+        types_or: [css, javascript]
+        additional_dependencies:
+          - prettier@3.0.3
+
+  - repo: https://github.com/pre-commit/mirrors-eslint
+    rev: "" # Use the sha / tag you want to point at
+    hooks:
+      - id: eslint
+        files: \.[jt]sx?$ # *.js, *.jsx, *.ts and *.tsx
+        types: [file]
 
   # python
   - repo: local
@@ -32,6 +47,7 @@ repos:
   - repo: https://github.com/pre-commit/mirrors-mypy
     rev: v1.4.1
     hooks:
+      # type checker
       # mypy for server
       - id: mypy
         name: mypy-server
@@ -44,16 +60,32 @@ repos:
   - repo: https://github.com/psf/black
     rev: 23.7.0
     hooks:
-      # formatter
+      # formater
+      # black for server
       - id: black
+        name: black-server
         args: [--safe]
+        files: ^server/
+      # black for admin_server
+      - id: black
+        name: black-admin-server
+        args: [--safe]
+        files: ^admin_server/
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.0.292
     hooks:
       # linter
+      # ruff for server
       - id: ruff
+        name: ruff-server
         args: [--fix, --exit-non-zero-on-fix]
-      # formatter unsave(beta)
-      - id: ruff-format
-        args: [--check]
+        files: ^server/
+      # ruff for admin_server
+      - id: ruff
+        name: ruff-admin-server
+        args: [--fix, --exit-non-zero-on-fix]
+        files: ^admin_server/
+      # # formatter(beta)
+      # - id: ruff-format
+      #   args: [--check]

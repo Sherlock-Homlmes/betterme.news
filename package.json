@@ -7,12 +7,5 @@
     "enum-converter": "^1.4.11",
     "json-schema-to-typescript": "^13.1.1",
     "jsonschema": "^1.4.1"
-  },
-  "devDependencies": {
-    "@commitlint/cli": "^17.3.0",
-    "@commitlint/config-conventional": "^17.3.0",
-    "husky": "^8.0.0",
-    "prettier": "^3.0.3",
-    "lint-staged": "^13.1.2"
   }
 }
