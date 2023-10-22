@@ -18,5 +18,9 @@ jobs:
           services: |
             mongo
             server
-          test-container: server
-          test-command: "python --version && poetry install --only-root"
+
+      - name: Install dependencies
+        run: docker-compose run --rm server poetry install --only-root
+
+      - name: Run test
+        run: docker-compose run --rm server python --version
