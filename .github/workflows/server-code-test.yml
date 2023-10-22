@@ -11,11 +11,11 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: Start containers
-        run: docker-compose up server -d --build
+        run: docker-compose -f "docker-compose.yml" up server -d --build
 
       - name: Install server dependencies
         run: docker-compose run --rm server poetry install
 
       - name: Stop containers
         if: always()
-        run: docker-compose down server
+        run: docker-compose  -f "docker-compose.yml" down server
