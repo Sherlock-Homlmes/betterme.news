@@ -20,6 +20,5 @@ bun install
 python3 -m venv .venv
 source ./.venv/bin/activate
 pip install -r requirements.txt
-cd others
 git config --unset-all core.hooksPath
 pre-commit install
