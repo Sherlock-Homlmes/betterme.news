@@ -17,5 +17,6 @@ jobs:
           down-flags: "--volumes"
           services: |
             mongo
+            server
           test-container: server
-          test-command: "poetry install --only-root"
+          test-command: "docker-compose run --rm server poetry install --only-root"
