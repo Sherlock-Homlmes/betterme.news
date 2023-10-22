@@ -18,14 +18,7 @@ jobs:
           services: |
             mongo
             server
-
-      - name: Test something
-        run: |
-          ls
-          docker-compose run --rm server chmod u+x .
-
-      - name: Run test
-        run: docker-compose run --rm server python --version
-
-      - name: Install dependencies
-        run: docker-compose run --rm server poetry install --only-root
+        test-container: server
+        test-command: |
+          python --version
+          poetry install --only-root
