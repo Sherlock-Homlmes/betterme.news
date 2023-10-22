@@ -1,0 +1,21 @@
+name: Server code test
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+jobs:
+  style-code-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Start containers
+        run: docker-compose up server -d --build
+
+      - name: Install server dependencies
+        run: docker-compose run --rm server poetry install
+
+      - name: Stop containers
+        if: always()
+        run: docker-compose down server
