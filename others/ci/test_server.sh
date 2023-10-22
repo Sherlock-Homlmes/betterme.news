@@ -5,4 +5,5 @@ pip install poetry
 cd server
 poetry install --only-root
 # run test
-pytest
+source .venv/bin/activate
+python -m pytest
