@@ -1,21 +1,22 @@
-name: Server code test
+name: Server test
 on:
   push:
     branches: [master]
   pull_request:
     branches: [master]
 jobs:
-  style-code-check:
+  server-code-test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
 
       - name: Start containers
-        run: docker-compose -f "docker-compose.yml" up server -d --build
-
-      - name: Install server dependencies
-        run: docker-compose run --rm server poetry install
-
-      - name: Stop containers
-        if: always()
-        run: docker-compose  -f "docker-compose.yml" down server
+        uses: adambirds/docker-compose-action@v1.3.0
+        with:
+          compose-file: "./docker-compose.yml"
+          down-flags: "--volumes"
+          services: |
+            server
+            mongo
+          test-container: server
+          test-command: "poetry install --only-root"
