@@ -11,14 +11,19 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Start containers & install dependencies
-        uses: adambirds/docker-compose-action@v1.3.0
-        with:
-          compose-file: "./docker-compose.yml"
-          up-flags: "--build"
-          down-flags: "--volumes"
-          services: |
-            mongo
-            server
-          test-container: server
-          test-command: "python --version"
+      - name: Run docker
+        run: docker-compose build
+
+      - name: Install dependencies
+        run: docker-compose run --rm server poetry install --only-root
+      # - name: Start containers & install dependencies
+      #   uses: adambirds/docker-compose-action@v1.3.0
+      #   with:
+      #     compose-file: "./docker-compose.yml"
+      #     up-flags: "--build"
+      #     down-flags: "--volumes"
+      #     services: |
+      #       mongo
+      #       server
+      #     test-container: server
+      #     test-command: "python --version"
