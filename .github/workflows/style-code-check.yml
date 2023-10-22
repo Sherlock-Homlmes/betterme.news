@@ -15,10 +15,12 @@ jobs:
         with:
           python-version: 3.9
           cache: "pip"
+      - name: Go to pre-commit config file dir
+        run: cd others
       - name: Setup pre-commit
         uses: pre-commit/action@v3.0.0
       - name: Install pre-commit
-        run: cd others && pre-commit install
+        run: pre-commit install
 
       # Run style code check
       - name: Run pre-commit
