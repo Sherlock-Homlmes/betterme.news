@@ -14,7 +14,7 @@ jobs:
         uses: adambirds/docker-compose-action@v1.3.0
         with:
           compose-file: "./docker-compose.yml"
-          up-flags: "-f"
+          up-flags: "--detach"
           down-flags: "--volumes"
           services: |
             mongo
