@@ -22,10 +22,10 @@ jobs:
       - name: Test something
         run: |
           ls
-          chmod u+x .
-
-      - name: Install dependencies
-        run: docker-compose run --rm server poetry install --only-root
+          docker-compose run --rm server chmod u+x .
 
       - name: Run test
         run: docker-compose run --rm server python --version
+
+      - name: Install dependencies
+        run: docker-compose run --rm server poetry install --only-root
