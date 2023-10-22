@@ -1,0 +1,28 @@
+name: Style code check
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+jobs:
+  style-code-check:
+    runs-on: ubuntu-latest
+    steps:
+      # Setup
+      - uses: actions/checkout@v3
+      - name: Setup python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.9
+          cache: "pip"
+
+      # Install
+      - name: Install python dependencies
+        run: pip install -r requirements.txt
+      - run: pre-commit --version
+      - name: Install pre-commit
+        run: cd others && pre-commit install
+
+      # Run style code check
+      - name: Install pre-commit
+        run: cd .. && bash .git/hooks/pre-commit
