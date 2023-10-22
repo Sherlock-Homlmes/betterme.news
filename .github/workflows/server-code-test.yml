@@ -18,8 +18,9 @@ jobs:
         # install dependencies
         run: |
           bash others/create_sample_env.sh
-          docker-compose run --rm server poetry install --only-root
+          docker-compose up server -d
+          docker-compose exec server poetry install --only-root
 
       # TODO: cannot run docker-compose test
       - name: Run tests
-        run: docker-compose run --rm server python --version
+        run: docker-compose exec server python --version

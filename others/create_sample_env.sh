@@ -7,5 +7,3 @@ if [ ! -f ./admin_server/.env ]; then
     echo "Generate admin server .env file"
     cp admin_server/example.env admin_server/.env
 fi
-
-echo "Create sample env done"
