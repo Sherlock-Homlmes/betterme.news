@@ -16,6 +16,9 @@ jobs:
           python-version: 3.12
           cache: "pip"
 
+      - name: Install dependencies
+        run: bash others/ci/install_server.sh
+
       - name: Run tests
         run: bash others/ci/test_server.sh
 
