@@ -36,6 +36,8 @@ class Settings(BaseSettings):
     DISCORD_BOT_TOKEN: str
 
     FACEBOOK_ACCESS_TOKEN: str
+    FACEBOOK_APP_ID: str
+    FACEBOOK_APP_SECRET: str
 
 
 settings = Settings()

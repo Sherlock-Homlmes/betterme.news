@@ -19,6 +19,7 @@ from core.schemas import (
 )
 from scrap.func import scrap_post_data, get_scrap_post_data
 from services.discord_bot.news import send_news
+from services.facebook_bot.func import post_to_fb
 
 # from services.time_modules import Time
 
@@ -57,6 +58,13 @@ async def post_crawler(body: PostCrawlersDataPayload):
         origin=body.origin, post_name=body.post_name, is_testing=body.is_testing
     )
     print(discord_post_id)
+    facebook_post = post_to_fb(
+        origin=body.origin,
+        content=current_data.discord.title,
+        comment="test comment",
+        hashtags=["hashtag1", "hashtag2"],
+    )
+    print(facebook_post)
 
     return
 

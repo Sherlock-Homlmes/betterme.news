@@ -1,14 +1,18 @@
 # mypy: disable-error-code="index"
 # default
-from typing import List
+from typing import List, Optional
 
 # local
-from services.facebook import fb_client
 from core.models import FacebookPostInfo
+from .conf import fb_client
 
 
 def post_to_fb(
-    origin: str, image_name: str, content: str, comment: str, hashtags: List[str]
+    origin: str,
+    content: str,
+    comment: str,
+    hashtags: Optional[List[str]] = [],
+    image_name: Optional[str] = None,
 ) -> FacebookPostInfo:
     # add hashtag(s)
     content += "'\n"
@@ -22,13 +26,13 @@ def post_to_fb(
         post = fb_client.put_object("me", "feed", message=content)
 
     # like post
-    fb_client.put_like(object_id=post["post_id"])
+    fb_client.put_like(object_id=post["id"])
 
     # add comment
-    comment = fb_client.put_comment(object_id=post["post_id"], message=comment)
+    comment = fb_client.put_comment(object_id=post["id"], message=comment)
 
     return FacebookPostInfo(
-        post_id=post["post_id"],
+        post_id=post["id"],
         comment_id=comment["id"],
     )
 
