@@ -10,13 +10,12 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Start containers
+      - name: Start containers & install dependencies
         uses: adambirds/docker-compose-action@v1.3.0
         with:
           compose-file: "./docker-compose.yml"
           down-flags: "--volumes"
           services: |
-            server
             mongo
           test-container: server
           test-command: "poetry install --only-root"
