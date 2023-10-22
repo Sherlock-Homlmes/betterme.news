@@ -1,0 +1,16 @@
+name: test
+on:
+  push:
+    branches: [main]
+jobs:
+  say-something:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo Hello test
+
+      - name: Setup python 3.9
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+
+      - run: bun install
