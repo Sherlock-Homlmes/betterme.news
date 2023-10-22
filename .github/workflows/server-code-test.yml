@@ -14,9 +14,10 @@ jobs:
         uses: adambirds/docker-compose-action@v1.3.0
         with:
           compose-file: "./docker-compose.yml"
+          up-flags: "-f"
           down-flags: "--volumes"
           services: |
             mongo
             server
           test-container: server
-          test-command: "docker-compose run --rm server poetry install --only-root"
+          test-command: "python --version && poetry install --only-root"
