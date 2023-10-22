@@ -19,6 +19,4 @@ jobs:
             mongo
             server
           test-container: server
-          test-command: |
-            python --version
-            poetry install --only-root
+          test-command: "python --version"
