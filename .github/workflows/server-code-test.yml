@@ -18,7 +18,7 @@ jobs:
           services: |
             mongo
             server
-        test-container: server
-        test-command: |
-          python --version
-          poetry install --only-root
+          test-container: server
+          test-command: |
+            python --version
+            poetry install --only-root
