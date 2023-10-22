@@ -20,7 +20,7 @@ jobs:
         run: bash others/ci/install_server.sh
 
       - name: Run tests
-        run: bash others/ci/test_server.sh
+        run: pytest
 
       # - name: Build image docker
       #   run: docker-compose build server
