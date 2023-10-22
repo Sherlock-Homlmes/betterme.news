@@ -1,0 +1,17 @@
+name: test
+on:
+  push:
+    branches: [main]
+jobs:
+  say-something:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo Hello test
+
+      - name: Setup python 3.9
+        uses: action/setup-python
+        with:
+          python-version: 3.9
+
+      - name: test somehting
+        run: python3 -m pip install requirements.txt
