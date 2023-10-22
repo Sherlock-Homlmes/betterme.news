@@ -9,18 +9,32 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - name: Setup python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.12
+          cache: "pip"
 
       - name: Build image docker
         run: docker-compose build server
+
+      # TODO: cannot run docker-compose install
+      # - name: Install dependencies
+      #   # create sample .env file
+      #   # install dependencies
+      #   run: |
+      #     bash others/create_sample_env.sh
+      #     docker-compose up server
+      #     docker-compose exec server poetry install --only-root
 
       - name: Install dependencies
         # create sample .env file
         # install dependencies
         run: |
           bash others/create_sample_env.sh
-          docker-compose up server -d
-          docker-compose exec server poetry install --only-root
+          pip install poetry
+          cd server
+          poetry install --only-root
 
-      # TODO: cannot run docker-compose test
       - name: Run tests
         run: docker-compose exec server python --version
