@@ -38,12 +38,12 @@ repos:
         additional_dependencies:
           - prettier@3.0.3
 
-  - repo: https://github.com/pre-commit/mirrors-eslint
-    rev: "" # Use the sha / tag you want to point at
-    hooks:
-      - id: eslint
-        files: \.[jt]sx?$ # *.js, *.jsx, *.ts and *.tsx
-        types: [file]
+  # - repo: https://github.com/pre-commit/mirrors-eslint
+  #   rev: "" # Use the sha / tag you want to point at
+  #   hooks:
+  #     - id: eslint
+  #       files: \.[jt]sx?$ # *.js, *.jsx, *.ts and *.tsx
+  #       types: [file]
 
   # python
   - repo: https://github.com/psf/black
