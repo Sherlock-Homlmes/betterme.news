@@ -19,6 +19,7 @@ pydantic-settings = "^2.0.3"
 mypy = "^1.5.1"
 ruff = "^0.0.292"
 black = "^23.9.1"
+pytest = "^7.4.2"
 
 [tool.ruff.per-file-ignores]
 "__init__.py" = ["F403"]

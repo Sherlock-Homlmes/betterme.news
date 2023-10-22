@@ -1,4 +1,3 @@
-# TODO: cannot run docker-compose test
 name: Server test
 on:
   push:
@@ -11,19 +10,16 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Run docker
-        run: docker-compose build
+      - name: Build image docker
+        run: docker-compose build server
 
       - name: Install dependencies
-        run: docker-compose run --rm server poetry install --only-root
-      # - name: Start containers & install dependencies
-      #   uses: adambirds/docker-compose-action@v1.3.0
-      #   with:
-      #     compose-file: "./docker-compose.yml"
-      #     up-flags: "--build"
-      #     down-flags: "--volumes"
-      #     services: |
-      #       mongo
-      #       server
-      #     test-container: server
-      #     test-command: "python --version"
+        # create sample .env file
+        # install dependencies
+        run: |
+          bash others/create_sample_env.sh
+          docker-compose run --rm server poetry install --only-root
+
+      # TODO: cannot run docker-compose test
+      - name: Run tests
+        run: docker-compose run --rm server python --version
