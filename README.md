@@ -17,8 +17,8 @@
 
 ## RUN SERVICES:
 
-    - docker compose up -d
-    - docker compose logs <service_name> -f --tails=50
+    - docker-compose up -d
+    - docker-compose logs <service_name> -f --tails=50
 
 ## RUN TOOLS:
 
