@@ -64,11 +64,12 @@ services:
     build:
       context: ./
       dockerfile: ./others/docker/client/Dockerfile
-    ports:
-      - 4321:4321
     volumes:
       - .:/var/task
     working_dir: /var/task/client
+    user: "${COMPOSE_UID:-1000}:${COMPOSE_GID:-1000}"
+    ports:
+      - 4321:4321
     networks:
       - nginx-net
     command:

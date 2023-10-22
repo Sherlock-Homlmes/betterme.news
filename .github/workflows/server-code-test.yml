@@ -19,6 +19,11 @@ jobs:
             mongo
             server
 
+      - name: Test something
+        run: |
+          ls
+          chmod u+x .
+
       - name: Install dependencies
         run: docker-compose run --rm server poetry install --only-root
 
