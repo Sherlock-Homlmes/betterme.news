@@ -1,3 +1,4 @@
+# TODO: cannot run docker-compose
 name: Server test
 on:
   push:
@@ -15,10 +16,12 @@ jobs:
           python-version: 3.12
           cache: "pip"
 
-      - name: Build image docker
-        run: docker-compose build server
+      - name: Run tests
+        run: bash others/ci/test_server.sh
 
-      # TODO: cannot run docker-compose install
+      # - name: Build image docker
+      #   run: docker-compose build server
+
       # - name: Install dependencies
       #   # create sample .env file
       #   # install dependencies
@@ -26,15 +29,3 @@ jobs:
       #     bash others/create_sample_env.sh
       #     docker-compose up server
       #     docker-compose exec server poetry install --only-root
-
-      - name: Install dependencies
-        # create sample .env file
-        # install dependencies
-        run: |
-          bash others/create_sample_env.sh
-          pip install poetry
-          cd server
-          poetry install --only-root
-
-      - name: Run tests
-        run: docker-compose exec server python --version
