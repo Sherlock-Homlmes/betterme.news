@@ -9,9 +9,10 @@ jobs:
       - run: echo Hello test
 
       - name: Setup python 3.9
-        uses: action/setup-python
+        uses: actions/setup-python@v4
         with:
           python-version: 3.9
+          cache: "pip" # caching pip dependencies
 
       - name: test somehting
         run: python3 -m pip install requirements.txt
