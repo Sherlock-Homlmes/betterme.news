@@ -6,11 +6,11 @@ jobs:
   say-something:
     runs-on: ubuntu-latest
     steps:
-      - run: echo Hello test
-
-      - name: Setup python 3.9
+      - uses: actions/checkout@v3 # Checkout repo
+      - name: Setup bun
         uses: oven-sh/setup-bun@v1
         with:
           bun-version: latest
 
+      - run: bun -v
       - run: bun install

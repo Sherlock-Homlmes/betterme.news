@@ -3,10 +3,10 @@ on:
   push:
     branches: [master]
 jobs:
-  say-something:
+  something:
     runs-on: ubuntu-latest
     steps:
-      - run: echo Hello test
+      - uses: actions/checkout@v3
 
       - name: Setup python 3.9
         uses: actions/setup-python@v4
@@ -14,5 +14,5 @@ jobs:
           python-version: 3.9
           cache: "pip" # caching pip dependencies
 
-      - name: test somehting
-        run: python3 -m pip install requirements.txt
+      - name: Install dependencies
+        run: pip install -r requirements.txt
