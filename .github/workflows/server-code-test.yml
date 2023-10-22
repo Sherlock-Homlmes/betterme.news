@@ -1,3 +1,4 @@
+# TODO: cannot run docker-compose test
 name: Server test
 on:
   push:
@@ -14,6 +15,7 @@ jobs:
         uses: adambirds/docker-compose-action@v1.3.0
         with:
           compose-file: "./docker-compose.yml"
+          up-flags: "--build"
           down-flags: "--volumes"
           services: |
             mongo
