@@ -1,3 +1,4 @@
+# This pre-commit file use for check code style before commit and also use for check code style in CI
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v3.2.0
