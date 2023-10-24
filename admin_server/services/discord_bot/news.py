@@ -9,7 +9,12 @@ from core.schemas import OriginCrawlPagesEnum
 from .conf import server_info
 
 
-# TODO: tags, button more info
+# TODO:
+# -> rename func
+# ->.pass post description
+# -> revert deadline
+# -> tags
+# -> button more info
 async def send_news(
     origin: OriginCrawlPagesEnum, post_name: str, is_testing: bool = True
 ) -> int:

@@ -12,7 +12,6 @@ endcolor="\e[0m"
 # link=${link#"/${arr[1]}"}
 # link=${link%"/run.sh"}
 # eval "cd ~$link"
-# eval "cd ~/Documents/otani_proj"
 
 # docker_alias = []
 # docker_command = []
