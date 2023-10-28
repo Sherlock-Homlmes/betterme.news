@@ -1,0 +1,60 @@
+---
+import TopNav from "../components/TopNav.astro";
+import PostCard from "../components/PostCard.astro";
+import CommonLayout from "../layouts/CommonLayout.astro";
+import Carousel from "../components/Carousel.svelte";
+---
+
+<CommonLayout>
+  <TopNav />
+  <center class="mt-10">
+    <center class="max-w-7xl">
+      <div class="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
+        <div class="col-span-2">
+          <Carousel client:load />
+        </div>
+        <div class="col-span-2 grid gap-4 grid-cols-1 md:grid-cols-2">
+          <PostCard />
+          <PostCard />
+          <PostCard />
+          <PostCard />
+        </div>
+        <div class="col-span-1">
+          <PostCard />
+        </div>
+        <div class="col-span-1">
+          <PostCard />
+        </div>
+        <div class="col-span-1">
+          <PostCard />
+        </div>
+        <div class="col-span-1">
+          <PostCard />
+        </div>
+        <div class="col-span-1">
+          <PostCard />
+        </div>
+        <div class="col-span-1">
+          <PostCard />
+        </div>
+        <div class="col-span-1">
+          <PostCard />
+        </div>
+        <div class="col-span-1">
+          <PostCard />
+        </div>
+      </div>
+    </center>
+  </center>
+</CommonLayout>
+
+<style>
+  body {
+    line-height: 1.5;
+    background-color: #f8f3eb;
+    color: #484847;
+  }
+  aside > div > div {
+    font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+  }
+</style>
