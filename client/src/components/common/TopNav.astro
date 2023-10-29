@@ -1,7 +1,6 @@
 ---
-import Logo from "./Logo.astro";
-import TagCard from "./TagCard.astro";
-import SearchInput from "./SearchInput.svelte";
+import TagCard from "../index/TagCard.astro";
+import SearchInput from "../index/SearchInput.svelte";
 ---
 
 <nav class="pb-8 bg-white border-gray-200 dark:bg-gray-900">
@@ -27,15 +26,15 @@ import SearchInput from "./SearchInput.svelte";
     <p class="ml-5 text-lg font-extrabold text-slate-600">CHỦ ĐỀ</p>
     <center>
       <div class="max-w-screen-xl grid grid-cols-9 gap-4 justify-center">
-        <TagCard />
-        <TagCard />
-        <TagCard />
-        <TagCard />
-        <TagCard />
-        <TagCard />
-        <TagCard />
-        <TagCard />
-        <TagCard />
+        <TagCard title="Khoa học" />
+        <TagCard title="CLB/Tình nguyện" />
+        <TagCard title="Khóa học" />
+        <TagCard title="ABC" />
+        <TagCard title="ABC" />
+        <TagCard title="ABC" />
+        <TagCard title="ABC" />
+        <TagCard title="ABC" />
+        <TagCard title="ABC" />
       </div>
     </center>
   </div>

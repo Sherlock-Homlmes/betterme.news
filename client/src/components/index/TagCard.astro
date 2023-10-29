@@ -1,5 +1,5 @@
 ---
-
+const { title } = Astro.props;
 ---
 
 <a class="w-[110px] h-[130px]" href="">
@@ -15,7 +15,7 @@
       <h2
         class="mb-2 text-center text-xl font-bold tracking-tight text-gray-900 dark:text-white"
       >
-        Space
+        {title}
       </h2>
     </div>
   </div>

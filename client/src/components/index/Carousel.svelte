@@ -1,7 +1,6 @@
 <script>
   import { Carousel } from "flowbite-svelte";
 
-  let index = 0;
   const images = [
     {
       alt: "Câu Lạc Bộ Pháp Ngữ Học Viên Ngoại Giao Chính Thức Mở Đơn Tuyển Thành Viên",
@@ -47,12 +46,13 @@
   let image;
 </script>
 
-<div class="max-w-4xl space-y-4">
+<div class="max-w-[85%] space-y-4">
   <Carousel
     {images}
     let:Indicators
     let:Controls
     on:change={({ detail }) => (image = detail)}
+    duration={3900}
   >
     <Controls />
     <Indicators />
