@@ -38,6 +38,7 @@ repos:
         types_or: [css, javascript]
         additional_dependencies:
           - prettier@3.0.3
+        args: [--check]
 
   # - repo: https://github.com/pre-commit/mirrors-eslint
   #   rev: "" # Use the sha / tag you want to point at
@@ -47,23 +48,9 @@ repos:
   #       types: [file]
 
   # python
-  - repo: https://github.com/psf/black
-    rev: 23.7.0
-    hooks:
-      # formater
-      # black for server
-      - id: black
-        name: black-server
-        args: [--safe]
-        files: ^server/
-      # black for admin_server
-      - id: black
-        name: black-admin-server
-        args: [--safe]
-        files: ^admin_server/
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.0.292
+    rev: v0.1.8
     hooks:
       # linter
       # ruff for server
@@ -76,6 +63,6 @@ repos:
         name: ruff-admin-server
         args: [--fix, --exit-non-zero-on-fix]
         files: ^admin_server/
-      # # formatter(beta)
-      # - id: ruff-format
-      #   args: [--check]
+      # formatter
+      - id: ruff-format
+        args: [--check]
