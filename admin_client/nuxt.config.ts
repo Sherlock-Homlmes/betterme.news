@@ -1,13 +1,15 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
-// CommonJS require syntax
-const vuePugPlugin = require('vue-pug-plugin')
 
 export default defineNuxtConfig({
-  devtools: { enabled: true },
+  alias: {
+      "@": "./src",
+      "@components": "./src/components",
+  },
   build: {
     transpile: ['vuetify'],
   },
+  devtools: { enabled: true },
   modules: [
     (_options, nuxt) => {
       nuxt.hooks.hook('vite:extendConfig', (config) => {
@@ -20,12 +22,7 @@ export default defineNuxtConfig({
   vite: {
     vue: {
       template: {
-        transformAssetUrls,
-        preprocessOptions: { // 'preprocessOptions' is passed through to the pug compiler
-          plugins: [
-            vuePugPlugin
-          ]
-        }
+        transformAssetUrls
       },
     },
   },
