@@ -42,3 +42,4 @@ repos:
       # formatter
       - id: ruff-format
         args: [--check]
+        files: ^server/
