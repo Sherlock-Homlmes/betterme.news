@@ -5,7 +5,7 @@ import json
 import discord
 
 # local
-from core.schemas import OriginCrawlPagesEnum
+from core.schemas.admin import OriginCrawlPagesEnum
 from .conf import server_info
 
 

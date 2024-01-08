@@ -154,10 +154,10 @@ cython_debug/
 
 others/data/
 store/
-admin_server/scrap/data/*/discord/*
-admin_server/scrap/data/*/media/*
-admin_server/scrap/data/*/pages/*
-admin_server/scrap/data/*/posts/*
+server/scrap/data/*/discord/*
+server/scrap/data/*/media/*
+server/scrap/data/*/pages/*
+server/scrap/data/*/posts/*
 
 # ---------- Client ----------
 # build output

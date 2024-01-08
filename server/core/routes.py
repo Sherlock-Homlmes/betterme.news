@@ -2,15 +2,17 @@
 from fastapi import APIRouter
 
 # local
-from routers import users
+from routers.admin import (
+    crawlers as be_crawlers,
+)
 
-# create all api routers(for include in app and testing)
+# create all api routers
 api_router = APIRouter()
-for router in [
-    users,
+for admin_be_service in [
+    be_crawlers,
 ]:
     api_router.include_router(
-        router.router,
-        prefix="/api",
+        admin_be_service.router,
+        prefix="/api/admin",
         responses={404: {"description": "Not found"}},
     )

@@ -1,5 +1,3 @@
-# TODO: Solve ignore
-# mypy: disable-error-code="attr-defined"
 # default
 from typing import Annotated
 
@@ -8,7 +6,7 @@ from fastapi import APIRouter, Depends
 
 # local
 from core.models import Posts
-from core.schemas import (
+from core.schemas.admin import (
     # params
     CrawlersDataParams,
     # responses

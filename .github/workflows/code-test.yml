@@ -13,7 +13,7 @@ jobs:
       - name: Setup python
         uses: actions/setup-python@v4
         with:
-          python-version: 3.12
+          python-version: 3.9
           cache: "pip"
 
       - name: Install dependencies
@@ -21,22 +21,6 @@ jobs:
 
       - name: Run tests
         run: bash others/ci/test_server.sh
-
-  # admin-server-code-test:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v3
-  #     - name: Setup python
-  #       uses: actions/setup-python@v4
-  #       with:
-  #         python-version: 3.12
-  #         cache: "pip"
-
-  #     - name: Install dependencies
-  #       run: bash others/ci/install_admin_server.sh
-
-  #     - name: Run tests
-  #       run: bash others/ci/test_admin_server.sh
 
   # - name: Build image docker
   #   run: docker-compose build server

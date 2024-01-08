@@ -32,19 +32,13 @@ repos:
 
   # python
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.1.8
+    rev: v0.1.9
     hooks:
       # linter
-      # ruff for server
       - id: ruff
         name: ruff-server
         args: [--fix, --exit-non-zero-on-fix]
         files: ^server/
-      # ruff for admin_server
-      - id: ruff
-        name: ruff-admin-server
-        args: [--fix, --exit-non-zero-on-fix]
-        files: ^admin_server/
       # formatter
       - id: ruff-format
         args: [--check]

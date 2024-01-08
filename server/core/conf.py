@@ -24,7 +24,18 @@ get_env = os.environ.get
 # env var
 class Settings(BaseSettings):
     IS_DEV_ENV: bool = False
+
     DATABASE_URL: str
+
+    AWS_ACCESS_KEY_ID: str
+    AWS_ACCESS_ACCESS_KEY: str
+    AWS_BUCKET: str
+
+    DISCORD_BOT_TOKEN: str
+
+    FACEBOOK_ACCESS_TOKEN: str
+    FACEBOOK_APP_ID: str
+    FACEBOOK_APP_SECRET: str
 
 
 settings = Settings()
@@ -40,14 +51,7 @@ app = FastAPI(
 allow_origins = (
     ["*"]
     if settings.IS_DEV_ENV
-    else [
-        "https://betterme.study",
-        "http://betterme.study",
-        "https://betterme.news",
-        "http://betterme.news",
-        "https://admin.betterme.news",
-        "http://admin.betterme.news",
-    ]
+    else ["https://admin.betterme.news", "http://admin.betterme.news"]
 )
 
 app.add_middleware(

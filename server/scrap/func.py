@@ -7,7 +7,7 @@ from PIL import Image
 from fastapi import HTTPException
 
 # local
-from core.schemas import (
+from core.schemas.admin import (
     # payload
     PatchCrawlersDataPayload,
     # response
