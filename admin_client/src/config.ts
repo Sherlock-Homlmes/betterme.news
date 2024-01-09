@@ -1,3 +1,3 @@
-const serverLink = 'http://localhost:8008'
+const serverLink = 'http://localhost'
 const fetchLink = `${serverLink}/api`
 export default fetchLink;

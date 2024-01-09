@@ -4,6 +4,7 @@ import os
 # libraries
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from pydantic_settings import BaseSettings
 from dotenv import load_dotenv
 
@@ -59,3 +60,5 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+app.mount("/api/media", StaticFiles(directory="scrap/data/media"), name="media")
