@@ -49,9 +49,7 @@ app = FastAPI(
 )
 
 allow_origins = (
-    ["*"]
-    if settings.IS_DEV_ENV
-    else ["https://admin.betterme.news", "http://admin.betterme.news"]
+    ["*"] if settings.IS_DEV_ENV else ["https://admin.betterme.news", "http://admin.betterme.news"]
 )
 
 app.add_middleware(

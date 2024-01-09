@@ -16,22 +16,14 @@ def khoahoc_tv_crawl(url: str):
         def parse(self, response):
             # crawl
             title = response.css("h1::text").get()
-            content = response.css("div.content-detail").css(
-                "p, h2, h3, ul, div.responsive"
-            )
+            content = response.css("div.content-detail").css("p, h2, h3, ul, div.responsive")
             author = response.css("div.author-info").css("span::text").getall()
 
             page_content = {
                 # SEO
-                "description": response.xpath("//meta[@name='description']/@content")[
-                    0
-                ].get(),
-                "keywords": response.xpath("//meta[@name='keywords']/@content")[
-                    0
-                ].get(),
-                "seo_img": response.xpath(
-                    "//meta[@property='og:image']/@content"
-                ).get(),
+                "description": response.xpath("//meta[@name='description']/@content")[0].get(),
+                "keywords": response.xpath("//meta[@name='keywords']/@content")[0].get(),
+                "seo_img": response.xpath("//meta[@property='og:image']/@content").get(),
                 # CONTENT
                 "title": title,
                 "content": [
@@ -64,17 +56,13 @@ def khoahoc_tv_crawl(url: str):
             file_name = self.start_urls[0].split("/")[3]
 
             # write origin data to js file
-            with io.open(
-                f"crawl_origin_data/{file_name}.json", "w", encoding="utf8"
-            ) as json_file:
+            with io.open(f"crawl_origin_data/{file_name}.json", "w", encoding="utf8") as json_file:
                 json.dump(page_content, json_file, ensure_ascii=False, indent=4)
 
             page_content = process_detail_page_data(page_content)
 
             # write to js file
-            with io.open(
-                f"crawl_data/{file_name}.json", "w", encoding="utf8"
-            ) as json_file:
+            with io.open(f"crawl_data/{file_name}.json", "w", encoding="utf8") as json_file:
                 json.dump(page_content, json_file, ensure_ascii=False, indent=4)
 
             # write to html file
@@ -100,9 +88,7 @@ def process_detail_page_data(page_content: dict) -> dict:
     page_content["keywords"] = page_content["keywords"].lower()
     page_content["keywords"] = page_content["keywords"].split(",")
     page_content["slidesshow_img"] = page_content["seo_img"]
-    page_content["thumbnail_img"] = page_content["seo_img"].replace(
-        "650.jpg", "200.jpg"
-    )
+    page_content["thumbnail_img"] = page_content["seo_img"].replace("650.jpg", "200.jpg")
     del page_content["seo_img"]
 
     # CONTENT
@@ -129,9 +115,7 @@ def process_detail_page_data(page_content: dict) -> dict:
         elif cont["h3"] is not None:
             temp_content = cont["h3"]
         elif cont["ul"] is not None:
-            temp_content = (
-                cont["ul"] if cont_index + 1 != len(page_content["content"]) else ""
-            )
+            temp_content = cont["ul"] if cont_index + 1 != len(page_content["content"]) else ""
         elif cont["video"] is not None:
             temp_content = f"""
             <video controls="" width="560" height="280">

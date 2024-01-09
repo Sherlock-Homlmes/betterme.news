@@ -5,7 +5,6 @@ import json
 import discord
 
 # local
-from core.schemas.admin import OriginCrawlPagesEnum
 from .conf import server_info
 
 
@@ -15,17 +14,13 @@ from .conf import server_info
 # -> revert deadline
 # -> tags
 # -> button more info
-async def send_news(
-    origin: OriginCrawlPagesEnum, post_name: str, is_testing: bool = True
-) -> int:
+async def send_news(post_name: str, is_testing: bool = True) -> int:
     # for tag in server_info.news_channel.available_tags:
     #     print(tag)
 
     # open json file to get data
     try:
-        with open(
-            f"scrap/data/{origin.value}/discord/{post_name}.json", encoding="utf-8"
-        ) as json_file:
+        with open(f"scrap/data/discord/{post_name}.json", encoding="utf-8") as json_file:
             data = json.load(json_file)
     except Exception as e:
         raise e
@@ -35,9 +30,7 @@ async def send_news(
         description=data["description"],
     )
     embed.add_field(name="Deadline", value=data["deadline"], inline=False)
-    embed.add_field(
-        name="More info", value=f"https://betterme.news/{post_name}", inline=False
-    )
+    embed.add_field(name="More info", value=f"https://betterme.news/{post_name}", inline=False)
 
     post: discord.Thread = None
     if is_testing is True:

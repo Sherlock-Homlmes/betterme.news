@@ -4,16 +4,24 @@ from pathlib import Path
 from lxml import etree, html
 
 # library
-import wget
+import aiofiles
+import aiohttp
 from scrapy import Selector
 
 
-DATA_DIR = f"{Path(__file__).resolve().parent.parent}/data/ivolunteer_vn"
+DATA_DIR = f"{Path(__file__).resolve().parent.parent}/data"
 
 
-def save_image(url: str) -> str:
-    image = wget.download(url, out=f"{DATA_DIR}/media")
-    return image
+async def save_image(url: str) -> str:
+    async with aiohttp.ClientSession() as session:
+        async with session.get(url) as resp:
+            if resp.status == 200:
+                print(url.split("/")[-1])
+                img_name = url.split("/")[-1]
+                f = await aiofiles.open(f"{DATA_DIR}/media/{img_name}", mode="wb")
+                await f.write(await resp.read())
+                await f.close()
+                return img_name
 
 
 def replace_html(selector: Selector) -> str:
@@ -28,9 +36,7 @@ def replace_html(selector: Selector) -> str:
             f"</{replace_tag[0]}>", replace_tag[1]
         )
     for replace_tag in replace_tags:
-        content = re.sub(
-            f"<{replace_tag[0]}?(.*?)>", replace_tag[1], content, flags=re.DOTALL
-        )
+        content = re.sub(f"<{replace_tag[0]}?(.*?)>", replace_tag[1], content, flags=re.DOTALL)
 
     content = content.replace("<h4>", "").replace("</h4>", "")
     content = content.replace("<li>", "").replace("</li>", "")
@@ -56,9 +62,7 @@ def replace_html_with_discord_tag(selector: Selector) -> str:
             f"</{replace_tag[0]}>", replace_tag[1]
         )
     for replace_tag in replace_tags:
-        content = re.sub(
-            f"<{replace_tag[0]}?(.*?)>", replace_tag[1], content, flags=re.DOTALL
-        )
+        content = re.sub(f"<{replace_tag[0]}?(.*?)>", replace_tag[1], content, flags=re.DOTALL)
 
     content = content.replace("<h4>", "\n**").replace("</h4>", "**")
     content = content.replace("<li>", "\n- ").replace("</li>", "")
@@ -88,9 +92,7 @@ def process_detail_page_data_discord(content: list) -> list:
         elif isinstance(new_cont, str):
             new_content[index] = new_cont.replace("\xa0", "")
             while "  " in new_content[index] or "** **" in new_content[index]:
-                new_content[index] = (
-                    new_content[index].replace("  ", " ").replace("** **", "**")
-                )
+                new_content[index] = new_content[index].replace("  ", " ").replace("** **", "**")
 
     return new_content
 

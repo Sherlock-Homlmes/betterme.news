@@ -74,10 +74,7 @@ async def get_server_info():
         server_info.test_news_channel,
         server_info.news_channel,
     ) = await asyncio.gather(
-        *[
-            get_channel(server_info.guild, server_info_data[channel])
-            for channel in channels
-        ]
+        *[get_channel(server_info.guild, server_info_data[channel]) for channel in channels]
     )
 
 

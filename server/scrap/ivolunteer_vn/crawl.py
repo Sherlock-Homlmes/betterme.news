@@ -1,4 +1,5 @@
 # default
+import asyncio
 import json
 import io
 from pathlib import Path
@@ -16,7 +17,7 @@ from data_process import (
     replace_html,
 )
 
-DATA_DIR = f"{Path(__file__).resolve().parent.parent}/data/ivolunteer_vn"
+DATA_DIR = f"{Path(__file__).resolve().parent.parent}/data"
 ALLOWED_DOMAINS = ["ivolunteer.vn"]
 PAGE_URL = "https://ivolunteer.vn/"
 
@@ -31,12 +32,10 @@ def ivolunteer_crawl(url: str):
         def parse(self, response):
             # crawl
             title = response.css("h1::text").get().replace("  ", "").replace("\n", "")
-            dealine = (
-                response.css(".mvp-post-cat::text").get().replace("Deadline: ", "")
-            )
+            dealine = response.css(".mvp-post-cat::text").get().replace("Deadline: ", "")
             dealine = "-".join(dealine.split("/")[::-1])
             banner = response.css("#mvp-content-main").css("img::attr(data-src)").get()
-            banner = None if banner is None else save_image(banner).split("/")[-1]
+            banner = None if banner is None else asyncio.run(save_image(banner)).split("/")[-1]
             content = response.css("#mvp-content-main").css("h4, p, ul")
             content.pop(0)
             content.pop()
@@ -46,9 +45,7 @@ def ivolunteer_crawl(url: str):
                 "title": title,
                 "deadline": dealine,
                 "banner": banner,
-                "description": replace_html(
-                    response.css("#mvp-content-main").css("p")[0]
-                ),
+                "description": replace_html(response.css("#mvp-content-main").css("p")[0]),
                 "content": process_detail_page_data_html(content),
             }
 
@@ -57,9 +54,7 @@ def ivolunteer_crawl(url: str):
                 "deadline": dealine,
                 "banner": banner,
                 "description": (
-                    replace_html_with_discord_tag(
-                        response.css("#mvp-content-main").css("p")[0]
-                    )
+                    replace_html_with_discord_tag(response.css("#mvp-content-main").css("p")[0])
                     .replace("* ", "*")
                     .replace(" *", "*")
                 ),
@@ -70,7 +65,7 @@ def ivolunteer_crawl(url: str):
 
             # write to js file
             with io.open(
-                f"{DATA_DIR}/posts/{file_name}.json", "w", encoding="utf8"
+                f"{DATA_DIR}/web/{file_name}.json", "w", encoding="utf8"
             ) as html_json_file:
                 json.dump(html_data, html_json_file, ensure_ascii=False, indent=4)
             with io.open(
@@ -78,9 +73,7 @@ def ivolunteer_crawl(url: str):
             ) as discord_json_file:
                 json.dump(discord_data, discord_json_file, ensure_ascii=False, indent=4)
 
-    process = CrawlerProcess(
-        {"USER_AGENT": "Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1)"}
-    )
+    process = CrawlerProcess({"USER_AGENT": "Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1)"})
     process.crawl(IvolunteerTvSpider)
     process.start()
 
@@ -94,20 +87,12 @@ def ivolunteer_page_crawl(content_type: str, page_number: int):
 
         def parse(self, response):
             data = response.css(".mvp-feat1-mid-wrap").css("a::attr(href)").getall()
-            data.extend(
-                response.css(".mvp-feat1-left-wrap").css("a::attr(href)").getall()
-            )
-            temp_data = (
-                response.css(".mvp-feat1-right-wrap").css("a::attr(href)").getall()
-            )
+            data.extend(response.css(".mvp-feat1-left-wrap").css("a::attr(href)").getall())
+            temp_data = response.css(".mvp-feat1-right-wrap").css("a::attr(href)").getall()
             temp_data.pop()
             data.extend(temp_data)
-            data.extend(
-                response.css(".mvp-widget-feat1-cont").css("a::attr(href)").getall()
-            )
-            data.extend(
-                response.css(".mvp-main-blog-cont").css("a::attr(href)").getall()
-            )
+            data.extend(response.css(".mvp-widget-feat1-cont").css("a::attr(href)").getall())
+            data.extend(response.css(".mvp-main-blog-cont").css("a::attr(href)").getall())
 
             # write to js file
             with io.open(
@@ -117,8 +102,6 @@ def ivolunteer_page_crawl(content_type: str, page_number: int):
             ) as json_file:
                 json.dump(data, json_file, ensure_ascii=False, indent=4)
 
-    process = CrawlerProcess(
-        {"USER_AGENT": "Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1)"}
-    )
+    process = CrawlerProcess({"USER_AGENT": "Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1)"})
     process.crawl(IvolunteerPageSpider)
     process.start()

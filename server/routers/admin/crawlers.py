@@ -50,9 +50,7 @@ async def post_crawler(body: PostCrawlersDataPayload):
     # print("---------------after banner", banner)
     now = Time().now
     # TODO: fix discord data
-    discord_post_id = await send_news(
-        origin=body.origin, post_name=body.post_name, is_testing=body.is_testing
-    )
+    discord_post_id = await send_news(post_name=body.post_name, is_testing=body.is_testing)
     facebook_post = post_to_fb(
         origin=body.origin,
         content=current_data.discord.title,
