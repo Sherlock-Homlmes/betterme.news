@@ -8,7 +8,6 @@
 
     - Linux
     - Python >= 3.9
-    - Bunjs >= 1.0.4
     - Docker >= 2
 
 ## SETUP:

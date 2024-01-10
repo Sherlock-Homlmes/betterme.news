@@ -9,45 +9,21 @@ export interface CrawlerListParams {
   origin: string;
   page?: number;
 }
-export interface CrawlersData {
-  title: string;
-  deadline: string;
-  banner: string;
-  description: string;
-}
 export interface CrawlersDataParams {
   origin: string;
 }
-export interface GetCrawlersDataResponse {
-  discord: KhoahocTvDiscordPost | IvolunteerDiscordPost;
-  html: KhoahocTvHtmlPost | IvolunteerHtmlPost;
-}
-export interface KhoahocTvDiscordPost {
+export interface GetCrawlersIvolunteerDataResponse {
   title: string;
-  deadline: string;
-  banner: string;
   description: string;
-  content: (string | string[])[];
-}
-export interface IvolunteerDiscordPost {
-  title: string;
-  deadline: string;
   banner: string;
-  description: string;
-  content: (string | string[])[];
-}
-export interface KhoahocTvHtmlPost {
-  title: string;
   deadline: string;
-  banner: string;
-  description: string;
   content: string;
 }
-export interface IvolunteerHtmlPost {
+export interface GetCrawlersKhoahocTvDataResponse {
   title: string;
-  deadline: string;
-  banner: string;
   description: string;
+  banner: string;
+  thumbnail: string;
   content: string;
 }
 export interface PatchBotPayload {
@@ -64,7 +40,7 @@ export interface PatchCrawlersDataPayload {
 }
 export interface PostCrawlersDataPayload {
   origin: string;
-  post_name: string;
+  title: string;
   banner?: string;
   thumbnail?: string;
   discord_content: (string | string[])[];

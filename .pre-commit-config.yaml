@@ -41,5 +41,5 @@ repos:
         files: ^server/
       # formatter
       - id: ruff-format
-        args: [--check]
+        # args: [--check]
         files: ^server/

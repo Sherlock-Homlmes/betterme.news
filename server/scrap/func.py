@@ -12,8 +12,6 @@ from core.schemas.admin import (
     # payload
     PatchCrawlersDataPayload,
     # response
-    IvolunteerDiscordPost,
-    IvolunteerHtmlPost,
     GetCrawlersKhoahocTvDataResponse,
     GetCrawlersIvolunteerDataResponse,
     # enums
@@ -23,7 +21,7 @@ from core.schemas.admin import (
 
 
 def check_if_crawl_success(title: str) -> bool:
-    if os.path.exists(f"scrap/data/web/{title}.json"):
+    if os.path.exists(f"scrap/data/general/{title}.json"):
         return True
     return False
 
@@ -33,10 +31,6 @@ def get_scrap_post_data(
 ) -> Union[GetCrawlersIvolunteerDataResponse, GetCrawlersKhoahocTvDataResponse]:
     with open(f"scrap/data/general/{title}.json", encoding="utf-8") as general_json_file:
         general_data = json.load(general_json_file)
-    with open(f"scrap/data/discord/{title}.json", encoding="utf-8") as discord_json_file:
-        discord_data = json.load(discord_json_file)
-    with open(f"scrap/data/web/{title}.json", encoding="utf-8") as html_json_file:
-        html_data = json.load(html_json_file)
 
     if origin == OriginCrawlPagesEnum.IVOLUNTEER_VN:
         return GetCrawlersIvolunteerDataResponse(
@@ -44,8 +38,7 @@ def get_scrap_post_data(
             banner=general_data["banner"],
             description=general_data["description"],
             deadline=general_data["deadline"],
-            html=IvolunteerHtmlPost(content=html_data),
-            discord=IvolunteerDiscordPost(content=discord_data),
+            content=general_data["content"],
         )
     elif origin == OriginCrawlPagesEnum.KHOAHOC_TV:
         return

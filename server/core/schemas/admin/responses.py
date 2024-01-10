@@ -1,4 +1,5 @@
 # default
+import datetime
 from typing import List, Optional, Union
 
 # libraries
@@ -10,22 +11,6 @@ from pydantic import BaseModel, Field
 DiscordContentType = List[Union[str, List[str]]]
 HtmlContentType = str
 # Models
-
-
-class IvolunteerDiscordPost(BaseModel):
-    content: DiscordContentType
-
-
-class IvolunteerHtmlPost(BaseModel):
-    content: HtmlContentType
-
-
-class KhoahocTvDiscordPost(BaseModel):
-    content: DiscordContentType
-
-
-class KhoahocTvHtmlPost(BaseModel):
-    content: HtmlContentType
 
 
 # Params
@@ -74,17 +59,15 @@ class GetCrawlersKhoahocTvDataResponse(BaseModel):
     description: str
     banner: str
     thumbnail: str
-    discord: KhoahocTvDiscordPost
-    html: KhoahocTvHtmlPost
+    content: str
 
 
 class GetCrawlersIvolunteerDataResponse(BaseModel):
     title: str
     description: str
     banner: str
-    deadline: str
-    discord: IvolunteerDiscordPost
-    html: IvolunteerHtmlPost
+    deadline: datetime.date
+    content: str
 
 
 ### bot.py

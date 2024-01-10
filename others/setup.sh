@@ -7,7 +7,7 @@ docker compose run --rm admin-client npm install --no-save
 bash others/create_sample_env.sh
 
 # install common tools
-bun install
+npm install --no-save
 
 python3 -m venv .venv
 source ./.venv/bin/activate
