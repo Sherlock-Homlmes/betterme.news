@@ -154,6 +154,7 @@ cython_debug/
 
 others/data/
 store/
+server/scrap/data/general/*
 server/scrap/data/discord/*
 server/scrap/data/media/*
 server/scrap/data/web/*

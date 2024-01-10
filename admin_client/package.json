@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "@mdi/font": "^7.3.67",
+    "@tinymce/tinymce-vue": "^4.0.7",
     "sass": "^1.69.5"
   }
 }

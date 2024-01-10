@@ -1,5 +1,5 @@
 # default
-from typing import Annotated
+from typing import Annotated, Union
 
 # libraries
 from fastapi import APIRouter, Depends
@@ -10,7 +10,8 @@ from core.schemas.admin import (
     # params
     CrawlersDataParams,
     # responses
-    GetCrawlersDataResponse,
+    GetCrawlersIvolunteerDataResponse,
+    GetCrawlersKhoahocTvDataResponse,
     PostCrawlersDataPayload,
     PatchCrawlersDataPayload,
     # enums
@@ -29,13 +30,13 @@ router = APIRouter(
 
 
 @router.get(
-    "/crawlers/{post_name}",
+    "/crawlers/{title}",
     tags=["Admin-backend-scrap"],
     status_code=ResponseStatusEnum.OK.value,
-    response_model=GetCrawlersDataResponse,
+    response_model=Union[GetCrawlersIvolunteerDataResponse, GetCrawlersKhoahocTvDataResponse],
 )
-def get_crawler(post_name: str, params: Annotated[dict, Depends(CrawlersDataParams)]):
-    return scrap_post_data(origin=params.origin, post_name=post_name)
+def get_crawler(title: str, params: Annotated[dict, Depends(CrawlersDataParams)]):
+    return scrap_post_data(origin=params.origin, title=title)
 
 
 @router.post(
@@ -44,13 +45,13 @@ def get_crawler(post_name: str, params: Annotated[dict, Depends(CrawlersDataPara
     status_code=ResponseStatusEnum.CREATED.value,
 )
 async def post_crawler(body: PostCrawlersDataPayload):
-    current_data = get_scrap_post_data(origin=body.origin, post_name=body.post_name)
+    current_data = get_scrap_post_data(origin=body.origin, title=body.title)
     banner = body.banner if body.banner else current_data.discord.banner
-    # banner = image_process(origin=body.origin, post_name=body.post_name)
+    # banner = image_process(origin=body.origin, title=body.title)
     # print("---------------after banner", banner)
     now = Time().now
     # TODO: fix discord data
-    discord_post_id = await send_news(post_name=body.post_name, is_testing=body.is_testing)
+    discord_post_id = await send_news(title=body.title, is_testing=body.is_testing)
     facebook_post = post_to_fb(
         origin=body.origin,
         content=current_data.discord.title,
@@ -83,10 +84,10 @@ async def post_crawler(body: PostCrawlersDataPayload):
 
 
 @router.patch(
-    "/crawlers/{post_name}",
+    "/crawlers/{title}",
     tags=["Admin-backend-scrap"],
     status_code=ResponseStatusEnum.CREATED.value,
 )
-def patch_crawler(post_name: str, body: PatchCrawlersDataPayload):
+def patch_crawler(title: str, body: PatchCrawlersDataPayload):
     print(body)
     return

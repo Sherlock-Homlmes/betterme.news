@@ -1,5 +1,4 @@
 # default
-import datetime
 from typing import List, Optional, Union
 
 # libraries
@@ -13,26 +12,19 @@ HtmlContentType = str
 # Models
 
 
-class CrawlersData(BaseModel):
-    title: str
-    deadline: datetime.date
-    banner: str
-    description: str
-
-
-class IvolunteerDiscordPost(CrawlersData):
+class IvolunteerDiscordPost(BaseModel):
     content: DiscordContentType
 
 
-class IvolunteerHtmlPost(CrawlersData):
+class IvolunteerHtmlPost(BaseModel):
     content: HtmlContentType
 
 
-class KhoahocTvDiscordPost(CrawlersData):
+class KhoahocTvDiscordPost(BaseModel):
     content: DiscordContentType
 
 
-class KhoahocTvHtmlPost(CrawlersData):
+class KhoahocTvHtmlPost(BaseModel):
     content: HtmlContentType
 
 
@@ -49,7 +41,7 @@ class CrawlersDataParams(BaseModel):
 # Payloads
 class PostCrawlersDataPayload(BaseModel):
     origin: str
-    post_name: str
+    title: str
 
     banner: Optional[str]
     thumbnail: Optional[str]
@@ -77,9 +69,22 @@ class PatchCrawlersDataPayload(BaseModel):
 
 
 # Responses
-class GetCrawlersDataResponse(BaseModel):
-    discord: Union[KhoahocTvDiscordPost, IvolunteerDiscordPost]
-    html: Union[KhoahocTvHtmlPost, IvolunteerHtmlPost]
+class GetCrawlersKhoahocTvDataResponse(BaseModel):
+    title: str
+    description: str
+    banner: str
+    thumbnail: str
+    discord: KhoahocTvDiscordPost
+    html: KhoahocTvHtmlPost
+
+
+class GetCrawlersIvolunteerDataResponse(BaseModel):
+    title: str
+    description: str
+    banner: str
+    deadline: str
+    discord: IvolunteerDiscordPost
+    html: IvolunteerHtmlPost
 
 
 ### bot.py

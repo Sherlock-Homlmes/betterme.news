@@ -2,6 +2,7 @@
 import json
 import os
 from PIL import Image
+from typing import Union
 
 # libraries
 from fastapi import HTTPException
@@ -13,61 +14,65 @@ from core.schemas.admin import (
     # response
     IvolunteerDiscordPost,
     IvolunteerHtmlPost,
-    KhoahocTvDiscordPost,
-    KhoahocTvHtmlPost,
-    GetCrawlersDataResponse,
+    GetCrawlersKhoahocTvDataResponse,
+    GetCrawlersIvolunteerDataResponse,
     # enums
-    CrawlerDataResponseTypeEnum,
     OriginCrawlPagesEnum,
     ResponseStatusEnum,
 )
 
 
-def check_if_crawl_success(post_name: str) -> bool:
-    if os.path.exists(f"scrap/data/web/{post_name}.json"):
+def check_if_crawl_success(title: str) -> bool:
+    if os.path.exists(f"scrap/data/web/{title}.json"):
         return True
     return False
 
 
-def get_scrap_post_data(origin: OriginCrawlPagesEnum, post_name: str) -> GetCrawlersDataResponse:
-    with open(f"scrap/data/discord/{post_name}.json", encoding="utf-8") as discord_json_file:
+def get_scrap_post_data(
+    origin: OriginCrawlPagesEnum, title: str
+) -> Union[GetCrawlersIvolunteerDataResponse, GetCrawlersKhoahocTvDataResponse]:
+    with open(f"scrap/data/general/{title}.json", encoding="utf-8") as general_json_file:
+        general_data = json.load(general_json_file)
+    with open(f"scrap/data/discord/{title}.json", encoding="utf-8") as discord_json_file:
         discord_data = json.load(discord_json_file)
-    with open(f"scrap/data/web/{post_name}.json", encoding="utf-8") as html_json_file:
+    with open(f"scrap/data/web/{title}.json", encoding="utf-8") as html_json_file:
         html_data = json.load(html_json_file)
 
-    # map return data to exact type
-    data_map = {
-        OriginCrawlPagesEnum.KHOAHOC_TV: {
-            CrawlerDataResponseTypeEnum.HTML: KhoahocTvHtmlPost,
-            CrawlerDataResponseTypeEnum.DISCORD: KhoahocTvDiscordPost,
-        },
-        OriginCrawlPagesEnum.IVOLUNTEER_VN: {
-            CrawlerDataResponseTypeEnum.HTML: IvolunteerHtmlPost,
-            CrawlerDataResponseTypeEnum.DISCORD: IvolunteerDiscordPost,
-        },
-    }
+    if origin == OriginCrawlPagesEnum.IVOLUNTEER_VN:
+        return GetCrawlersIvolunteerDataResponse(
+            title=general_data["title"],
+            banner=general_data["banner"],
+            description=general_data["description"],
+            deadline=general_data["deadline"],
+            html=IvolunteerHtmlPost(content=html_data),
+            discord=IvolunteerDiscordPost(content=discord_data),
+        )
+    elif origin == OriginCrawlPagesEnum.KHOAHOC_TV:
+        return
+        # return GetCrawlersKhoahocTvDataResponse(
+        #     **general_data,
+        #     html=data_map[origin][CrawlerDataResponseTypeEnum.HTML](**html_data),
+        #     discord=data_map[origin][CrawlerDataResponseTypeEnum.DISCORD](**discord_data),
+        # )
 
-    return GetCrawlersDataResponse(
-        html=data_map[origin][CrawlerDataResponseTypeEnum.HTML](**html_data),
-        discord=data_map[origin][CrawlerDataResponseTypeEnum.DISCORD](**discord_data),
-    )
 
-
-def scrap_post_data(origin: OriginCrawlPagesEnum, post_name: str) -> GetCrawlersDataResponse:
+def scrap_post_data(
+    origin: OriginCrawlPagesEnum, title: str
+) -> Union[GetCrawlersIvolunteerDataResponse, GetCrawlersKhoahocTvDataResponse]:
     # crawl post data
-    os.system(f"python3 scrap/{origin.value}/__init__.py {post_name}")
+    os.system(f"python3 scrap/{origin.value}/__init__.py {title}")
     # check if
-    if check_if_crawl_success(post_name=post_name):
-        return get_scrap_post_data(origin=origin, post_name=post_name)
+    if check_if_crawl_success(title=title):
+        return get_scrap_post_data(origin=origin, title=title)
     raise HTTPException(status_code=ResponseStatusEnum.BAD_REQUEST.value, detail="Not found post")
 
 
 def srap_post_data_find_or_create(
-    origin: OriginCrawlPagesEnum, post_name: str
-) -> GetCrawlersDataResponse:
-    if check_if_crawl_success(post_name=post_name):
-        return get_scrap_post_data(origin=origin, post_name=post_name)
-    return scrap_post_data(origin=origin, post_name=post_name)
+    origin: OriginCrawlPagesEnum, title: str
+) -> Union[GetCrawlersIvolunteerDataResponse, GetCrawlersKhoahocTvDataResponse]:
+    if check_if_crawl_success(title=title):
+        return get_scrap_post_data(origin=origin, title=title)
+    return scrap_post_data(origin=origin, title=title)
 
 
 def save_crawler_data(payload: PatchCrawlersDataPayload) -> None:

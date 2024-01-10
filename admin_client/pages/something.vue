@@ -31,7 +31,12 @@
                     :value="1"
                 >
                     <v-container fluid>
-                        <span v-html="pageInfo.html.content"></span>
+                        <editor
+                        v-model="pageInfo.html.content"
+                        initial-value="Loading..."
+                        output-format="html"
+                        />
+                        <h2></h2>
                     </v-container>
                 </v-window-item>
 
@@ -42,12 +47,16 @@
                 >
                     <v-container fluid>
                         {{ pageInfo.discord.content }}
+                        <center>
+                            <v-btn prepend-icon="$vuetify">Preview</v-btn>
+                        </center>
                     </v-container>
                 </v-window-item>
 
             </v-window>
         </v-card>
     </div>
+
 
     <v-progress-circular v-else indeterminate color="green" ></v-progress-circular>
 </center>
@@ -56,10 +65,13 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import fetchLink from '~/src/config'
+import Editor from '@tinymce/tinymce-vue';
+import type {GetCrawlersDataResponse} from '~/src/types/responses'
 
-const pageInfo = ref()
+const pageInfo = ref<GetCrawlersDataResponse>()
 const tab = ref<Number>()
 const description = ref<String>('')
+const isPreviewed = ref<Boolean>(false)
 
 const getPageInfo = async (link: string) => {
     const result = await fetch(
@@ -67,7 +79,6 @@ const getPageInfo = async (link: string) => {
     )
     pageInfo.value = await result.json()
     console.log(pageInfo.value)
-    description.value = pageInfo.value.html.description
 }
 onMounted(async()=>{
     await getPageInfo('du-an-ve-lich-su-ngan-nam-dat-viet-mo-don-tuyen-thanh-vien-the-he-4-0-s23376.html?origin=ivolunteer_vn')
