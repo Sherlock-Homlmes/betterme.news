@@ -16,10 +16,6 @@ class PostCrawlersDataPayload(PostCrawlersDataPayload):
     origin: OriginCrawlPagesEnum
 
 
-class PatchCrawlersDataPayload(PatchCrawlersDataPayload):
-    origin: OriginCrawlPagesEnum
-
-
 class PostCrawlersPreviewDiscordDataPayload(PostCrawlersPreviewDiscordDataPayload):
     origin: OriginCrawlPagesEnum
     preview_source: List[CrawlerDataResponseTypeEnum]

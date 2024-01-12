@@ -20,7 +20,7 @@ from core.schemas.admin import (
     ResponseStatusEnum,
     CrawlerDataResponseTypeEnum,
 )
-from scrap.func import scrap_post_data, get_scrap_post_data
+from scrap.func import scrap_post_data, get_scrap_post_data, save_crawler_data
 from services.discord_bot.news import send_news
 from services.facebook_bot.func import post_to_fb
 from services.time_modules import Time
@@ -33,14 +33,14 @@ router = APIRouter(
 
 
 @router.get(
-    "/crawlers/{title}",
+    "/crawlers/{post_name}",
     tags=["Admin-backend-scrap"],
     status_code=ResponseStatusEnum.OK.value,
 )
 def get_crawler(
-    title: str, params: Annotated[dict, Depends(CrawlersDataParams)]
+    post_name: str, params: Annotated[dict, Depends(CrawlersDataParams)]
 ) -> Union[GetCrawlersIvolunteerDataResponse, GetCrawlersKhoahocTvDataResponse]:
-    return scrap_post_data(origin=params.origin, title=title)
+    return scrap_post_data(origin=params.origin, post_name=post_name)
 
 
 @router.post(
@@ -88,18 +88,18 @@ async def post_crawler(body: PostCrawlersDataPayload):
 
 
 @router.patch(
-    "/crawlers/{title}",
+    "/crawlers/{post_name}",
     tags=["Admin-backend-scrap"],
     status_code=ResponseStatusEnum.CREATED.value,
 )
-def patch_crawler(title: str, body: PatchCrawlersDataPayload):
-    print(body)
+def patch_crawler(post_name: str, body: PatchCrawlersDataPayload):
+    save_crawler_data(post_name=post_name, data=body)
     return
 
 
 # Preview
 @router.post(
-    "/crawlers/preview/{post_name}",
+    "/crawlers/{post_name}/preview",
     tags=["Admin-backend-scrap"],
     status_code=ResponseStatusEnum.CREATED.value,
 )

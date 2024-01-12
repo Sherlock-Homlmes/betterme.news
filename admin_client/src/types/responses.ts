@@ -30,13 +30,10 @@ export interface PatchBotPayload {
   action: string;
 }
 export interface PatchCrawlersDataPayload {
-  origin: string;
+  title?: string;
+  description?: string;
   banner?: string;
-  thumbnail?: string;
-  discord_content: (string | string[])[];
-  discord_description: string;
-  html_content: string;
-  html_description: string;
+  content?: string;
 }
 export interface PostCrawlersDataPayload {
   origin: string;

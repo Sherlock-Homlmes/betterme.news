@@ -41,16 +41,10 @@ class PostCrawlersDataPayload(BaseModel):
 
 
 class PatchCrawlersDataPayload(BaseModel):
-    origin: str
-
-    banner: Optional[str]
-    thumbnail: Optional[str]
-
-    discord_content: DiscordContentType
-    discord_description: str
-
-    html_content: HtmlContentType
-    html_description: str
+    title: Optional[str] = None
+    description: Optional[str] = None
+    banner: Optional[str] = None
+    content: Optional[str] = None
 
 
 class PostCrawlersPreviewDiscordDataPayload(BaseModel):
