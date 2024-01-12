@@ -5,9 +5,7 @@ import discord
 
 # local
 from .conf import server_info
-from core.schemas.admin import (
-    GetCrawlersIvolunteerDataResponse,
-)
+from core.schemas.admin import GetCrawlersIvolunteerDataResponse, IvolunteerPageTagsEnum
 
 
 # TODO:
@@ -16,14 +14,48 @@ from core.schemas.admin import (
 # -> revert deadline
 # -> tags
 # -> button more info
+map_tags = {
+    IvolunteerPageTagsEnum.CLUB: 1094471174701994055,
+    IvolunteerPageTagsEnum.VOLUNTEER: 1094471174701994055,
+    IvolunteerPageTagsEnum.COURSE: 1094471213587374100,
+    IvolunteerPageTagsEnum.SKILL: 1094471213587374100,
+    IvolunteerPageTagsEnum.SCHORLARSHIP: 1094471259695366245,
+    IvolunteerPageTagsEnum.EVENT: 1094471278062215218,
+    IvolunteerPageTagsEnum.WORK: 1094472047217889310,
+}
+
+test_map_tags = {
+    IvolunteerPageTagsEnum.CLUB: 1195438617259155486,
+    IvolunteerPageTagsEnum.VOLUNTEER: 1195438617259155486,
+    IvolunteerPageTagsEnum.COURSE: 1195438712864124999,
+    IvolunteerPageTagsEnum.SKILL: 1195438712864124999,
+    IvolunteerPageTagsEnum.SCHORLARSHIP: 1195438775153737758,
+    IvolunteerPageTagsEnum.EVENT: 1195438832846389280,
+    IvolunteerPageTagsEnum.WORK: 1195438889846964396,
+}
+
+
 async def send_news(data: GetCrawlersIvolunteerDataResponse, is_testing: bool = True) -> int:
-    # for tag in server_info.news_channel.available_tags:
-    #     print(tag)
+    # TODO: refactor tags logic
+    tags = (
+        [test_map_tags[tag] for tag in data.tags]
+        if is_testing
+        else [map_tags[tag] for tag in data.tags]
+    )
+    applied_tags = []
+    if is_testing:
+        for x in server_info.test_news_channel.available_tags:
+            if x.id in tags:
+                applied_tags.append(x)
+    else:
+        for x in server_info.news_channel.available_tags:
+            if x.id in tags:
+                applied_tags.append(x)
 
     embed = discord.Embed(
         title=data.title,
         color=discord.Colour.yellow(),
-        description=f"**{data.description}**",
+        description=f"_{data.description}_",
     )
     embed.add_field(name="Deadline", value=data.deadline, inline=False)
     # TODO: post name
@@ -35,15 +67,11 @@ async def send_news(data: GetCrawlersIvolunteerDataResponse, is_testing: bool = 
     post: discord.Thread = None
     if is_testing is True:
         post = await server_info.test_news_channel.create_thread(
-            name=data.title,
-            file=file,
-            embed=embed,
+            name=data.title, file=file, embed=embed, applied_tags=applied_tags
         )
     else:
         post = await server_info.news_channel.create_thread(
-            name=data.title,
-            file=file,
-            embed=embed,
+            name=data.title, file=file, embed=embed, applied_tags=applied_tags
         )
 
     return post.thread.id

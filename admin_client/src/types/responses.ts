@@ -15,6 +15,7 @@ export interface CrawlersDataParams {
 export interface GetCrawlersIvolunteerDataResponse {
   title: string;
   description: string;
+  tags: string[];
   banner: string;
   deadline: string;
   content: string;
@@ -22,9 +23,13 @@ export interface GetCrawlersIvolunteerDataResponse {
 export interface GetCrawlersKhoahocTvDataResponse {
   title: string;
   description: string;
+  tags: string[];
   banner: string;
   thumbnail: string;
   content: string;
+}
+export interface GetTagsParams {
+  origin: string;
 }
 export interface PatchBotPayload {
   action: string;
@@ -34,6 +39,7 @@ export interface PatchCrawlersDataPayload {
   description?: string;
   banner?: string;
   content?: string;
+  tags?: string[];
 }
 export interface PostCrawlersDataPayload {
   origin: string;

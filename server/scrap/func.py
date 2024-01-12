@@ -34,13 +34,7 @@ def get_scrap_post_data(
         general_data = json.load(general_json_file)
 
     if origin == OriginCrawlPagesEnum.IVOLUNTEER_VN:
-        return GetCrawlersIvolunteerDataResponse(
-            title=general_data["title"],
-            banner=general_data["banner"],
-            description=general_data["description"],
-            deadline=general_data["deadline"],
-            content=general_data["content"],
-        )
+        return GetCrawlersIvolunteerDataResponse(**general_data)
     elif origin == OriginCrawlPagesEnum.KHOAHOC_TV:
         return
         # return GetCrawlersKhoahocTvDataResponse(
@@ -57,6 +51,12 @@ def scrap_post_data(
     os.system(f"python3 scrap/{origin.value}/__init__.py {post_name}")
     # check if
     if check_if_crawl_success(post_name=post_name):
+        if origin == OriginCrawlPagesEnum.IVOLUNTEER_VN:
+            with open(
+                f"scrap/data/general/{post_name}.json", encoding="utf-8"
+            ) as general_json_file:
+                general_data = json.load(general_json_file)
+            image_process(origin=origin, image=general_data["banner"])
         return get_scrap_post_data(origin=origin, post_name=post_name)
     raise HTTPException(status_code=ResponseStatusEnum.BAD_REQUEST.value, detail="Not found post")
 
@@ -76,11 +76,15 @@ def save_crawler_data(post_name: str, data: PatchCrawlersDataPayload) -> None:
             general_data = json.load(general_json_file)
 
         # update if key match
+        # TODO: refactor using orjson
         update_data = data.dict()
         for key, value in update_data.items():
             name = general_data.get(key, None) if value is not None else None
-            if name:
-                general_data[key] = update_data[key]
+            if name is not None:
+                if key == "tags":
+                    general_data["tags"] = [x.value for x in update_data["tags"]]
+                else:
+                    general_data[key] = update_data[key]
 
         # write to js file
         with io.open(
@@ -97,13 +101,11 @@ def save_crawler_data(post_name: str, data: PatchCrawlersDataPayload) -> None:
 def image_process(origin: OriginCrawlPagesEnum, image: str) -> None:
     # Opens a image
     if origin == OriginCrawlPagesEnum.IVOLUNTEER_VN:
-        frame_img = Image.open("scrap/media/betterme_news_ivolunteer.png")
-    else:
         frame_img = Image.open("scrap/media/betterme_news.png")
-    img = Image.open(f"scrap/data/{origin.value}/media/{image}")
+        img = Image.open(f"scrap/data/media/{image}")
 
-    # Add foreground
-    img.paste(frame_img, (0, 0), frame_img)
+        # Add foreground
+        img.paste(frame_img, (0, 0), frame_img)
 
-    # Save the image
-    img.save(f"scrap/data/{origin.value}/media/{image}")
+        # Save the image
+        img.save(f"scrap/data/media/{image}")

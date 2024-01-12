@@ -56,7 +56,7 @@ async def get_server_info():
 
     ### Get server info
     server_info_data = {
-        "test_news_channel": 1098594858450554940,
+        "test_news_channel": 1195438410807120022,
         "news_channel": 1094468765527330918,
     }
 

@@ -46,6 +46,7 @@ def ivolunteer_crawl(url: str):
                 "deadline": dealine,
                 "banner": banner,
                 "content": process_detail_page_data_html(content),
+                "tags": [],
             }
             # html_content = process_detail_page_data_html(content)
             # discord_content = process_detail_page_data_discord(content)

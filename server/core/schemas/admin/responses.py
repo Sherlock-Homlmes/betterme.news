@@ -45,6 +45,7 @@ class PatchCrawlersDataPayload(BaseModel):
     description: Optional[str] = None
     banner: Optional[str] = None
     content: Optional[str] = None
+    tags: Optional[List[str]] = None
 
 
 class PostCrawlersPreviewDiscordDataPayload(BaseModel):
@@ -56,6 +57,7 @@ class PostCrawlersPreviewDiscordDataPayload(BaseModel):
 class GetCrawlersKhoahocTvDataResponse(BaseModel):
     title: str
     description: str
+    tags: List[str]
     banner: str
     thumbnail: str
     content: str
@@ -64,6 +66,7 @@ class GetCrawlersKhoahocTvDataResponse(BaseModel):
 class GetCrawlersIvolunteerDataResponse(BaseModel):
     title: str
     description: str
+    tags: List[str]
     banner: str
     deadline: datetime.date
     content: str
@@ -72,3 +75,12 @@ class GetCrawlersIvolunteerDataResponse(BaseModel):
 ### bot.py
 class PatchBotPayload(BaseModel):
     action: str
+
+
+### tags.py
+# Params
+class GetTagsParams(BaseModel):
+    origin: str
+
+
+# Responses

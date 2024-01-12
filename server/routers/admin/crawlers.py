@@ -25,8 +25,6 @@ from services.discord_bot.news import send_news
 from services.facebook_bot.func import post_to_fb
 from services.time_modules import Time
 
-# from services.time_modules import Time
-
 router = APIRouter(
     responses={404: {"description": "Not found"}},
 )
@@ -50,9 +48,7 @@ def get_crawler(
 )
 async def post_crawler(body: PostCrawlersDataPayload):
     current_data = get_scrap_post_data(origin=body.origin, title=body.title)
-    banner = body.banner if body.banner else current_data.discord.banner
-    # banner = image_process(origin=body.origin, title=body.title)
-    # print("---------------after banner", banner)
+    banner = body.banner if body.banner else current_data.banner
     now = Time().now
     # TODO: fix discord data
     discord_post_id = await send_news(title=body.title, is_testing=body.is_testing)
