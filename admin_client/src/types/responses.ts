@@ -49,3 +49,7 @@ export interface PostCrawlersDataPayload {
   html_description: string;
   is_testing?: boolean;
 }
+export interface PostCrawlersPreviewDiscordDataPayload {
+  origin: string;
+  preview_source: string[];
+}

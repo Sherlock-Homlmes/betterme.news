@@ -60,6 +60,6 @@ class KhoahocTvPageTagsEnum(Enum):
 
 
 class CrawlerDataResponseTypeEnum(Enum):
-    HTML = "html"
+    WEB = "html"
     DISCORD = "discord"
     FACEBOOK = "facebook"

@@ -9,13 +9,16 @@ from core.models import Posts
 from core.schemas.admin import (
     # params
     CrawlersDataParams,
+    # payload
+    PostCrawlersDataPayload,
+    PatchCrawlersDataPayload,
+    PostCrawlersPreviewDiscordDataPayload,
     # responses
     GetCrawlersIvolunteerDataResponse,
     GetCrawlersKhoahocTvDataResponse,
-    PostCrawlersDataPayload,
-    PatchCrawlersDataPayload,
     # enums
     ResponseStatusEnum,
+    CrawlerDataResponseTypeEnum,
 )
 from scrap.func import scrap_post_data, get_scrap_post_data
 from services.discord_bot.news import send_news
@@ -33,9 +36,10 @@ router = APIRouter(
     "/crawlers/{title}",
     tags=["Admin-backend-scrap"],
     status_code=ResponseStatusEnum.OK.value,
-    response_model=Union[GetCrawlersIvolunteerDataResponse, GetCrawlersKhoahocTvDataResponse],
 )
-def get_crawler(title: str, params: Annotated[dict, Depends(CrawlersDataParams)]):
+def get_crawler(
+    title: str, params: Annotated[dict, Depends(CrawlersDataParams)]
+) -> Union[GetCrawlersIvolunteerDataResponse, GetCrawlersKhoahocTvDataResponse]:
     return scrap_post_data(origin=params.origin, title=title)
 
 
@@ -90,4 +94,27 @@ async def post_crawler(body: PostCrawlersDataPayload):
 )
 def patch_crawler(title: str, body: PatchCrawlersDataPayload):
     print(body)
+    return
+
+
+# Preview
+@router.post(
+    "/crawlers/preview/{post_name}",
+    tags=["Admin-backend-scrap"],
+    status_code=ResponseStatusEnum.CREATED.value,
+)
+async def post_crawler_preview(post_name: str, body: PostCrawlersPreviewDiscordDataPayload):
+    current_data = get_scrap_post_data(origin=body.origin, post_name=post_name)
+    if CrawlerDataResponseTypeEnum.DISCORD in body.preview_source:
+        await send_news(data=current_data, is_testing=True)
+    elif CrawlerDataResponseTypeEnum.FACEBOOK in body.preview_source:
+        post_to_fb(
+            origin=body.origin,
+            content=current_data.discord.title,
+            comment="test comment",
+            hashtags=["hashtag1", "hashtag2"],
+        )
+    elif CrawlerDataResponseTypeEnum.WEB in body.preview_source:
+        pass
+
     return

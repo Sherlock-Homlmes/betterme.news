@@ -1,11 +1,13 @@
 # default
-import json
 
 # library
 import discord
 
 # local
 from .conf import server_info
+from core.schemas.admin import (
+    GetCrawlersIvolunteerDataResponse,
+)
 
 
 # TODO:
@@ -14,35 +16,33 @@ from .conf import server_info
 # -> revert deadline
 # -> tags
 # -> button more info
-async def send_news(title: str, is_testing: bool = True) -> int:
+async def send_news(data: GetCrawlersIvolunteerDataResponse, is_testing: bool = True) -> int:
     # for tag in server_info.news_channel.available_tags:
     #     print(tag)
 
-    # open json file to get data
-    try:
-        with open(f"scrap/data/discord/{title}.json", encoding="utf-8") as json_file:
-            data = json.load(json_file)
-    except Exception as e:
-        raise e
     embed = discord.Embed(
-        title=data["title"],
+        title=data.title,
         color=discord.Colour.yellow(),
-        description=data["description"],
+        description=f"**{data.description}**",
     )
-    embed.add_field(name="Deadline", value=data["deadline"], inline=False)
-    embed.add_field(name="More info", value=f"https://betterme.news/{title}", inline=False)
+    embed.add_field(name="Deadline", value=data.deadline, inline=False)
+    # TODO: post name
+    # embed.add_field(
+    #     name="More info", value=f"https://betterme.news/{data}", inline=False
+    # )
+    file = discord.File(f"scrap/data/media/{data.banner}", filename=data.banner)
 
     post: discord.Thread = None
     if is_testing is True:
         post = await server_info.test_news_channel.create_thread(
-            name=data["title"],
-            # file=data["banner"],
+            name=data.title,
+            file=file,
             embed=embed,
         )
     else:
         post = await server_info.news_channel.create_thread(
-            name=data["title"],
-            # file=data["banner"],
+            name=data.title,
+            file=file,
             embed=embed,
         )
 

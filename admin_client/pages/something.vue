@@ -89,9 +89,11 @@ const getPageInfo = async (link: string) => {
     pageInfo.value = await result.json()
 }
 
-const onDiscordPreview = ()=>{
+const onSaveDraft = async () => {
+    // pass
+}
+const onDiscordPreview = async () => {
     isDiscordPreviewed.value = true
-    console.log(pageInfo.value)
 }
 const onHtmlPreview = ()=>{
     isHtmlPreviewed.value = true

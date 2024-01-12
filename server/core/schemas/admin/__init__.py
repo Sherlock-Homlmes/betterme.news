@@ -1,4 +1,5 @@
 # mypy: disable-error-code="no-redef, assignment"
+from typing import List
 from .responses import *
 from .enums import *
 
@@ -17,3 +18,8 @@ class PostCrawlersDataPayload(PostCrawlersDataPayload):
 
 class PatchCrawlersDataPayload(PatchCrawlersDataPayload):
     origin: OriginCrawlPagesEnum
+
+
+class PostCrawlersPreviewDiscordDataPayload(PostCrawlersPreviewDiscordDataPayload):
+    origin: OriginCrawlPagesEnum
+    preview_source: List[CrawlerDataResponseTypeEnum]

@@ -53,6 +53,11 @@ class PatchCrawlersDataPayload(BaseModel):
     html_description: str
 
 
+class PostCrawlersPreviewDiscordDataPayload(BaseModel):
+    origin: str
+    preview_source: List[str]
+
+
 # Responses
 class GetCrawlersKhoahocTvDataResponse(BaseModel):
     title: str

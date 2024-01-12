@@ -27,9 +27,9 @@ def check_if_crawl_success(title: str) -> bool:
 
 
 def get_scrap_post_data(
-    origin: OriginCrawlPagesEnum, title: str
+    origin: OriginCrawlPagesEnum, post_name: str
 ) -> Union[GetCrawlersIvolunteerDataResponse, GetCrawlersKhoahocTvDataResponse]:
-    with open(f"scrap/data/general/{title}.json", encoding="utf-8") as general_json_file:
+    with open(f"scrap/data/general/{post_name}.json", encoding="utf-8") as general_json_file:
         general_data = json.load(general_json_file)
 
     if origin == OriginCrawlPagesEnum.IVOLUNTEER_VN:

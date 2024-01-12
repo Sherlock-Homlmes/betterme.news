@@ -1,7 +1,7 @@
 // From export enums.py (6 Enums 17 Values)
 
 export enum CrawlerDataResponseTypeEnum {
-   HTML = 'html',
+   WEB = 'html',
    DISCORD = 'discord',
    FACEBOOK = 'facebook'
 }
