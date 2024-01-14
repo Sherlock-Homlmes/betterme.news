@@ -81,7 +81,7 @@
         <template v-slot:item.3>
             <v-card title="Tạo bài viết mới" flat></v-card>
                                 <center class="my-5">
-                                    <v-btn prepend-icon="$vuetify" :disabled="!canSave">Create</v-btn>
+                                    <v-btn prepend-icon="$vuetify" :disabled="!canSave"   @click="onCreatePost">Create</v-btn>
                                 </center>
         </template>
         </v-stepper>
@@ -100,7 +100,7 @@ import { ref, onMounted, watch, computed, getCurrentInstance } from 'vue';
 import fetchLink from '~/src/config'
 import { changeTracker } from '~/src/func'
 import Editor from '@tinymce/tinymce-vue';
-import type {GetCrawlersIvolunteerDataResponse, PostCrawlersPreviewDiscordDataPayload} from '~/src/types/responses'
+import type {GetCrawlersIvolunteerDataResponse, PostCrawlersPreviewDiscordDataPayload, PostCrawlersDataPayload} from '~/src/types/responses'
 import {CrawlerDataResponseTypeEnum, OriginCrawlPagesEnum, IvolunteerPageTagsEnum} from '~/src/types/enums'
 
 const vm = getCurrentInstance().proxy
@@ -135,13 +135,29 @@ const onSaveDraft = async () => {
         body: JSON.stringify(changeTracker.getChange(pageInfo.value))
     })
 }
+
+const onCreatePost = async () => {
+    const body: PostCrawlersDataPayload = {
+        origin: OriginCrawlPagesEnum.IVOLUNTEER_VN,
+        post_name: link.value.toString()
+    }
+    const result = await fetch(`${fetchLink}/admin/crawlers`, {
+        method: 'POST',
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body)
+    })
+    console.log(await result.json())
+}
+
 const onDiscordPreview = async () => {
     await onSaveDraft()
     const body: PostCrawlersPreviewDiscordDataPayload = {
         origin: OriginCrawlPagesEnum.IVOLUNTEER_VN,
         preview_source: [CrawlerDataResponseTypeEnum.DISCORD]
     }
-    await fetch(`${fetchLink}/admin/crawlers/${link.value}/preview`, {
+    await fetch(`${fetchLink}/admin/crawlers/${link.value}/_preview`, {
         method: 'POST',
         headers: {
             "Content-Type": "application/json",

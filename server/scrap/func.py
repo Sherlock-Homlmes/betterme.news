@@ -76,7 +76,7 @@ def save_crawler_data(post_name: str, data: PatchCrawlersDataPayload) -> None:
             general_data = json.load(general_json_file)
 
         # update if key match
-        # TODO: refactor using orjson
+        # TODO: refactor using pydantic serilization
         update_data = data.dict()
         for key, value in update_data.items():
             name = general_data.get(key, None) if value is not None else None

@@ -16,6 +16,7 @@ from core.schemas.admin import (
     # responses
     GetCrawlersIvolunteerDataResponse,
     GetCrawlersKhoahocTvDataResponse,
+    PostCrawlersResponse,
     # enums
     ResponseStatusEnum,
     CrawlerDataResponseTypeEnum,
@@ -23,6 +24,7 @@ from core.schemas.admin import (
 from scrap.func import scrap_post_data, get_scrap_post_data, save_crawler_data
 from services.discord_bot.news import send_news
 from services.facebook_bot.func import post_to_fb
+from services.tebi import upload_image
 from services.time_modules import Time
 
 router = APIRouter(
@@ -44,43 +46,50 @@ def get_crawler(
 @router.post(
     "/crawlers",
     tags=["Admin-backend-scrap"],
-    status_code=ResponseStatusEnum.CREATED.value,
+    status_code=ResponseStatusEnum.OK.value,
 )
 async def post_crawler(body: PostCrawlersDataPayload):
-    current_data = get_scrap_post_data(origin=body.origin, title=body.title)
-    banner = body.banner if body.banner else current_data.banner
+    current_data = get_scrap_post_data(origin=body.origin, post_name=body.post_name)
+    all_fields = current_data.__fields__.keys()
+    banner_img = None
+    thumbnail_img = None
+    if current_data.banner is not None:
+        banner_img = upload_image(current_data.banner)
+    if "thumbnail" in all_fields and current_data.thumbnail is not None:
+        thumbnail_img = upload_image(current_data.thumbnail)
     now = Time().now
-    # TODO: fix discord data
-    discord_post_id = await send_news(title=body.title, is_testing=body.is_testing)
-    facebook_post = post_to_fb(
-        origin=body.origin,
-        content=current_data.discord.title,
-        comment="test comment",
-        hashtags=["hashtag1", "hashtag2"],
-    )
+    # facebook_post = post_to_fb(
+    #     origin=body.origin,
+    #     content=current_data.discord.title,
+    #     comment="test comment",
+    #     hashtags=["hashtag1", "hashtag2"],
+    # )
     # TODO: fix html data -> fix this data
     post = Posts(
         # info
         created_at=now,
         raw_data=None,
         # other service
-        facebook_post=facebook_post,
-        discord_post_id=discord_post_id,
+        # facebook_post=facebook_post,
+        discord_post_id=0,
         # content
-        title=current_data.discord.title,
-        thumbnail_img="abc",
-        banner_img=banner,
-        content=current_data.html.content,
+        title=current_data.title,
+        description=current_data.description,
+        thumbnail_img=thumbnail_img,
+        banner_img=banner_img,
+        content=current_data.content,
         author="Ivolunteer.vn",
         # writed_at = datetime.date(2023, 3, 24),
         # SEO
-        description=current_data.html.description,
         keywords=["keyword 1", "keyword 2", "keyword 3"],
-        og_img=banner,
+        og_img=banner_img,
     )
     await post.insert()
-
-    return post.id
+    # create discord post
+    discord_post_id = await send_news(data=current_data, is_testing=False, post_id=post.id)
+    post.discord_post_id = discord_post_id
+    await post.save()
+    return PostCrawlersResponse(id=str(post.id))
 
 
 @router.patch(
@@ -95,7 +104,7 @@ def patch_crawler(post_name: str, body: PatchCrawlersDataPayload):
 
 # Preview
 @router.post(
-    "/crawlers/{post_name}/preview",
+    "/crawlers/{post_name}/_preview",
     tags=["Admin-backend-scrap"],
     status_code=ResponseStatusEnum.CREATED.value,
 )

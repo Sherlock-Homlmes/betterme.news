@@ -26,18 +26,7 @@ class CrawlersDataParams(BaseModel):
 # Payloads
 class PostCrawlersDataPayload(BaseModel):
     origin: str
-    title: str
-
-    banner: Optional[str]
-    thumbnail: Optional[str]
-
-    discord_content: DiscordContentType
-    discord_description: str
-
-    html_content: HtmlContentType
-    html_description: str
-
-    is_testing: bool = False
+    post_name: str
 
 
 class PatchCrawlersDataPayload(BaseModel):
@@ -70,6 +59,10 @@ class GetCrawlersIvolunteerDataResponse(BaseModel):
     banner: str
     deadline: datetime.date
     content: str
+
+
+class PostCrawlersResponse(BaseModel):
+    id: str
 
 
 ### bot.py

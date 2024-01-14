@@ -13,12 +13,12 @@ s3 = boto3.resource(
 )
 
 
-def upload_data(origin: str, image_name: str):
-    data = open(f"scrap/data/{origin}/media/{image_name}", "rb")
-    s3.Bucket(settings.AWS_BUCKET).put_object(Key=f"{image_name}.jpg", Body=data)
+def upload_image(image_name: str):
+    data = open(f"scrap/data/media/{image_name}", "rb")
+    s3.Bucket(settings.AWS_BUCKET).put_object(Key=f"{image_name}", Body=data)
 
     return (
-        f"https://s3.tebi.co/{settings.AWS_BUCKET}/{image_name}"
+        f"https://s3.tebi.io/{settings.AWS_BUCKET}/{image_name}"
         if settings.IS_DEV_ENV
         else f"https://files.betterme.news/{image_name}"
     )

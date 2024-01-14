@@ -4,10 +4,12 @@ from typing import Optional, List
 
 # libraries
 from beanie import Document, Link
-from pydantic import BaseModel, Field
+from fastapi import HTTPException
+from pydantic import BaseModel, Field, field_validator
 
 # locals
 from .users import Users
+from core.schemas.admin import ResponseStatusEnum
 
 
 class FacebookPostInfo(BaseModel):
@@ -15,7 +17,10 @@ class FacebookPostInfo(BaseModel):
     comment_id: str
 
 
-# TODO: banner process
+class OtherPostInfo(BaseModel):
+    deadline: datetime.date
+
+
 # TODO: after create process: change title, insert to search engine, caching
 class Posts(Document):
     # info
@@ -23,29 +28,38 @@ class Posts(Document):
     # TODO: remove optional and None
     created_by: Optional[Link[Users]] = None
     updated_at: Optional[datetime.datetime] = None
-    # TODO: remove optional and None
     updated_by: Optional[Link[Users]] = None
-    raw_data: None
 
     # other service
-    facebook_post: FacebookPostInfo
+    facebook_post: Optional[FacebookPostInfo] = None
     discord_post_id: int
 
     # content
     title: str
-    thumbnail_img: str
-    banner_img: Optional[str]
+    description: str
+    thumbnail_img: Optional[str] = None
+    banner_img: Optional[str] = None
     content: str
     author: str
-    # writed_at: datetime.date
+    other_information: Optional[OtherPostInfo] = None
     view: Optional[int] = Field(default=1, gt=0)
 
     # SEO
-    description: str
     keywords: List[str]
     og_img: str
 
     class Settings:
         validate_on_save = True
+
+    # TODO: check if working or not
+    @field_validator("thumbnail_img")
+    @classmethod
+    def validate_x(cls, thumbnail_img: str) -> int:
+        if thumbnail_img or cls.banner_img:
+            return thumbnail_img
+        raise HTTPException(
+            status_code=ResponseStatusEnum.BAD_REQUEST.value,
+            detail="Thumbnail or banner must be exist",
+        )
 
     # event

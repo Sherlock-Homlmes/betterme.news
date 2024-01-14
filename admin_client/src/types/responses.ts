@@ -43,14 +43,7 @@ export interface PatchCrawlersDataPayload {
 }
 export interface PostCrawlersDataPayload {
   origin: string;
-  title: string;
-  banner?: string;
-  thumbnail?: string;
-  discord_content: (string | string[])[];
-  discord_description: string;
-  html_content: string;
-  html_description: string;
-  is_testing?: boolean;
+  post_name: string;
 }
 export interface PostCrawlersPreviewDiscordDataPayload {
   origin: string;

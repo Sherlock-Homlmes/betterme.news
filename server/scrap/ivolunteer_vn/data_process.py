@@ -16,7 +16,7 @@ async def save_image(url: str) -> str:
     async with aiohttp.ClientSession() as session:
         async with session.get(url) as resp:
             if resp.status == 200:
-                img_name = url.split("/")[-1]
+                img_name = url.split("/")[-1].replace(".png", "").replace(".jpg", "") + ".png"
                 f = await aiofiles.open(f"{DATA_DIR}/media/{img_name}", mode="wb")
                 await f.write(await resp.read())
                 await f.close()

@@ -6,6 +6,7 @@ import discord
 # local
 from .conf import server_info
 from core.schemas.admin import GetCrawlersIvolunteerDataResponse, IvolunteerPageTagsEnum
+from services.text_convertion import rewrite_title
 
 
 # TODO:
@@ -35,7 +36,11 @@ test_map_tags = {
 }
 
 
-async def send_news(data: GetCrawlersIvolunteerDataResponse, is_testing: bool = True) -> int:
+async def send_news(
+    data: GetCrawlersIvolunteerDataResponse,
+    is_testing: bool = True,
+    post_id: int = None,
+) -> int:
     # TODO: refactor tags logic
     tags = (
         [test_map_tags[tag] for tag in data.tags]
@@ -57,11 +62,15 @@ async def send_news(data: GetCrawlersIvolunteerDataResponse, is_testing: bool = 
         color=discord.Colour.yellow(),
         description=f"_{data.description}_",
     )
-    embed.add_field(name="Deadline", value=data.deadline, inline=False)
+    # from yyyy-mm-dd -> dd/mm/yyy
+    embed.add_field(name="Deadline", value=data.deadline.strftime("%d/%m/%Y"), inline=False)
     # TODO: post name
-    # embed.add_field(
-    #     name="More info", value=f"https://betterme.news/{data}", inline=False
-    # )
+    if is_testing is False and post_id is not None:
+        embed.add_field(
+            name="Xem thêm",
+            value=f"https://betterme.news/{rewrite_title(name=data.title)}_{post_id}",
+            inline=False,
+        )
     file = discord.File(f"scrap/data/media/{data.banner}", filename=data.banner)
 
     post: discord.Thread = None
