@@ -77,6 +77,7 @@ async def post_crawler(body: PostCrawlersDataPayload):
             # content
             title=current_data.title,
             description=current_data.description,
+            tags=current_data.tags,
             other_information=OtherPostInfo(deadline=current_data.deadline),
             banner_img=banner_img,
             content=current_data.content,

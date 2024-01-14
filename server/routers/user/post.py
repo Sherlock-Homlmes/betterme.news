@@ -17,15 +17,28 @@ router = APIRouter(
 )
 
 
+# @router.get(
+#     "/posts",
+#     tags=["Post"],
+#     status_code=ResponseStatusEnum.OK.value,
+# )
+# async def get_post(
+#     post_name: str,
+# ) -> GetPostResponse:
+#     post_id = post_name.split("_")[-1]
+#     post = await Posts.get(post_id)
+#     print(post)
+#     return post
+
+
 @router.get(
-    "/post/{post_name}",
+    "/posts/{post_name}",
     tags=["Post"],
     status_code=ResponseStatusEnum.OK.value,
 )
 async def get_post(
     post_name: str,
 ) -> GetPostResponse:
-    post_id = post_name.split("_")[-1]
+    post_id: str = post_name.split("_")[-1]
     post = await Posts.get(post_id)
-    print(post)
     return post

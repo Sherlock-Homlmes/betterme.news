@@ -49,3 +49,6 @@ export interface PostCrawlersPreviewDiscordDataPayload {
   origin: string;
   preview_source: string[];
 }
+export interface PostCrawlersResponse {
+  id: string;
+}

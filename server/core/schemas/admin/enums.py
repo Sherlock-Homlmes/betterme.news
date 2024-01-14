@@ -18,13 +18,13 @@ class OriginCrawlPagesEnum(Enum):
 
 
 class IvolunteerPageTagsEnum(Enum):
-    VOLUNTEER = "tinh-nguyen"
-    CLUB = "clb"
-    COURSE = "khoa-hoc"
-    SKILL = "ki-nang"
-    SCHORLARSHIP = "hoc-bong"
-    EVENT = "su-kien"
-    WORK = "viec-lam"
+    VOLUNTEER = "Tình nguyện"
+    CLUB = "CLB"
+    COURSE = "Khoa hoc"
+    SKILL = "Kĩ năng"
+    SCHORLARSHIP = "Học bổng"
+    EVENT = "Sự kiện"
+    WORK = "Việc làm"
 
 
 class KhoahocTvPageTagsEnum(Enum):

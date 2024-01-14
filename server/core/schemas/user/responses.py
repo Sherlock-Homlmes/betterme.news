@@ -25,6 +25,7 @@ class GetPostResponse(BaseModel):
     author: str
     other_information: Optional[OtherPostInfo] = None
     view: int
+    tags: List[str]
 
     # SEO
     keywords: List[str]

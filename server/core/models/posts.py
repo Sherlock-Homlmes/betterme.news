@@ -43,6 +43,7 @@ class Posts(Document):
     author: str
     other_information: Optional[OtherPostInfo] = None
     view: Optional[int] = Field(default=1, gt=0)
+    tags: Optional[List[str]] = []
 
     # SEO
     keywords: List[str]

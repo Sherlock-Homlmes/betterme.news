@@ -1,4 +1,4 @@
-// From export enums.py (6 Enums 17 Values)
+// From export enums.py (5 Enums 17 Values)
 
 export enum CrawlerDataResponseTypeEnum {
    WEB = 'html',
@@ -7,13 +7,13 @@ export enum CrawlerDataResponseTypeEnum {
 }
 
 export enum IvolunteerPageTagsEnum {
-   VOLUNTEER = 'tinh-nguyen',
-   CLUB = 'clb',
-   COURSE = 'khoa-hoc',
-   SKILL = 'ki-nang',
-   SCHORLARSHIP = 'hoc-bong',
-   EVENT = 'su-kien',
-   WORK = 'viec-lam'
+   VOLUNTEER = 'Tình nguyện',
+   CLUB = 'CLB',
+   COURSE = 'Khoa hoc',
+   SKILL = 'Kĩ năng',
+   SCHORLARSHIP = 'Học bổng',
+   EVENT = 'Sự kiện',
+   WORK = 'Việc làm'
 }
 
 export enum KhoahocTvPageTagsEnum {
@@ -24,10 +24,6 @@ export enum KhoahocTvPageTagsEnum {
 export enum OriginCrawlPagesEnum {
    KHOAHOC_TV = 'khoahoc_tv',
    IVOLUNTEER_VN = 'ivolunteer_vn'
-}
-
-export enum ResponseStatusEnum {
-
 }
 
 export enum TagsEnum {

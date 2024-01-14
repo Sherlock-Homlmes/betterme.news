@@ -8,6 +8,7 @@ import TableOfContents from '@/components/TableOfContents'
 import { getPosts } from '@/utils'
 import SButton from '@/components/mdx/SButton'
 
+export const prerender = true
 const posts = await getCollection('blog')
 export async function getStaticPaths() {
 	const posts = await getPosts()
