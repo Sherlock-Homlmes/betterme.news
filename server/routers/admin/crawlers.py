@@ -5,7 +5,7 @@ from typing import Annotated, Union
 from fastapi import APIRouter, Depends
 
 # local
-from core.models import Posts
+from core.models import Posts, OtherPostInfo
 from core.schemas.admin import (
     # params
     CrawlersDataParams,
@@ -18,6 +18,7 @@ from core.schemas.admin import (
     GetCrawlersKhoahocTvDataResponse,
     PostCrawlersResponse,
     # enums
+    OriginCrawlPagesEnum,
     ResponseStatusEnum,
     CrawlerDataResponseTypeEnum,
 )
@@ -50,13 +51,13 @@ def get_crawler(
 )
 async def post_crawler(body: PostCrawlersDataPayload):
     current_data = get_scrap_post_data(origin=body.origin, post_name=body.post_name)
-    all_fields = current_data.__fields__.keys()
     banner_img = None
-    thumbnail_img = None
     if current_data.banner is not None:
         banner_img = upload_image(current_data.banner)
-    if "thumbnail" in all_fields and current_data.thumbnail is not None:
-        thumbnail_img = upload_image(current_data.thumbnail)
+    # all_fields = current_data.__fields__.keys()
+    # thumbnail_img = None
+    # if "thumbnail" in all_fields and current_data.thumbnail is not None:
+    #     thumbnail_img = upload_image(current_data.thumbnail)
     now = Time().now
     # facebook_post = post_to_fb(
     #     origin=body.origin,
@@ -65,25 +66,27 @@ async def post_crawler(body: PostCrawlersDataPayload):
     #     hashtags=["hashtag1", "hashtag2"],
     # )
     # TODO: fix html data -> fix this data
-    post = Posts(
-        # info
-        created_at=now,
-        raw_data=None,
-        # other service
-        # facebook_post=facebook_post,
-        discord_post_id=0,
-        # content
-        title=current_data.title,
-        description=current_data.description,
-        thumbnail_img=thumbnail_img,
-        banner_img=banner_img,
-        content=current_data.content,
-        author="Ivolunteer.vn",
-        # writed_at = datetime.date(2023, 3, 24),
-        # SEO
-        keywords=["keyword 1", "keyword 2", "keyword 3"],
-        og_img=banner_img,
-    )
+    if body.origin == OriginCrawlPagesEnum.IVOLUNTEER_VN:
+        post = Posts(
+            # info
+            created_at=now,
+            raw_data=None,
+            # other service
+            # facebook_post=facebook_post,
+            discord_post_id=0,
+            # content
+            title=current_data.title,
+            description=current_data.description,
+            other_information=OtherPostInfo(deadline=current_data.deadline),
+            banner_img=banner_img,
+            content=current_data.content,
+            author="Ivolunteer.vn",
+            # SEO
+            keywords=["keyword 1", "keyword 2", "keyword 3"],
+            og_img=banner_img,
+        )
+    else:
+        pass
     await post.insert()
     # create discord post
     discord_post_id = await send_news(data=current_data, is_testing=False, post_id=post.id)
