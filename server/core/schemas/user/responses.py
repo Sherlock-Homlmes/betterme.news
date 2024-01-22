@@ -12,6 +12,14 @@ class OtherPostInfo(BaseModel):
 
 
 # reponses
+class GetPostListResponse(BaseModel):
+    # content
+    title: str
+    description: str
+    thumbnail_img: Optional[str] = None
+    banner_img: Optional[str] = None
+
+
 class GetPostResponse(BaseModel):
     # info
     created_at: datetime.datetime

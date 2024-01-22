@@ -1,4 +1,5 @@
 # default
+from typing import List
 
 # libraries
 from fastapi import APIRouter
@@ -7,6 +8,7 @@ from fastapi import APIRouter
 from core.models import Posts
 from core.schemas.user import (
     # responses
+    GetPostListResponse,
     GetPostResponse,
     # enums
     ResponseStatusEnum,
@@ -17,18 +19,13 @@ router = APIRouter(
 )
 
 
-# @router.get(
-#     "/posts",
-#     tags=["Post"],
-#     status_code=ResponseStatusEnum.OK.value,
-# )
-# async def get_post(
-#     post_name: str,
-# ) -> GetPostResponse:
-#     post_id = post_name.split("_")[-1]
-#     post = await Posts.get(post_id)
-#     print(post)
-#     return post
+@router.get(
+    "/posts",
+    tags=["Post"],
+    status_code=ResponseStatusEnum.OK.value,
+)
+async def get_list_post(page: int, per_page: int) -> List[GetPostListResponse]:
+    return await Posts.find().skip(page - 1).limit(per_page).to_list()
 
 
 @router.get(
