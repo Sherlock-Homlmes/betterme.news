@@ -1,12 +1,13 @@
 ---
 import BlogPostV2 from '@/layouts/BlogPostV2'
-import ListRelatedPosts from '@/components/ListRelatedPosts'
+// import ListRelatedPosts from '@/components/ListRelatedPosts'
 import Share from '@/components/Share'
 // import TableOfContents from '@/components/TableOfContents'
 
 
 const {postName} = Astro.params
-const postData = await fetch(`http://server:8080/api/posts/${postName}`).then(async(response) => await response.json())
+const response = await fetch(`http://server:8080/api/posts/${postName}`)
+const postData = await response.json()
 ---
 <!-- TODO: Table of content, related post -->
 <BlogPostV2
