@@ -67,6 +67,9 @@ async def post_crawler(body: PostCrawlersDataPayload):
     # )
     # TODO: fix html data -> fix this data
     if body.origin == OriginCrawlPagesEnum.IVOLUNTEER_VN:
+        other_info = OtherPostInfo()
+        if current_data.deadline:
+            other_info.deadline = current_data.deadline.strftime("%Y-%m-%d")
         post = Posts(
             # info
             created_at=now,
@@ -78,7 +81,7 @@ async def post_crawler(body: PostCrawlersDataPayload):
             title=current_data.title,
             description=current_data.description,
             tags=current_data.tags,
-            other_information=OtherPostInfo(deadline=current_data.deadline),
+            other_information=other_info,
             banner_img=banner_img,
             content=current_data.content,
             author="Ivolunteer.vn",

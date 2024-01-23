@@ -31,8 +31,10 @@ def ivolunteer_crawl(url: str):
         def parse(self, response):
             # crawl
             title = response.css("h1::text").get().replace("  ", "").replace("\n", "")
-            dealine = response.css(".mvp-post-cat::text").get().replace("Deadline: ", "")
-            dealine = "-".join(dealine.split("/")[::-1])
+            deadline = response.css(".mvp-post-cat::text").get().replace("Deadline: ", "")
+            deadline = "-".join(deadline.split("/")[::-1])
+            if deadline == "ASAP":
+                deadline = None
             banner = response.css("#mvp-content-main").css("img::attr(data-src)").get()
             banner = None if banner is None else asyncio.run(save_image(banner)).split("/")[-1]
             content = response.css("#mvp-content-main").css("h4, p, ul")
@@ -43,7 +45,7 @@ def ivolunteer_crawl(url: str):
             general_data = {
                 "title": title,
                 "description": replace_html(response.css("#mvp-content-main").css("p")[0]),
-                "deadline": dealine,
+                "deadline": deadline,
                 "banner": banner,
                 "content": process_detail_page_data_html(content),
                 "tags": [],

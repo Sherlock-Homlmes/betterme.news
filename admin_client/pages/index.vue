@@ -1,4 +1,4 @@
 
-<template lang="pug">
+<template>
 v-card(variant="outlined" text="aaskdfjsjf")
 </template>

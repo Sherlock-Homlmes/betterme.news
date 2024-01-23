@@ -5,6 +5,12 @@
 /* Do not modify it by hand - just update the pydantic models and then re-run the script
 */
 
+export interface GetPostListResponse {
+  title: string;
+  description: string;
+  thumbnail_img?: string;
+  banner_img?: string;
+}
 export interface GetPostResponse {
   created_at: string;
   title: string;

@@ -53,11 +53,12 @@ class GetCrawlersKhoahocTvDataResponse(BaseModel):
 
 
 class GetCrawlersIvolunteerDataResponse(BaseModel):
+    id: Optional[str] = None
     title: str
     description: str
     tags: List[str]
     banner: str
-    deadline: datetime.date
+    deadline: Union[datetime.date, None]
     content: str
 
 

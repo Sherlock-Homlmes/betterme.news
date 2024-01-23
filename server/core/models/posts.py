@@ -1,6 +1,6 @@
 # default
 import datetime
-from typing import Optional, List
+from typing import Optional, List, Union
 
 # libraries
 from beanie import Document, Link
@@ -18,7 +18,8 @@ class FacebookPostInfo(BaseModel):
 
 
 class OtherPostInfo(BaseModel):
-    deadline: datetime.date
+    # TODO: change type str to datetime when lib support
+    deadline: Optional[Union[str, None]] = None
 
 
 # TODO: after create process: change title, insert to search engine, caching

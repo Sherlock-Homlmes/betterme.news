@@ -63,7 +63,9 @@ async def send_news(
         description=f"_{data.description}_",
     )
     # from yyyy-mm-dd -> dd/mm/yyy
-    embed.add_field(name="Deadline", value=data.deadline.strftime("%d/%m/%Y"), inline=False)
+    deadline = "ASAP" if data.deadline is None else data.deadline.strftime("%d/%m/%Y")
+    embed.add_field(name="Deadline", value=deadline, inline=False)
+
     # TODO: post name
     if is_testing is False and post_id is not None:
         embed.add_field(

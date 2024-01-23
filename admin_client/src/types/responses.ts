@@ -13,11 +13,12 @@ export interface CrawlersDataParams {
   origin: string;
 }
 export interface GetCrawlersIvolunteerDataResponse {
+  id?: string;
   title: string;
   description: string;
   tags: string[];
   banner: string;
-  deadline: string;
+  deadline?: string;
   content: string;
 }
 export interface GetCrawlersKhoahocTvDataResponse {
