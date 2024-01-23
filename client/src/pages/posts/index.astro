@@ -1,0 +1,39 @@
+
+---
+import ListCategories from '@/components/ListCategories'
+import ListPostsV2 from '@/components/ListPostsV2'
+import TitlePage from '@/components/TitlePage'
+import BaseLayout from '@/layouts/BaseLayout'
+import type {GetPostListResponse} from '@/types/responses'
+
+const response = await fetch(`http://server:8080/api/posts?page=1&per_page=10`)
+const postData = await response.json() as Array<GetPostListResponse>
+---
+
+<BaseLayout title='Home'>
+	<TitlePage title='BetterMe-Better everyday' />
+	<ListCategories />
+
+	<div>
+		<h2 class='text-lg font-medium tracking-wide text-end'>Latest Posts</h2>
+		<ListPostsV2 FirstBig={true} posts={postData} />
+	</div>
+</BaseLayout>
+
+<script>
+	import { animate } from 'motion'
+	const showAnimations = localStorage.getItem('animations') === 'true'
+
+	if (showAnimations) {
+		animate(
+			'.title',
+			{ y: [80, 0], opacity: [0, 1] },
+			{
+				duration: 2.5,
+				opacity: { duration: 3 },
+
+				offset: [0, 0.55, 0.75]
+			}
+		)
+	}
+</script>
