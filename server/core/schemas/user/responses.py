@@ -1,6 +1,6 @@
 # default
 import datetime
-from typing import List, Optional
+from typing import List, Optional, Union
 
 # libraries
 from pydantic import BaseModel
@@ -8,16 +8,18 @@ from pydantic import BaseModel
 
 # TODO: duplicate code
 class OtherPostInfo(BaseModel):
-    deadline: datetime.date
+    deadline: Union[datetime.date, None] = None
 
 
 # reponses
 class GetPostListResponse(BaseModel):
+    id: str
     # content
     title: str
     description: str
     thumbnail_img: Optional[str] = None
     banner_img: Optional[str] = None
+    tags: List[str]
 
 
 class GetPostResponse(BaseModel):

@@ -6,10 +6,12 @@
 */
 
 export interface GetPostListResponse {
+  id: string;
   title: string;
   description: string;
   thumbnail_img?: string;
   banner_img?: string;
+  tags: string[];
 }
 export interface GetPostResponse {
   created_at: string;
