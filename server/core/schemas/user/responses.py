@@ -14,6 +14,7 @@ class OtherPostInfo(BaseModel):
 # reponses
 class GetPostListResponse(BaseModel):
     id: str
+    slug: str
     # content
     title: str
     description: str

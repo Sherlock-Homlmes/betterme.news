@@ -13,6 +13,7 @@ from core.schemas.user import (
     # enums
     ResponseStatusEnum,
 )
+from services.text_convertion import rewrite_title
 
 router = APIRouter(
     responses={404: {"description": "Not found"}},
@@ -25,11 +26,18 @@ router = APIRouter(
     status_code=ResponseStatusEnum.OK.value,
 )
 async def get_list_post(page: int, per_page: int) -> List[GetPostListResponse]:
-    posts = await Posts.find().skip(page - 1).limit(per_page).to_list()
-    # TODO: change model of post id
+    # TODO: add projection
+    posts = await Posts.find().sort(-Posts.id).skip(page - 1).limit(per_page).to_list()
+
+    # TODO: refactor this
+    results = []
     for post in posts:
-        post.id = str(post.id)
-    return posts
+        result = post.dict()
+        result["id"] = str(result["id"])
+        result["slug"] = rewrite_title(result["title"])
+        results.append(result)
+
+    return results
 
 
 @router.get(

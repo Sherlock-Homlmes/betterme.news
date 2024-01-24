@@ -7,6 +7,7 @@
 
 export interface GetPostListResponse {
   id: string;
+  slug: string;
   title: string;
   description: string;
   thumbnail_img?: string;
@@ -28,5 +29,5 @@ export interface GetPostResponse {
   og_img: string;
 }
 export interface OtherPostInfo {
-  deadline: string;
+  deadline?: string;
 }
