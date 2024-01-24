@@ -4,9 +4,10 @@ import ListCategories from '@/components/ListCategories'
 import ListPostsV2 from '@/components/ListPostsV2'
 import TitlePage from '@/components/TitlePage'
 import BaseLayout from '@/layouts/BaseLayout'
+import fetchLink from 'src/utils/config'
 import type {GetPostListResponse} from '@/types/responses'
 
-const response = await fetch(`http://server:8080/api/posts?page=1&per_page=10`)
+const response = await fetch(`${fetchLink}/posts?page=1&per_page=10`)
 const postData = await response.json() as Array<GetPostListResponse>
 ---
 

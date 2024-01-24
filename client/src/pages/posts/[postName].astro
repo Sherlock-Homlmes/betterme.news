@@ -1,6 +1,7 @@
 ---
 import BlogPostV2 from '@/layouts/BlogPostV2'
 import Share from '@/components/Share'
+import fetchLink from 'src/utils/config'
 import type {GetPostResponse} from '@/types/responses'
 // TODO
 // import ListRelatedPosts from '@/components/ListRelatedPosts'
@@ -8,9 +9,8 @@ import type {GetPostResponse} from '@/types/responses'
 
 
 const {postName} = Astro.params
-const response = await fetch(`http://server:8080/api/posts/${postName}`)
+const response = await fetch(`${fetchLink}/posts/${postName}`)
 const postData = await response.json() as GetPostResponse
-console.log(postData)
 ---
 <!-- TODO: Table of content, related post -->
 <BlogPostV2
