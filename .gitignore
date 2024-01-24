@@ -154,8 +154,8 @@ cython_debug/
 
 others/data/
 store/
-server/scrap/data/general/*
-server/scrap/data/media/*
+# server/scrap/data/general/*
+# server/scrap/data/media/*
 
 # ---------- Client ----------
 # build output
