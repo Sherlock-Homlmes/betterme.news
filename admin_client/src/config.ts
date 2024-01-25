@@ -1,5 +1,5 @@
-const isProd = process.env.DEV
+const config = useRuntimeConfig()
 const devServerLink = 'http://localhost'
 const prodServerLink = 'https://api.betterme.news'
-const fetchLink = isProd ? `${prodServerLink}/api`: `${devServerLink}/api`
+const fetchLink = config.public.isDev ? `${devServerLink}/api` : `${prodServerLink}/api`
 export default fetchLink;

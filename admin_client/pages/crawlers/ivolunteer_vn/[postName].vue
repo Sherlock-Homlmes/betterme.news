@@ -141,6 +141,7 @@ const isDiscordPreviewed = ref<Boolean>(false)
 const canSave = computed<Boolean>(()=>isDiscordPreviewed.value)
 
 const getPageInfo = async () => {
+    console.log(`${fetchLink}/admin/tags?origin=ivolunteer_vn`)
     const tagsResult = await fetch(
         `${fetchLink}/admin/tags?origin=ivolunteer_vn`
     )

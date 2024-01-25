@@ -26,4 +26,9 @@ export default defineNuxtConfig({
       },
     },
   },
+  runtimeConfig: {
+    public: {
+      isDev: process.env.DEV,
+    }
+  }
 })
