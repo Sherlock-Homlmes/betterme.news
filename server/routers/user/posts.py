@@ -2,7 +2,10 @@
 from typing import List
 
 # libraries
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException
+
+# TODO: to error handler
+from pydantic_core._pydantic_core import ValidationError
 
 # local
 from core.models import Posts
@@ -49,5 +52,11 @@ async def get_post(
     post_name: str,
 ) -> GetPostResponse:
     post_id: str = post_name.split("_")[-1]
-    post = await Posts.get(post_id)
-    return post
+    try:
+        post = await Posts.get(post_id)
+        return post
+    except ValidationError:
+        raise HTTPException(
+            status_code=ResponseStatusEnum.BAD_REQUEST.value,
+            detail="Post not found",
+        )
