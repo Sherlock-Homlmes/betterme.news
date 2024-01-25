@@ -28,7 +28,9 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     public: {
-      isDev: process.env.DEV,
+      fetchLink: process.env.DEV
+      ? 'http://localhost/api'
+      : 'https://api.betterme.news/api'
     }
   }
 })

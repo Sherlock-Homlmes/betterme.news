@@ -81,8 +81,8 @@
         <template v-slot:item.3>
             <v-card title="Tạo bài viết mới" flat></v-card>
                                 <center class="my-5">
-                                    <v-btn v-if="pageInfo?.id" prepend-icon="$vuetify" :disabled="!canSave" :loading="updating" @click="onCreatePost">Create</v-btn>
-                                    <v-btn v-else prepend-icon="$vuetify" :disabled="!canSave" :loading="updating" @click="onCreatePost">SAVE(TODO...)</v-btn>
+                                    <v-btn v-if="pageInfo?.id" prepend-icon="$vuetify" :disabled="!canSave" :loading="updating" @click="onCreatePost">SAVE(TODO...)</v-btn>
+                                    <v-btn v-else prepend-icon="$vuetify" :disabled="!canSave" :loading="updating" @click="onCreatePost">Create</v-btn>
                                 </center>
         </template>
         </v-stepper>
@@ -121,11 +121,14 @@
 // facebook preview
 // vue use
 import { ref, onMounted, watch, computed, getCurrentInstance } from 'vue';
-import fetchLink from '~/src/config'
+import { useRuntimeConfig } from 'nuxt/app';
 import { changeTracker } from '~/src/func'
 import Editor from '@tinymce/tinymce-vue';
 import type {GetCrawlersIvolunteerDataResponse, PostCrawlersPreviewDiscordDataPayload, PostCrawlersDataPayload, PostCrawlersResponse} from '~/src/types/responses'
 import {CrawlerDataResponseTypeEnum, OriginCrawlPagesEnum, IvolunteerPageTagsEnum} from '~/src/types/enums'
+
+const config = useRuntimeConfig()
+const fetchLink = config.public.fetchLink
 
 const vm = getCurrentInstance().proxy
 // TODO: snackbar component
@@ -138,10 +141,14 @@ const isFacebookPreviewed = ref<Boolean>(false)
 const isHtmlPreviewed = ref<Boolean>(false)
 const isDiscordPreviewed = ref<Boolean>(false)
 // TODO: add conditions
-const canSave = computed<Boolean>(()=>isDiscordPreviewed.value)
+const canSave = computed<Boolean>(
+    ()=>
+    isDiscordPreviewed.value &&
+    pageInfo.value && pageInfo.value.tags.length
+)
+
 
 const getPageInfo = async () => {
-    console.log(`${fetchLink}/admin/tags?origin=ivolunteer_vn`)
     const tagsResult = await fetch(
         `${fetchLink}/admin/tags?origin=ivolunteer_vn`
     )
