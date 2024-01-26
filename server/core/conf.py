@@ -1,5 +1,6 @@
 # default
 import os
+from enum import Enum
 
 # libraries
 from fastapi import FastAPI
@@ -23,8 +24,15 @@ get_env = os.environ.get
 
 
 # env var
+class ENVEnum(Enum):
+    DEV = "DEV"
+    ADMIN = "ADMIN"
+    USER = "USER"
+
+
 class Settings(BaseSettings):
-    IS_DEV_ENV: bool = False
+    # TODO: change this to ENVEnum when lib support
+    ENV: str
 
     DATABASE_URL: str
 
@@ -40,6 +48,7 @@ class Settings(BaseSettings):
 
 
 settings = Settings()
+is_dev_env = settings.ENV == ENVEnum.DEV.value
 
 # basic config
 app = FastAPI(
@@ -50,7 +59,9 @@ app = FastAPI(
 )
 
 allow_origins = (
-    ["*"] if settings.IS_DEV_ENV else ["https://admin.betterme.news", "http://admin.betterme.news"]
+    ["*"]
+    if settings.ENV == ENVEnum.DEV
+    else ["https://admin.betterme.news", "http://admin.betterme.news"]
 )
 
 app.add_middleware(

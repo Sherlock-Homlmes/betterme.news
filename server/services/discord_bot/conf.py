@@ -7,7 +7,7 @@ import discord
 from discord.ext import commands
 
 # local
-from core.conf import settings
+from core.conf import is_dev_env
 from services.discord_bot.func import get_channel
 
 is_app_running = True
@@ -22,7 +22,7 @@ class Bot(commands.Bot):
         global is_app_running
 
         print(f"We have logged in as {self.user} news bot")
-        if settings.IS_DEV_ENV:
+        if is_dev_env:
             # Stop bot when reload
             while is_app_running:
                 from core.event_handler import running
@@ -57,7 +57,7 @@ async def get_server_info():
     ### Get server info
     server_info_data = {
         "test_news_channel": 1195438410807120022,
-        "news_channel": 1094468765527330918,
+        "news_channel": 1195438410807120022 if is_dev_env else 1094468765527330918,
     }
 
     # get guild

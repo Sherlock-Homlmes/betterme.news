@@ -2,7 +2,7 @@
 import boto3
 
 # local
-from core.conf import settings
+from core.conf import settings, is_dev_env
 
 # Let's use S3
 s3 = boto3.resource(
@@ -19,6 +19,6 @@ def upload_image(image_name: str):
 
     return (
         f"https://s3.tebi.io/{settings.AWS_BUCKET}/{image_name}"
-        if settings.IS_DEV_ENV
+        if is_dev_env
         else f"https://files.betterme.news/{image_name}"
     )

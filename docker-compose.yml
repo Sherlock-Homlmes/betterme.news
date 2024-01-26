@@ -22,19 +22,20 @@ services:
     volumes:
       - .:/var/task
     working_dir: /var/task/server
-    user: '${COMPOSE_UID:-1000}:${COMPOSE_GID:-1000}'
+    user: "${COMPOSE_UID:-1000}:${COMPOSE_GID:-1000}"
     ports:
       - 8080:8080
     environment:
       - HOME=/tmp
-      - IS_DEV_ENV=True
+      - ENV=DEV
     depends_on:
       - mongo
     networks:
       - nginx-net
       - mongo-database
-    command: ['uvicorn', 'main:app', '--reload', '--host=0.0.0.0', '--port=8080']
-    entrypoint: ['poetry', 'run']
+    command:
+      ["uvicorn", "main:app", "--reload", "--host=0.0.0.0", "--port=8080"]
+    entrypoint: ["poetry", "run"]
 
   client:
     build:
@@ -43,12 +44,13 @@ services:
     volumes:
       - .:/var/task
     working_dir: /var/task/client
-    user: '${COMPOSE_UID:-1000}:${COMPOSE_GID:-1000}'
+    user: "${COMPOSE_UID:-1000}:${COMPOSE_GID:-1000}"
     ports:
       - 3000:3000
     networks:
       - nginx-net
-    command: ['npm', 'run', 'start', '--', '--host', '0.0.0.0', '--port', '3000']
+    command:
+      ["npm", "run", "start", "--", "--host", "0.0.0.0", "--port", "3000"]
 
   admin-client:
     build:
@@ -57,12 +59,12 @@ services:
     volumes:
       - .:/var/task
     working_dir: /var/task/admin_client
-    user: '${COMPOSE_UID:-1000}:${COMPOSE_GID:-1000}'
+    user: "${COMPOSE_UID:-1000}:${COMPOSE_GID:-1000}"
     ports:
       - 3001:3001
     networks:
       - nginx-net
-    command: ['npm', 'run', 'dev', '--', '--host', '0.0.0.0', '--port', '3001']
+    command: ["npm", "run", "dev", "--", "--host", "0.0.0.0", "--port", "3001"]
 
   mongo:
     image: mongo

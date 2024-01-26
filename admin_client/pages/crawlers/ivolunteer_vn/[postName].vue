@@ -3,7 +3,7 @@
 <center class="mt-5 mb-15">
     <div v-if="pageInfo" class="w-75">
         <v-text-field label="Title" v-model="pageInfo.title"></v-text-field>
-        <img :src="`http://localhost/api/media/${pageInfo?.banner}`" >
+        <img :src="`${fetchLink}/media/${pageInfo?.banner}`" >
         <v-file-input clearable label="To do..." variant="solo-filled" class="w-50" :disabled='true'></v-file-input>
         <v-autocomplete
         v-model="pageInfo.tags"
