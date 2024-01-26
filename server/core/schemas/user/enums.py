@@ -19,7 +19,7 @@ class ResponseStatusEnum(Enum):
 
 
 class IvolunteerPageTagsEnum(Enum):
-    CLUB = "Câu Lạc Bộ"
+    CLUB = "Câu lạc bộ"
     VOLUNTEER = "Tình nguyện"
     COURSE = "Khóa học"
     # SKILL = "Kĩ năng"
