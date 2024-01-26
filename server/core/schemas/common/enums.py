@@ -5,6 +5,20 @@ from enum import Enum
 from fastapi import status
 
 
+class IvolunteerPageTagsEnum(Enum):
+    VOLUNTEER = "Tình nguyện"
+    CLUB = "CLB"
+    COURSE = "Khoa hoc"
+    SKILL = "Kĩ năng"
+    SCHORLARSHIP = "Học bổng"
+    EVENT = "Sự kiện"
+
+
+class KhoahocTvPageTagsEnum(Enum):
+    SOMETHING1 = "something1"
+    SOMETHING2 = "something2"
+
+
 class ResponseStatusEnum(Enum):
     OK = status.HTTP_200_OK
     CREATED = status.HTTP_201_CREATED

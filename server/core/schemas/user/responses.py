@@ -41,3 +41,10 @@ class GetPostResponse(BaseModel):
     # SEO
     keywords: List[str]
     og_img: str
+
+
+# reponses
+class GetPostListParams(BaseModel):
+    page: Optional[int] = 1
+    per_page: Optional[int] = 10
+    match_tag: Optional[str] = None

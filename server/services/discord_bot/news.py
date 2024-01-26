@@ -22,7 +22,7 @@ map_tags = {
     IvolunteerPageTagsEnum.SKILL: 1094471213587374100,
     IvolunteerPageTagsEnum.SCHORLARSHIP: 1094471259695366245,
     IvolunteerPageTagsEnum.EVENT: 1094471278062215218,
-    IvolunteerPageTagsEnum.WORK: 1094472047217889310,
+    # IvolunteerPageTagsEnum.WORK: 1094472047217889310,
 }
 
 test_map_tags = {
@@ -32,7 +32,7 @@ test_map_tags = {
     IvolunteerPageTagsEnum.SKILL: 1195438712864124999,
     IvolunteerPageTagsEnum.SCHORLARSHIP: 1195438775153737758,
     IvolunteerPageTagsEnum.EVENT: 1195438832846389280,
-    IvolunteerPageTagsEnum.WORK: 1195438889846964396,
+    # IvolunteerPageTagsEnum.WORK: 1195438889846964396,
 }
 
 

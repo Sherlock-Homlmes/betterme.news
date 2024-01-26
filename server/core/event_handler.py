@@ -9,7 +9,6 @@ from core.conf import app, settings
 from core.database.mongodb import client
 from core.models import (
     Posts,
-    PostTags,
     Users,
 )
 from services.discord_bot.conf import bot
@@ -48,7 +47,6 @@ async def startup():
         database=client.betterme_news,
         document_models=[
             Posts,
-            PostTags,
             Users,
         ],
     )

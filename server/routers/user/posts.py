@@ -1,9 +1,10 @@
 # default
-from typing import List, Optional
+from typing import List, Optional, Annotated
 
 # libraries
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Depends
 from beanie import PydanticObjectId
+from beanie.operators import ElemMatch
 
 # TODO: to error handler
 from pydantic_core._pydantic_core import ValidationError
@@ -14,6 +15,8 @@ from core.schemas.user import (
     # responses
     GetPostListResponse,
     GetPostResponse,
+    # payload
+    GetPostListParams,
     # enums
     ResponseStatusEnum,
 )
@@ -38,17 +41,21 @@ class PostListProject(GetPostListResponse):
     tags=["Post"],
     status_code=ResponseStatusEnum.OK.value,
 )
-async def get_list_post(page: int, per_page: int) -> List[GetPostListResponse]:
+async def get_list_post(
+    params: Annotated[dict, Depends(GetPostListParams)],
+) -> List[GetPostListResponse]:
+    queries = {}
+    if params.match_tag:
+        queries = ElemMatch(Posts.tags, {"$eq": params.match_tag})
     posts = (
-        await Posts.find()
+        await Posts.find(queries)
         .project(PostListProject)
         .sort(-Posts.id)
-        .skip(page - 1)
-        .limit(per_page)
+        .skip(params.page - 1)
+        .limit(params.per_page)
         .to_list()
     )
 
-    # TODO: refactor this
     for post in posts:
         post.id = str(post.id)
         post.slug = rewrite_title(post.title)
