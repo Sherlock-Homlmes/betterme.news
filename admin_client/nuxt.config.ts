@@ -30,7 +30,7 @@ export default defineNuxtConfig({
     public: {
       fetchLink: process.env.DEV
       ? 'http://localhost/api'
-      : 'https://api.betterme.news/api'
+      : 'https://api.admin.betterme.news/api'
     }
   }
 })
