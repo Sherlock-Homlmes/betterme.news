@@ -3,13 +3,13 @@ from fastapi import APIRouter
 
 # local
 from .conf import settings, ENVEnum
-from routers.admin import crawlers as be_crawlers, tags
-from routers.user import posts
+from routers.admin import crawlers
+from routers.user import posts, tags
 
 # create all api routers
 api_router = APIRouter()
-admin_routers = [be_crawlers, tags]
-user_routers = [posts]
+admin_routers = [crawlers]
+user_routers = [posts, tags]
 
 
 def include_admin_routers():

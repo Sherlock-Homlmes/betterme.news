@@ -1,7 +1,6 @@
 # mypy: disable-error-code="no-redef, assignment"
-from typing import Optional, List, Union
+from typing import Optional, Union
 
-from core.schemas.common import *
 from .responses import *
 from .enums import *
 

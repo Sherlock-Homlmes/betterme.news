@@ -5,6 +5,11 @@
 /* Do not modify it by hand - just update the pydantic models and then re-run the script
 */
 
+export interface GetPostListParams {
+  page?: number;
+  per_page?: number;
+  match_tag?: string;
+}
 export interface GetPostListResponse {
   id: string;
   slug: string;

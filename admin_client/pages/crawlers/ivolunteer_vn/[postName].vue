@@ -150,7 +150,7 @@ const canSave = computed<Boolean>(
 
 const getPageInfo = async () => {
     const tagsResult = await fetch(
-        `${fetchLink}/admin/tags?origin=ivolunteer_vn`
+        `${fetchLink}/tags?origin=ivolunteer_vn`
     )
     tags.value = await tagsResult.json()
 

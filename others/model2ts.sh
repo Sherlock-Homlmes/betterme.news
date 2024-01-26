@@ -10,3 +10,6 @@ pydantic2ts --module ./server/core/schemas/admin/responses.py --output ./admin_c
 enumc ./server/core/schemas/admin/enums.py --to typescript --out ./admin_client/src/types/enums.ts --sort-enums asc
 # replace enum with export enum to import from orther file
 sed -i "s/enum/export enum/" ./admin_client/src/types/enums.ts
+
+# enum from user can use for admin
+cat ./client/src/types/enums.ts >> ./admin_client/src/types/enums.ts

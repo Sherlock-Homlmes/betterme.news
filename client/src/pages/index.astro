@@ -1,19 +1,19 @@
 
 ---
-import ListCategories from '@/components/ListCategories'
+import ListTagsV2 from '@/components/ListTagsV2'
 import ListPostsV2 from '@/components/ListPostsV2'
 import TitlePage from '@/components/TitlePage'
 import BaseLayout from '@/layouts/BaseLayout'
 import fetchLink from 'src/utils/config'
 import type {GetPostListResponse} from '@/types/responses'
 
-const response = await fetch(`${fetchLink}/posts?page=1&per_page=10`)
+const response = await fetch(`${fetchLink}/posts?` + Astro.url.searchParams)
 const postData = await response.json() as Array<GetPostListResponse>
 ---
 
 <BaseLayout title='Home'>
 	<TitlePage title='BetterMe-Better everyday' />
-	<ListCategories />
+	<ListTagsV2 />
 
 	<div>
 		<h2 class='text-lg font-medium tracking-wide text-end'>Bài viết mới nhất</h2>
