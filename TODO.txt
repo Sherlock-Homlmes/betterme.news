@@ -1,8 +1,9 @@
 - UI: pagination
-- API + UI: scrap keywords for SEO
 - UI: add header icon + privacy
+- API + UI: scrap keywords for SEO
 - UI: share
 - API + UI: auth for admin
+---- MVP ----
 - API + UI: admin self create new post
 - SE + API + UI: add search engine
 - API: store original data
