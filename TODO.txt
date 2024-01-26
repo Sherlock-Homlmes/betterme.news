@@ -1,0 +1,10 @@
+- UI: store old post static
+- UI: tags
+- UI: share
+- API + UI: auth for admin
+- API: store original data
+- UI: prettier
+- API + UI: post to facebook
+- API: post to Linkedin
+- API: refactor scrap code -> UI: TOC -> UI: Custom text editor
+- MOBILE
