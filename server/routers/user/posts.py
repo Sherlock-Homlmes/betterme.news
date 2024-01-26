@@ -1,8 +1,9 @@
 # default
-from typing import List
+from typing import List, Optional
 
 # libraries
 from fastapi import APIRouter, HTTPException
+from beanie import PydanticObjectId
 
 # TODO: to error handler
 from pydantic_core._pydantic_core import ValidationError
@@ -16,11 +17,20 @@ from core.schemas.user import (
     # enums
     ResponseStatusEnum,
 )
+from services.beanie_odm import get_projections_from_model
 from services.text_convertion import rewrite_title
 
 router = APIRouter(
     responses={404: {"description": "Not found"}},
 )
+
+
+class PostListProject(GetPostListResponse):
+    id: Optional[PydanticObjectId] = None
+    slug: Optional[str] = None
+
+    class Settings:
+        projection = get_projections_from_model(GetPostListResponse, exclude_fields=["slug"])
 
 
 @router.get(
@@ -29,18 +39,21 @@ router = APIRouter(
     status_code=ResponseStatusEnum.OK.value,
 )
 async def get_list_post(page: int, per_page: int) -> List[GetPostListResponse]:
-    # TODO: add projection
-    posts = await Posts.find().sort(-Posts.id).skip(page - 1).limit(per_page).to_list()
+    posts = (
+        await Posts.find()
+        .project(PostListProject)
+        .sort(-Posts.id)
+        .skip(page - 1)
+        .limit(per_page)
+        .to_list()
+    )
 
     # TODO: refactor this
-    results = []
     for post in posts:
-        result = post.dict()
-        result["id"] = str(result["id"])
-        result["slug"] = rewrite_title(result["title"])
-        results.append(result)
+        post.id = str(post.id)
+        post.slug = rewrite_title(post.title)
 
-    return results
+    return posts
 
 
 @router.get(
