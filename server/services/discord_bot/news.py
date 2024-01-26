@@ -6,7 +6,7 @@ import discord
 # local
 from .conf import server_info
 from core.schemas.admin import GetCrawlersIvolunteerDataResponse, IvolunteerPageTagsEnum
-from services.text_convertion import rewrite_title
+from services.text_convertion import gen_slug_from_title
 
 
 # TODO:
@@ -68,7 +68,7 @@ async def send_news(
     if is_testing is False and post_id is not None:
         embed.add_field(
             name="Xem thêm",
-            value=f"https://betterme.news/posts/{rewrite_title(name=data.title)}_{post_id}",
+            value=f"https://betterme.news/posts/{gen_slug_from_title(name=data.title)}_{post_id}",
             inline=False,
         )
     file = discord.File(f"scrap/data/media/{data.banner}", filename=data.banner)

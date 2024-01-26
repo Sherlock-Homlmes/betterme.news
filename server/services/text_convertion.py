@@ -79,7 +79,7 @@ replace_string = {
 }
 
 
-def rewrite_title(name: str) -> str:
+def gen_slug_from_title(name: str) -> str:
     global name_check, replace_string
 
     name = name.lower()

@@ -3,6 +3,7 @@ from typing import List, Optional, Annotated
 
 # libraries
 from fastapi import APIRouter, HTTPException, Depends
+from fastapi.responses import JSONResponse
 from beanie import PydanticObjectId
 from beanie.operators import ElemMatch
 
@@ -20,8 +21,8 @@ from core.schemas.user import (
     # enums
     ResponseStatusEnum,
 )
-from services.beanie_odm import get_projections_from_model
-from services.text_convertion import rewrite_title
+from services.beanie_odm import get_projections_from_model, return_with_pagination
+from services.text_convertion import gen_slug_from_title
 
 router = APIRouter(
     responses={404: {"description": "Not found"}},
@@ -47,20 +48,24 @@ async def get_list_post(
     queries = {}
     if params.match_tag:
         queries = ElemMatch(Posts.tags, {"$eq": params.match_tag})
+    cursor = Posts.find(queries).project(PostListProject)
     posts = (
-        await Posts.find(queries)
-        .project(PostListProject)
-        .sort(-Posts.id)
-        .skip(params.page - 1)
+        await cursor.sort(-Posts.id)
+        .skip(params.per_page * (params.page - 1))
         .limit(params.per_page)
         .to_list()
     )
 
     for post in posts:
-        post.id = str(post.id)
-        post.slug = rewrite_title(post.title)
+        post.slug = gen_slug_from_title(post.title)
 
-    return posts
+    # TODO: better pagination solution
+    # model -> json
+    posts = [post.model_dump() for post in posts]
+
+    response = JSONResponse(content=posts)
+    await return_with_pagination(cursor, response, params.page, params.per_page)
+    return response
 
 
 @router.get(

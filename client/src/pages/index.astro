@@ -3,14 +3,33 @@
 import ListTagsV2 from '@/components/ListTagsV2'
 import ListPostsV2 from '@/components/ListPostsV2'
 import TitlePage from '@/components/TitlePage'
+import Pagination from '@/components/Pagination'
 import BaseLayout from '@/layouts/BaseLayout'
 import fetchLink from 'src/utils/config'
 import type {GetPostListResponse} from '@/types/responses'
 
 const response = await fetch(`${fetchLink}/posts?` + Astro.url.searchParams)
-console.log(`============${fetchLink}/posts?` + Astro.url.searchParams)
 const postData = await response.json() as Array<GetPostListResponse>
-console.log(postData)
+
+let page = {
+	start: 0,
+	currentPage: 1,
+	lastPage: 1,
+}
+if (
+	response.headers.get('x-current-page') &&
+	response.headers.get('x-total-count') &&
+	response.headers.get('x-per-page')
+){
+	const totalPosts: number = parseInt(response.headers.get('x-total-count'))
+	const currentPage: number = parseInt(response.headers.get('x-current-page'))
+	const perPage: number = parseInt(response.headers.get('x-per-page'))
+	page = {
+		start: 0,
+		currentPage: currentPage,
+		lastPage: Math.round(totalPosts / perPage)
+	}
+}
 ---
 
 <BaseLayout title='Home'>
@@ -20,6 +39,9 @@ console.log(postData)
 	<div>
 		<h2 class='text-lg font-medium tracking-wide text-end'>Bài viết mới nhất</h2>
 		<ListPostsV2 posts={postData} />
+	</div>
+	<div>
+		<Pagination page={ page }></Pagination>
 	</div>
 </BaseLayout>
 
