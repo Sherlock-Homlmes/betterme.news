@@ -1,7 +1,11 @@
 - UI: store old post static
+- API + UI: scrap keywords for SEO
+- UI: add header icon + privacy
 - UI: tags
 - UI: share
 - API + UI: auth for admin
+- API + UI: admin self create new post
+- SE + API + UI: add search engine
 - API: store original data
 - UI: prettier
 - API + UI: post to facebook

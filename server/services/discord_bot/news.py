@@ -70,7 +70,7 @@ async def send_news(
     if is_testing is False and post_id is not None:
         embed.add_field(
             name="Xem thêm",
-            value=f"https://betterme.news/{rewrite_title(name=data.title)}_{post_id}",
+            value=f"https://betterme.news/posts/{rewrite_title(name=data.title)}_{post_id}",
             inline=False,
         )
     file = discord.File(f"scrap/data/media/{data.banner}", filename=data.banner)
