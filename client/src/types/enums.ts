@@ -1,12 +1,11 @@
-// From export enums.py (3 Enums 8 Values)
+// From export enums.py (3 Enums 7 Values)
 
 export enum IvolunteerPageTagsEnum {
+   CLUB = 'Câu Lạc Bộ',
    VOLUNTEER = 'Tình nguyện',
-   CLUB = 'CLB',
-   COURSE = 'Khoa hoc',
-   SKILL = 'Kĩ năng',
+   COURSE = 'Khóa học',
    SCHORLARSHIP = 'Học bổng',
-   EVENT = 'Sự kiện'
+   EVENT = 'Sự kiện-Cuộc thi'
 }
 
 export enum KhoahocTvPageTagsEnum {
