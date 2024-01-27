@@ -1,3 +1,6 @@
+# default
+import uuid
+
 # libraries
 import boto3
 
@@ -11,14 +14,21 @@ s3 = boto3.resource(
     aws_secret_access_key=settings.AWS_ACCESS_ACCESS_KEY,
     endpoint_url="https://s3.tebi.io",
 )
+bucket = s3.Bucket(settings.AWS_BUCKET)
 
 
 def upload_image(image_name: str):
     data = open(f"scrap/data/media/{image_name}", "rb")
-    s3.Bucket(settings.AWS_BUCKET).put_object(Key=f"{image_name}", Body=data)
+    short_uuid = str(uuid.uuid4())[:8]
+    bucket.put_object(Key=f"{image_name}_{short_uuid}", Body=data)
 
     return (
         f"https://s3.tebi.io/{settings.AWS_BUCKET}/{image_name}"
         if is_dev_env
         else f"https://files.betterme.news/{image_name}"
     )
+
+
+def delete_image(image_link: str):
+    object_key = image_link.split("/")[-1]
+    s3.Object(settings.AWS_BUCKET, object_key).delete()

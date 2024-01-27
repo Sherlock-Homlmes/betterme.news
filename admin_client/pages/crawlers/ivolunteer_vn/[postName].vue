@@ -184,6 +184,7 @@ const onCreatePost = async () => {
     if(!pageInfo.value) return
 
     updating.value = true
+    await onSaveDraft()
     const body: PostCrawlersDataPayload = {
         origin: OriginCrawlPagesEnum.IVOLUNTEER_VN,
         post_name: link.value.toString()
@@ -231,12 +232,14 @@ const onFacebookPreview = ()=>{
     updating.value = false
 }
 
-watch(()=>[ pageInfo.value?.description, pageInfo.value?.keywords ],
-()=>{
-    isDiscordPreviewed.value = false
-    isHtmlPreviewed.value = false
-    isFacebookPreviewed.value = false
-})
+watch(()=>[ pageInfo.value?.description, pageInfo.value?.keywords, pageInfo.value?.tags ],
+    ()=>{
+        isDiscordPreviewed.value = false
+        isHtmlPreviewed.value = false
+        isFacebookPreviewed.value = false
+    },
+    {deep: true}
+)
 
 onMounted(async()=>{
     await getPageInfo()

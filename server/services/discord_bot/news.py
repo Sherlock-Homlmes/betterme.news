@@ -84,3 +84,13 @@ async def send_news(
         )
 
     return post.thread.id
+
+
+async def delete_news(
+    post_id: int,
+) -> None:
+    try:
+        post = await server_info.guild.fetch_channel(post_id)
+        await post.delete()
+    except discord.errors.NotFound:
+        print("Thread not exist")

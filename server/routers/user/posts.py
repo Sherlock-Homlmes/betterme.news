@@ -82,6 +82,6 @@ async def get_post(
         return post
     except ValidationError:
         raise HTTPException(
-            status_code=ResponseStatusEnum.BAD_REQUEST.value,
+            status_code=ResponseStatusEnum.NOT_FOUND.value,
             detail="Post not found",
         )
