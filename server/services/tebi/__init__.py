@@ -20,12 +20,13 @@ bucket = s3.Bucket(settings.AWS_BUCKET)
 def upload_image(image_name: str):
     uid = str(uuid.uuid4())[:8]
     data = open(f"scrap/data/media/{image_name}", "rb")
-    bucket.put_object(Key=f"{uid}_{image_name}", Body=data)
+    object_id = f"{uid}_{image_name}"
+    bucket.put_object(Key=object_id, Body=data)
 
     return (
-        f"https://s3.tebi.io/{settings.AWS_BUCKET}/{uid}_{image_name}"
+        f"https://s3.tebi.io/{settings.AWS_BUCKET}/{object_id}"
         if is_dev_env
-        else f"https://files.betterme.news/{uid}_{image_name}"
+        else f"https://files.betterme.news/{object_id}"
     )
 
 
