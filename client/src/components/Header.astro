@@ -1,11 +1,12 @@
 ---
-import HeaderLink from '@/components/HeaderLink'
-import TwitterIcon from '@/components/icons/TwitterIcon'
-import DiscordIcon from '@/components/icons/DiscordIcon'
-import MenuIcon from './icons/MenuIcon.astro'
-import Search from '@/components/Search'
-import TagIcon from './icons/TagIcon.astro'
+// import HeaderLink from '@/components/HeaderLink'
+// import TwitterIcon from '@/components/icons/TwitterIcon'
+// import DiscordIcon from '@/components/icons/DiscordIcon'
+// import MenuIcon from './icons/MenuIcon.astro'
+// import Search from '@/components/Search'
+// import TagIcon from './icons/TagIcon.astro'
 import ToggleTheme from './ToggleTheme.astro'
+import { Image } from 'astro:assets'
 
 // ADD YOUR SOCIAL NETWORKS HERE
 const SOCIALNETWORKS = [
@@ -32,14 +33,6 @@ const SOCIALNETWORKS = [
 		<nav
 			class='flex h-full flex-col justify-between gap-12 text-left md:flex-row md:w-full md:gap-5'
 		>
-			<div
-				class='flex flex-col gap-4 md:flex-row md:border-r-2 border-black pr-4 dark:border-white'
-			>
-				<HeaderLink href='/tags' class='flex items-center gap-1 text-2xl md:text-base'>
-					<TagIcon /> Tags
-				</HeaderLink>
-			</div>
-
 			<div class='flex justify-center items-center md:justify-end gap-3 md:p-0'>
 				{
 					SOCIALNETWORKS.map((network) => (
@@ -57,10 +50,10 @@ const SOCIALNETWORKS = [
 			<Search />
 		</div> -->
 		<ToggleTheme />
-		<button id='astro-header-drawer-button' type='button' class='md:ml-6 md:hidden'>
+		<!-- <button id='astro-header-drawer-button' type='button' class='md:ml-6 md:hidden'>
 			<MenuIcon />
 			<span class='sr-only'>Show Menu</span>
-		</button>
+		</button> -->
 	</div>
 </header>
 <script>

@@ -33,7 +33,7 @@ def ivolunteer_crawl(url: str):
             title = response.css("h1::text").get().replace("  ", "").replace("\n", "")
             deadline = response.css(".mvp-post-cat::text").get().replace("Deadline: ", "")
             deadline = "-".join(deadline.split("/")[::-1])
-            if deadline == "ASAP":
+            if deadline in ["ASAP", "All year round"]:
                 deadline = None
             banner = response.css("#mvp-content-main").css("img::attr(data-src)").get()
             banner = None if banner is None else asyncio.run(save_image(banner)).split("/")[-1]
@@ -49,6 +49,8 @@ def ivolunteer_crawl(url: str):
                 "banner": banner,
                 "content": process_detail_page_data_html(content),
                 "tags": [],
+                # SEO
+                "keywords": [],
             }
             # html_content = process_detail_page_data_html(content)
             # discord_content = process_detail_page_data_discord(content)
