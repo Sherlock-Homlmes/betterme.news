@@ -231,12 +231,12 @@ const onFacebookPreview = ()=>{
     updating.value = false
 }
 
-watch(()=>pageInfo,
+watch(()=>[ pageInfo.value?.description, pageInfo.value?.keywords ],
 ()=>{
     isDiscordPreviewed.value = false
     isHtmlPreviewed.value = false
     isFacebookPreviewed.value = false
-},{deep:true})
+})
 
 onMounted(async()=>{
     await getPageInfo()

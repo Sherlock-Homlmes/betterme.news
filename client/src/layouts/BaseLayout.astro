@@ -5,12 +5,12 @@ import Footer from '@/components/Footer'
 import ProviderTheme from '@/components/ProviderTheme'
 import ProviderAnimations from '@/components/ProviderAnimations'
 import TwSizeIndicator from '@/components/TwSizeIndicator'
-const { title, description, image, articleDate } = Astro.props
+const { title, description, image, articleDate, keywords } = Astro.props
 ---
 
 <html lang='en' class='scroll-smooth'>
 	<head>
-		<BaseHead title={title} description={description} ogImage={image} articleDate={articleDate} />
+		<BaseHead title={title} description={description} ogImage={image} keywords={keywords} articleDate={articleDate} />
 		<ProviderTheme />
 		<ProviderAnimations />
 	</head>
