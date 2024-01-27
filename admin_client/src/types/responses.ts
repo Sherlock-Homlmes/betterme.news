@@ -20,6 +20,7 @@ export interface GetCrawlersIvolunteerDataResponse {
   banner: string;
   deadline?: string;
   content: string;
+  keywords: string[];
 }
 export interface GetCrawlersKhoahocTvDataResponse {
   title: string;
@@ -28,6 +29,7 @@ export interface GetCrawlersKhoahocTvDataResponse {
   banner: string;
   thumbnail: string;
   content: string;
+  keywords: string[];
 }
 export interface GetTagsParams {
   origin: string;
@@ -41,6 +43,7 @@ export interface PatchCrawlersDataPayload {
   banner?: string;
   content?: string;
   tags?: string[];
+  keywords?: string[];
 }
 export interface PostCrawlersDataPayload {
   origin: string;

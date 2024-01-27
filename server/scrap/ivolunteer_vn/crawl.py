@@ -41,6 +41,12 @@ def ivolunteer_crawl(url: str):
             content.pop(0)
             content.pop()
             content.pop()
+            keywords = response.xpath("//meta[@name='keywords']/@content")[0].get().split(",")
+            keywords = [
+                keyword[1:] if keyword[0] == " " else keyword
+                for keyword in keywords
+                if "ivolunteer" not in keyword.lower()
+            ]
 
             general_data = {
                 "title": title,
@@ -50,7 +56,7 @@ def ivolunteer_crawl(url: str):
                 "content": process_detail_page_data_html(content),
                 "tags": [],
                 # SEO
-                "keywords": [],
+                "keywords": keywords,
             }
             # html_content = process_detail_page_data_html(content)
             # discord_content = process_detail_page_data_discord(content)

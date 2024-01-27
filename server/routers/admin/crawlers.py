@@ -86,7 +86,7 @@ async def post_crawler(body: PostCrawlersDataPayload):
             content=current_data.content,
             author="Ivolunteer.vn",
             # SEO
-            keywords=["keyword 1", "keyword 2", "keyword 3"],
+            keywords=current_data.keywords,
             og_img=banner_img,
         )
     else:

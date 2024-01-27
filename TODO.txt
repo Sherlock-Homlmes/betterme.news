@@ -1,5 +1,6 @@
 - API + UI: scrap keywords for SEO
 - UI: share
+- UI: admin validate
 - API + UI: auth for admin
 ---- MVP ----
 - UI: RSS

@@ -35,6 +35,7 @@ class PatchCrawlersDataPayload(BaseModel):
     banner: Optional[str] = None
     content: Optional[str] = None
     tags: Optional[List[str]] = None
+    keywords: Optional[List[str]] = None
 
 
 class PostCrawlersPreviewDiscordDataPayload(BaseModel):
@@ -50,6 +51,7 @@ class GetCrawlersKhoahocTvDataResponse(BaseModel):
     banner: str
     thumbnail: str
     content: str
+    keywords: List[str]
 
 
 class GetCrawlersIvolunteerDataResponse(BaseModel):
@@ -60,6 +62,7 @@ class GetCrawlersIvolunteerDataResponse(BaseModel):
     banner: str
     deadline: Union[datetime.date, None]
     content: str
+    keywords: List[str]
 
 
 class PostCrawlersResponse(BaseModel):

@@ -21,6 +21,8 @@ class GetPostListResponse(BaseModel):
     thumbnail_img: Optional[str] = None
     banner_img: Optional[str] = None
     tags: List[str]
+    # SEO
+    keywords: List[str]
 
 
 class GetPostResponse(BaseModel):

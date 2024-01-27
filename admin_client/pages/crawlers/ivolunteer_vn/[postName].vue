@@ -15,6 +15,13 @@
         multiple
         variant="solo-filled"
         ></v-autocomplete>
+        <v-combobox
+            v-model="pageInfo.keywords"
+            clearable
+            chips
+            multiple
+            label="Keyword"
+        ></v-combobox>
         <v-textarea label="Description" variant="solo-filled" v-model="pageInfo.description"></v-textarea>
         <v-card>
                         <editor
