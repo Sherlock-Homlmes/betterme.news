@@ -9,6 +9,7 @@
 - API + UI: admin self create new post
 - SE + API + UI: add search engine
 - API: store original data
+- UX/UI: Redesign the crawler flow
 - UI: prettier
 - API + UI: post to facebook
 - API: post to Linkedin
