@@ -54,6 +54,7 @@ class Posts(Document):
     class Settings:
         validate_on_save = True
 
+    ### Validate
     # TODO: check if working or not
     @field_validator("thumbnail_img")
     @classmethod
@@ -65,4 +66,9 @@ class Posts(Document):
             detail="Thumbnail or banner must be exist",
         )
 
-    # event
+    ### Method
+    async def increase_view(self):
+        self.view += 1
+        await self.save()
+
+    ### Event

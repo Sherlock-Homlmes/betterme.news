@@ -23,6 +23,8 @@ class GetPostListResponse(BaseModel):
     tags: List[str]
     # SEO
     keywords: List[str]
+    # other info
+    view: int
 
 
 class GetPostResponse(BaseModel):

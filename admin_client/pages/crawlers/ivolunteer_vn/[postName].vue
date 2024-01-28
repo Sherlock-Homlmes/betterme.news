@@ -104,7 +104,7 @@
         <v-btn
         color="indigo"
         variant="text"
-        :href='"https://betterme.news/posts/somepost_"+pageInfo?.id'
+        :href='`${clientLink}/posts/${pageInfo?.id}`'
         target="_blank"
         >
         View
@@ -135,7 +135,7 @@ import type {GetCrawlersIvolunteerDataResponse, PostCrawlersPreviewDiscordDataPa
 import {CrawlerDataResponseTypeEnum, OriginCrawlPagesEnum, IvolunteerPageTagsEnum} from '~/src/types/enums'
 
 const config = useRuntimeConfig()
-const fetchLink = config.public.fetchLink
+const { fetchLink, clientLink } = config.public
 
 const vm = getCurrentInstance().proxy
 // TODO: snackbar component

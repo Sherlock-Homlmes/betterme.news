@@ -1,11 +1,13 @@
 # default
-from typing import List
+from typing import List, Optional
 
 # libraries
 from pydantic import BaseModel
 
 
-def get_projections_from_model(pydantic_model: BaseModel, exclude_fields: List[str]) -> dict:
+def get_projections_from_model(
+    pydantic_model: BaseModel, exclude_fields: Optional[List[str]] = []
+) -> dict:
     something = pydantic_model.__fields__.keys()
     projections = {}
     for some in something:

@@ -1,9 +1,9 @@
 - API + UI: admin get list and delete posts
-- UI: admin validate
-- API + UI: post to facebook
 - API + UI: auth for admin
 ---- MVP ----
-- UI: RSS
+- UI: admin validate
+- UI + SEO: RSS
+- API + UI: post to facebook
 - UI: Deadline in post, post list
 - API + UI: admin self create new post
 - SE + API + UI: add search engine

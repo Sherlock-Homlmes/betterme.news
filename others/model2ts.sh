@@ -13,3 +13,4 @@ sed -i "s/enum/export enum/" ./admin_client/src/types/enums.ts
 
 # enum from user can use for admin
 cat ./client/src/types/enums.ts >> ./admin_client/src/types/enums.ts
+cat ./client/src/types/responses.ts >> ./admin_client/src/types/responses.ts

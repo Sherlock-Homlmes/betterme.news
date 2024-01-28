@@ -18,6 +18,8 @@ export interface GetPostListResponse {
   thumbnail_img?: string;
   banner_img?: string;
   tags: string[];
+  keywords: string[];
+  view: number;
 }
 export interface GetPostResponse {
   created_at: string;

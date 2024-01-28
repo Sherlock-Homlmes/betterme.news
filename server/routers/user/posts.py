@@ -2,13 +2,12 @@
 from typing import List, Optional, Annotated
 
 # libraries
-from fastapi import APIRouter, HTTPException, Depends
+from fastapi import APIRouter, HTTPException, Depends, BackgroundTasks
 from fastapi.responses import JSONResponse
 from beanie import PydanticObjectId
 from beanie.operators import ElemMatch
 
 # TODO: to error handler
-from pydantic_core._pydantic_core import ValidationError
 
 # local
 from core.models import Posts
@@ -48,6 +47,7 @@ async def get_list_post(
     queries = {}
     if params.match_tag:
         queries = ElemMatch(Posts.tags, {"$eq": params.match_tag})
+    # TODO: refactor change to class method
     cursor = Posts.find(queries).project(PostListProject)
     posts = (
         await cursor.sort(-Posts.id)
@@ -73,14 +73,13 @@ async def get_list_post(
     tags=["Post"],
     status_code=ResponseStatusEnum.OK.value,
 )
-async def get_post(
-    post_name: str,
-) -> GetPostResponse:
+async def get_post(post_name: str, background_tasks: BackgroundTasks) -> GetPostResponse:
     post_id: str = post_name.split("_")[-1]
     try:
         post = await Posts.get(post_id)
+        background_tasks.add_task(post.increase_view)
         return post
-    except ValidationError:
+    except AttributeError:
         raise HTTPException(
             status_code=ResponseStatusEnum.NOT_FOUND.value,
             detail="Post not found",
