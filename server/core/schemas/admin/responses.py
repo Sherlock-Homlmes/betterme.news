@@ -80,4 +80,12 @@ class GetTagsParams(BaseModel):
     origin: str
 
 
-# Responses
+### posts.py
+# Payload
+class PatchPostPayload(BaseModel):
+    title: Optional[str] = None
+    description: Optional[str] = None
+    banner: Optional[str] = None
+    content: Optional[str] = None
+    tags: Optional[List[str]] = None
+    keywords: Optional[List[str]] = None

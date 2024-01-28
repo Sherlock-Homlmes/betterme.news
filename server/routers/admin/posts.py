@@ -8,6 +8,7 @@ from core.models import Posts
 from core.schemas.admin import (
     # params
     # payload
+    PatchPostPayload,
     # responses
     # enums
     ResponseStatusEnum,
@@ -20,23 +21,29 @@ router = APIRouter(
     responses={404: {"description": "Not found"}},
 )
 
-# @router.get(
-#     "/posts/{post_name}",
-#     tags=["Post"],
-#     status_code=ResponseStatusEnum.OK.value,
-# )
-# async def get_post(
-#     post_name: str,
-# ) -> GetPostResponse:
-#     post_id: str = post_name.split("_")[-1]
-#     try:
-#         post = await Posts.get(post_id)
-#         return post
-#     except ValidationError:
-#         raise HTTPException(
-#             status_code=ResponseStatusEnum.NOT_FOUND.value,
-#             detail="Post not found",
-#         )
+
+@router.patch(
+    "/posts/{post_id}",
+    tags=["Admin-posts"],
+    status_code=ResponseStatusEnum.NO_CONTENT.value,
+)
+async def get_post(post_id: str, payload: PatchPostPayload):
+    try:
+        post = await Posts.get(post_id)
+    except Exception:
+        raise HTTPException(
+            status_code=ResponseStatusEnum.NOT_FOUND.value,
+            detail="Post not found",
+        )
+    # TODO: refactor this
+    update_fields = {}
+    for key, value in payload.model_dump().items():
+        if value is not None:
+            update_fields[key] = value
+
+    await post.update({"$set": update_fields})
+
+    return
 
 
 @router.delete(

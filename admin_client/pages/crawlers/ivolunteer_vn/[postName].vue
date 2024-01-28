@@ -88,8 +88,7 @@
         <template v-slot:item.3>
             <v-card title="Tạo bài viết mới" flat></v-card>
                                 <center class="my-5">
-                                    <v-btn v-if="pageInfo?.id" prepend-icon="$vuetify" :disabled="!canSave" :loading="updating" @click="onCreatePost">SAVE(TODO...)</v-btn>
-                                    <v-btn v-else prepend-icon="$vuetify" :disabled="!canSave" :loading="updating" @click="onCreatePost">Create</v-btn>
+                                    <v-btn prepend-icon="$vuetify" :disabled="!canSave" :loading="updating" @click="onCreatePost">SAVE(TODO...)</v-btn>
                                 </center>
         </template>
         </v-stepper>

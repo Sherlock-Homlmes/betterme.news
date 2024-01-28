@@ -45,6 +45,14 @@ export interface PatchCrawlersDataPayload {
   tags?: string[];
   keywords?: string[];
 }
+export interface PatchPostPayload {
+  title?: string;
+  description?: string;
+  banner?: string;
+  content?: string;
+  tags?: string[];
+  keywords?: string[];
+}
 export interface PostCrawlersDataPayload {
   origin: string;
   post_name: string;

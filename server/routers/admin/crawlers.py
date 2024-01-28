@@ -104,8 +104,8 @@ async def post_crawler(body: PostCrawlersDataPayload):
     tags=["Admin-backend-scrap"],
     status_code=ResponseStatusEnum.CREATED.value,
 )
-def patch_crawler(post_name: str, body: PatchCrawlersDataPayload):
-    save_crawler_data(post_name=post_name, data=body)
+def patch_crawler(post_name: str, payload: PatchCrawlersDataPayload):
+    save_crawler_data(post_name=post_name, data=payload)
     return
 
 
