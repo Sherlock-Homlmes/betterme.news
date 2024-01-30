@@ -82,6 +82,8 @@ async def send_news(
         post = await server_info.news_channel.create_thread(
             name=data.title, file=file, embed=embed, applied_tags=applied_tags
         )
+        # add emoji reaction
+        await post.message.add_reaction("❤️")
 
     return post.thread.id
 
