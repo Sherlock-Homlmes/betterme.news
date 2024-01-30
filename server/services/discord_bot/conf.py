@@ -19,9 +19,10 @@ class Bot(commands.Bot):
         super().__init__(*args, **kwargs)
 
     async def on_ready(self):
-        global is_app_running
-
+        global is_app_running, server_info
+        await get_server_info()
         print(f"We have logged in as {self.user} news bot")
+
         if is_dev_env:
             # Stop bot when reload
             while is_app_running:
@@ -82,10 +83,3 @@ async def get_server_info():
 prefix = "news!"
 bot = Bot(command_prefix=prefix, intents=discord.Intents.all())
 server_info = ServerInfo()
-
-
-@bot.listen()
-async def on_ready():
-    global server_info
-    await get_server_info()
-    print("News bot startup done")

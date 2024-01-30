@@ -34,6 +34,8 @@ class Settings(BaseSettings):
     # TODO: change this to ENVEnum when lib support
     ENV: str
 
+    SECRET_KEY: str
+
     DATABASE_URL: str
 
     AWS_ACCESS_KEY_ID: str
@@ -41,6 +43,10 @@ class Settings(BaseSettings):
     AWS_BUCKET: str
 
     DISCORD_BOT_TOKEN: str
+    DISCORD_OAUTH_URL: str
+    DISCORD_CLIENT_ID: str
+    DISCORD_CLIENT_SECRET: str
+    DISCORD_REDIRECT_URL: str
 
     FACEBOOK_ACCESS_TOKEN: str
     FACEBOOK_APP_ID: str
