@@ -5,7 +5,7 @@ import asyncio
 import beanie
 
 # local
-from core.conf import app, settings
+from core.conf import app, settings, ENVEnum
 from core.database.mongodb import client
 from core.models import (
     Posts,
@@ -24,6 +24,12 @@ class BackgroundRunner:
     async def run_discord_bot(self):
         print("Starting discord bot...")
         await bot.start(settings.DISCORD_BOT_TOKEN)
+
+    async def run_keep_alive(self):
+        if settings.ENV == ENVEnum.ADMIN:
+            while True:
+                await asyncio.sleep(60)
+                print("Keep alive")
 
 
 runner = BackgroundRunner()
@@ -54,6 +60,7 @@ async def startup():
 
     # RUN BOT
     asyncio.create_task(runner.run_discord_bot())
+    asyncio.create_task(runner.run_keep_alive())
 
     print("Start up done")
 
