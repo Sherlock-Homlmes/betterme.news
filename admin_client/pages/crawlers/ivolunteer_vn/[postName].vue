@@ -87,9 +87,9 @@
 
         <template v-slot:item.3>
             <v-card title="Tạo bài viết mới" flat></v-card>
-                                <center class="my-5">
-                                    <v-btn prepend-icon="$vuetify" :disabled="!canSave" :loading="updating" @click="onCreatePost">SAVE(TODO...)</v-btn>
-                                </center>
+                <center class="my-5">
+                    <v-btn prepend-icon="$vuetify" :disabled="!canSave" :loading="updating" @click="onCreatePost">CREATE</v-btn>
+                </center>
         </template>
         </v-stepper>
     </div>

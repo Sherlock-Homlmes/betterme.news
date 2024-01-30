@@ -1,5 +1,5 @@
-- API + UI: admin get list and delete posts
 - API + UI: auth for admin
+- API: store original data
 ---- MVP ----
 - UI: admin validate
 - UI + SEO: RSS
@@ -7,8 +7,7 @@
 - UI: Deadline in post, post list
 - API + UI: admin self create new post
 - SE + API + UI: add search engine
-- API: store original data
-- UX/UI: Redesign the crawler flow
+- UX/UI + API: Redesign the crawler flow
 - UI: prettier
 - API + UI: post to facebook
 - API + UI: Emphasis post for SEO: Show first in post + Ping every 5'
