@@ -116,9 +116,6 @@
         updating.value = true
         await fetchWithAuth(`${fetchLink}/admin/posts/${vm.$route.params.postId}`, {
             method: 'PATCH',
-            headers: {
-                "Content-Type": "application/json",
-            },
             body: JSON.stringify(changeTracker.getChange(postInfo.value))
         })
         updating.value = false

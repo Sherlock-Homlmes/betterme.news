@@ -20,7 +20,6 @@ class Users(Document):
     avatar_url: str
     roles: List[UserRoleEnum]
     last_logged_in_at: datetime.datetime
-    created_at: datetime.datetime
 
     class Settings:
         validate_on_save = True
