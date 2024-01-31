@@ -26,10 +26,10 @@ class BackgroundRunner:
         await bot.start(settings.DISCORD_BOT_TOKEN)
 
     async def run_keep_alive(self):
-        if settings.ENV == ENVEnum.ADMIN:
+        if settings.ENV == ENVEnum.ADMIN.value:
             while True:
-                await asyncio.sleep(60)
                 print("Keep alive")
+                await asyncio.sleep(60)
 
 
 runner = BackgroundRunner()
