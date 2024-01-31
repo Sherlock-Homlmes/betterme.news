@@ -5,7 +5,7 @@ from typing import Annotated, Union
 from fastapi import APIRouter, Depends
 
 # local
-from core.models import Posts, OtherPostInfo
+from core.models import Posts, OtherPostInfo, Users
 from core.schemas.admin import (
     # params
     CrawlersDataParams,
@@ -22,6 +22,7 @@ from core.schemas.admin import (
     ResponseStatusEnum,
     CrawlerDataResponseTypeEnum,
 )
+from routers.auth import auth_handler
 from scrap.func import scrap_post_data, get_scrap_post_data, save_crawler_data
 from services.discord_bot.news import send_news
 from services.facebook_bot.func import post_to_fb
@@ -39,7 +40,9 @@ router = APIRouter(
     status_code=ResponseStatusEnum.OK.value,
 )
 def get_crawler(
-    post_name: str, params: Annotated[dict, Depends(CrawlersDataParams)]
+    post_name: str,
+    params: Annotated[dict, Depends(CrawlersDataParams)],
+    user: Users = Depends(auth_handler.auth_wrapper),
 ) -> Union[GetCrawlersIvolunteerDataResponse, GetCrawlersKhoahocTvDataResponse]:
     return scrap_post_data(origin=params.origin, post_name=post_name)
 
@@ -49,7 +52,9 @@ def get_crawler(
     tags=["Admin-backend-scrap"],
     status_code=ResponseStatusEnum.OK.value,
 )
-async def post_crawler(body: PostCrawlersDataPayload):
+async def post_crawler(
+    body: PostCrawlersDataPayload, user: Users = Depends(auth_handler.auth_wrapper)
+):
     current_data = get_scrap_post_data(origin=body.origin, post_name=body.post_name)
     banner_img = None
     if current_data.banner is not None:
@@ -104,7 +109,11 @@ async def post_crawler(body: PostCrawlersDataPayload):
     tags=["Admin-backend-scrap"],
     status_code=ResponseStatusEnum.CREATED.value,
 )
-def patch_crawler(post_name: str, payload: PatchCrawlersDataPayload):
+def patch_crawler(
+    post_name: str,
+    payload: PatchCrawlersDataPayload,
+    user: Users = Depends(auth_handler.auth_wrapper),
+):
     save_crawler_data(post_name=post_name, data=payload)
     return
 
@@ -115,7 +124,11 @@ def patch_crawler(post_name: str, payload: PatchCrawlersDataPayload):
     tags=["Admin-backend-scrap"],
     status_code=ResponseStatusEnum.CREATED.value,
 )
-async def post_crawler_preview(post_name: str, body: PostCrawlersPreviewDiscordDataPayload):
+async def post_crawler_preview(
+    post_name: str,
+    body: PostCrawlersPreviewDiscordDataPayload,
+    user: Users = Depends(auth_handler.auth_wrapper),
+):
     current_data = get_scrap_post_data(origin=body.origin, post_name=post_name)
     if CrawlerDataResponseTypeEnum.DISCORD in body.preview_source:
         await send_news(data=current_data, is_testing=True)

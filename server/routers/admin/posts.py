@@ -1,10 +1,10 @@
 # default
 
 # libraries
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Depends
 
 # local
-from core.models import Posts
+from core.models import Posts, Users
 from core.schemas.admin import (
     # params
     # payload
@@ -13,6 +13,7 @@ from core.schemas.admin import (
     # enums
     ResponseStatusEnum,
 )
+from routers.auth import auth_handler
 from services.tebi import delete_image
 from services.discord_bot.news import delete_news
 
@@ -27,7 +28,9 @@ router = APIRouter(
     tags=["Admin-posts"],
     status_code=ResponseStatusEnum.NO_CONTENT.value,
 )
-async def get_post(post_id: str, payload: PatchPostPayload):
+async def get_post(
+    post_id: str, payload: PatchPostPayload, user: Users = Depends(auth_handler.auth_wrapper)
+):
     try:
         post = await Posts.get(post_id)
     except Exception:
@@ -51,7 +54,7 @@ async def get_post(post_id: str, payload: PatchPostPayload):
     tags=["Admin-posts"],
     status_code=ResponseStatusEnum.NO_CONTENT.value,
 )
-async def get_crawler(post_id: str) -> None:
+async def get_crawler(post_id: str, user: Users = Depends(auth_handler.auth_wrapper)) -> None:
     post = await Posts.get(post_id)
     if not post:
         raise HTTPException(

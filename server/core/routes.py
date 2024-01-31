@@ -1,9 +1,9 @@
 # libraries
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 
 # local
 from .conf import settings, ENVEnum
-from routers.auth import auth, discord_oauth
+from routers.auth import auth, discord_oauth, auth_handler
 from routers.admin import crawlers, posts as admin_posts
 from routers.user import posts as user_posts, tags
 
@@ -33,6 +33,7 @@ def include_admin_routers():
             admin_router.router,
             prefix="/api/admin",
             responses={404: {"description": "Not found"}},
+            dependencies=[Depends(auth_handler.auth_wrapper)],
         )
 
 
