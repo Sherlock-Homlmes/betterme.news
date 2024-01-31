@@ -1,5 +1,6 @@
 
 <template>
+  <NuxtLayout name="default">
     <center class="mt-5 mb-15">
         <h1>Manage posts</h1>
   <v-data-table
@@ -55,6 +56,7 @@
     </v-dialog>
 
     </center>
+    </NuxtLayout>
 </template>
 
 <script setup lang="ts">
@@ -66,6 +68,7 @@
     import { useRuntimeConfig } from 'nuxt/app';
     import {ref, getCurrentInstance, onMounted } from 'vue';
     import type {GetPostListResponse} from '~/src/types/responses'
+    import fetchWithAuth from '~/src/common/betterFetch'
     const config = useRuntimeConfig()
     const { fetchLink, clientLink } = config.public
     // const vm = getCurrentInstance().proxy
@@ -98,7 +101,7 @@
     }
     const onDeletePostConfirm = async (deletePost: GetPostListResponse) => {
         try{
-            await fetch(
+            await fetchWithAuth(
                 `${fetchLink}/admin/posts/${deletePost.id}`,{method: 'DELETE'}
             )
             posts.value = posts.value.filter(post => post.id !== deletePost.id)

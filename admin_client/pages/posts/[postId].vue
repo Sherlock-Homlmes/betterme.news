@@ -74,58 +74,59 @@
 </template>
 
 <script setup lang="ts">
-// TODO:
-// web preview
-// to store
-// facebook preview
-// vue use
-import { ref, onMounted, watch, computed, getCurrentInstance } from 'vue';
-import { useRuntimeConfig } from 'nuxt/app';
-import { changeTracker } from '~/src/func'
-import Editor from '@tinymce/tinymce-vue';
-import type {GetPostResponse} from '~/src/types/responses'
-import {IvolunteerPageTagsEnum} from '~/src/types/enums'
+    // TODO:
+    // web preview
+    // to store
+    // facebook preview
+    // vue use
+    import { ref, onMounted, watch, computed, getCurrentInstance } from 'vue';
+    import { useRuntimeConfig } from 'nuxt/app';
+    import { changeTracker } from '~/src/func'
+    import fetchWithAuth from '~/src/common/betterFetch'
+    import Editor from '@tinymce/tinymce-vue';
+    import type {GetPostResponse} from '~/src/types/responses'
+    import {IvolunteerPageTagsEnum} from '~/src/types/enums'
 
-const config = useRuntimeConfig()
-const { fetchLink, clientLink } = config.public
+    const config = useRuntimeConfig()
+    const { fetchLink, clientLink } = config.public
 
-const vm = getCurrentInstance().proxy
-// TODO: snackbar component
-const snackbar = ref<Boolean>(false)
-const postInfo = ref<GetPostResponse>()
-const tags = ref<IvolunteerPageTagsEnum[]>()
-const updating = ref<Boolean>(false)
-// TODO: add conditions
+    const vm = getCurrentInstance().proxy
+    // TODO: snackbar component
+    const snackbar = ref<Boolean>(false)
+    const postInfo = ref<GetPostResponse>()
+    const tags = ref<IvolunteerPageTagsEnum[]>()
+    const updating = ref<Boolean>(false)
+    // TODO: add conditions
 
-const getPostInfo = async () => {
-    const tagsResult = await fetch(
-        `${fetchLink}/tags?origin=ivolunteer_vn`
-    )
-    tags.value = await tagsResult.json()
+    const getPostInfo = async () => {
+        const tagsResult = await fetch(
+            `${fetchLink}/tags?origin=ivolunteer_vn`
+        )
+        tags.value = await tagsResult.json()
 
-    const postResult = await fetch(
-        `${fetchLink}/posts/${vm.$route.params.postId}`
-    )
-    postInfo.value = await postResult.json() as GetPostResponse
-    changeTracker.track(postInfo.value)
-}
+        const postResult = await fetchWithAuth(
+            `${fetchLink}/posts/${vm.$route.params.postId}`
+        )
+        postInfo.value = await postResult.json() as GetPostResponse
+        changeTracker.track(postInfo.value)
+    }
 
-const onSavePost = async () => {
-    if(!postInfo.value) return
-    updating.value = true
-    await fetch( `${fetchLink}/admin/posts/${vm.$route.params.postId}`, {
-        method: 'PATCH',
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(changeTracker.getChange(postInfo.value))
+    const onSavePost = async () => {
+        if(!postInfo.value) return
+        updating.value = true
+        await fetchWithAuth(`${fetchLink}/admin/posts/${vm.$route.params.postId}`, {
+            method: 'PATCH',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(changeTracker.getChange(postInfo.value))
+        })
+        updating.value = false
+    }
+
+    onMounted(async()=>{
+        await getPostInfo()
     })
-    updating.value = false
-}
-
-onMounted(async()=>{
-    await getPostInfo()
-})
 
 </script>
 

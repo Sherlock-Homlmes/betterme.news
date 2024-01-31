@@ -121,129 +121,128 @@
 </template>
 
 <script setup lang="ts">
-// TODO:
-// web preview
-// to store
-// facebook preview
-// vue use
-import { ref, onMounted, watch, computed, getCurrentInstance } from 'vue';
-import { useRuntimeConfig } from 'nuxt/app';
-import { changeTracker } from '~/src/func'
-import Editor from '@tinymce/tinymce-vue';
-import type {GetCrawlersIvolunteerDataResponse, PostCrawlersPreviewDiscordDataPayload, PostCrawlersDataPayload, PostCrawlersResponse} from '~/src/types/responses'
-import {CrawlerDataResponseTypeEnum, OriginCrawlPagesEnum, IvolunteerPageTagsEnum} from '~/src/types/enums'
+    // TODO:
+    // web preview
+    // to store - component
+    // facebook preview
+    // vue use
+    import { ref, onMounted, watch, computed, getCurrentInstance } from 'vue';
+    import { useRuntimeConfig } from 'nuxt/app';
+    import { changeTracker } from '~/src/func'
+    import Editor from '@tinymce/tinymce-vue';
+    import type {GetCrawlersIvolunteerDataResponse, PostCrawlersPreviewDiscordDataPayload, PostCrawlersDataPayload, PostCrawlersResponse} from '~/src/types/responses'
+    import {CrawlerDataResponseTypeEnum, OriginCrawlPagesEnum, IvolunteerPageTagsEnum} from '~/src/types/enums'
 
-const config = useRuntimeConfig()
-const { fetchLink, clientLink } = config.public
+    const config = useRuntimeConfig()
+    const { fetchLink, clientLink } = config.public
 
-const vm = getCurrentInstance().proxy
-// TODO: snackbar component
-const snackbar = ref<Boolean>(false)
-const link = ref<String>(vm.$route.params.postName)
-const pageInfo = ref<GetCrawlersIvolunteerDataResponse>()
-const tags = ref<IvolunteerPageTagsEnum[]>()
-const updating = ref<Boolean>(false)
-const isFacebookPreviewed = ref<Boolean>(false)
-const isHtmlPreviewed = ref<Boolean>(false)
-const isDiscordPreviewed = ref<Boolean>(false)
-// TODO: add conditions
-const canSave = computed<Boolean>(
-    ()=>
-    isDiscordPreviewed.value &&
-    pageInfo.value && pageInfo.value.tags.length
-)
-
-
-const getPageInfo = async () => {
-    const tagsResult = await fetch(
-        `${fetchLink}/tags?origin=ivolunteer_vn`
+    const vm = getCurrentInstance().proxy
+    // TODO: snackbar component
+    const snackbar = ref<Boolean>(false)
+    const link = ref<String>(vm.$route.params.postName)
+    const pageInfo = ref<GetCrawlersIvolunteerDataResponse>()
+    const tags = ref<IvolunteerPageTagsEnum[]>()
+    const updating = ref<Boolean>(false)
+    const isFacebookPreviewed = ref<Boolean>(false)
+    const isHtmlPreviewed = ref<Boolean>(false)
+    const isDiscordPreviewed = ref<Boolean>(false)
+    // TODO: add conditions
+    const canSave = computed<Boolean>(
+        ()=>
+        isDiscordPreviewed.value &&
+        pageInfo.value && pageInfo.value.tags.length
     )
-    tags.value = await tagsResult.json()
 
-    const postResult = await fetch(
-        `${fetchLink}/admin/crawlers/${link.value}?origin=ivolunteer_vn`
+
+    const getPageInfo = async () => {
+        const tagsResult = await fetch(
+            `${fetchLink}/tags?origin=ivolunteer_vn`
+        )
+        tags.value = await tagsResult.json()
+
+        const postResult = await fetch(
+            `${fetchLink}/admin/crawlers/${link.value}?origin=ivolunteer_vn`
+        )
+        pageInfo.value = await postResult.json() as GetCrawlersIvolunteerDataResponse
+        changeTracker.track(pageInfo.value)
+    }
+
+    const onSaveDraft = async () => {
+        updating.value = true
+        await fetch( `${fetchLink}/admin/crawlers/${link.value}`, {
+            method: 'PATCH',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(changeTracker.getChange(pageInfo.value))
+        })
+        updating.value = false
+    }
+
+    const onCreatePost = async () => {
+        if(!pageInfo.value) return
+
+        updating.value = true
+        await onSaveDraft()
+        const body: PostCrawlersDataPayload = {
+            origin: OriginCrawlPagesEnum.IVOLUNTEER_VN,
+            post_name: link.value.toString()
+        }
+        const result = await fetch(`${fetchLink}/admin/crawlers`, {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(body)
+        })
+        const response_data = await result.json() as PostCrawlersResponse
+        pageInfo.value.id = response_data["id"]
+        updating.value = false
+        snackbar.value = true
+    }
+
+    const onDiscordPreview = async () => {
+        updating.value = true
+        await onSaveDraft()
+        const body: PostCrawlersPreviewDiscordDataPayload = {
+            origin: OriginCrawlPagesEnum.IVOLUNTEER_VN,
+            preview_source: [CrawlerDataResponseTypeEnum.DISCORD]
+        }
+        await fetch(`${fetchLink}/admin/crawlers/${link.value}/_preview`, {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(body)
+        })
+        isDiscordPreviewed.value = true
+        updating.value = false
+    }
+    const onHtmlPreview = ()=>{
+        updating.value = true
+        //
+        isHtmlPreviewed.value = true
+        updating.value = false
+    }
+    const onFacebookPreview = ()=>{
+        updating.value = true
+        //
+        isFacebookPreviewed.value = true
+        updating.value = false
+    }
+
+    watch(()=>[ pageInfo.value?.description, pageInfo.value?.keywords, pageInfo.value?.tags ],
+        ()=>{
+            isDiscordPreviewed.value = false
+            isHtmlPreviewed.value = false
+            isFacebookPreviewed.value = false
+        },
+        {deep: true}
     )
-    pageInfo.value = await postResult.json() as GetCrawlersIvolunteerDataResponse
-    changeTracker.track(pageInfo.value)
-}
 
-const onSaveDraft = async () => {
-    updating.value = true
-    await fetch( `${fetchLink}/admin/crawlers/${link.value}`, {
-        method: 'PATCH',
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(changeTracker.getChange(pageInfo.value))
+    onMounted(async()=>{
+        await getPageInfo()
     })
-    updating.value = false
-}
-
-const onCreatePost = async () => {
-    if(!pageInfo.value) return
-
-    updating.value = true
-    await onSaveDraft()
-    const body: PostCrawlersDataPayload = {
-        origin: OriginCrawlPagesEnum.IVOLUNTEER_VN,
-        post_name: link.value.toString()
-    }
-    const result = await fetch(`${fetchLink}/admin/crawlers`, {
-        method: 'POST',
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(body)
-    })
-    const response_data = await result.json() as PostCrawlersResponse
-    pageInfo.value.id = response_data["id"]
-    updating.value = false
-    snackbar.value = true
-}
-
-const onDiscordPreview = async () => {
-    updating.value = true
-    await onSaveDraft()
-    const body: PostCrawlersPreviewDiscordDataPayload = {
-        origin: OriginCrawlPagesEnum.IVOLUNTEER_VN,
-        preview_source: [CrawlerDataResponseTypeEnum.DISCORD]
-    }
-    await fetch(`${fetchLink}/admin/crawlers/${link.value}/_preview`, {
-        method: 'POST',
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(body)
-    })
-    isDiscordPreviewed.value = true
-    updating.value = false
-}
-const onHtmlPreview = ()=>{
-    updating.value = true
-    //
-    isHtmlPreviewed.value = true
-    updating.value = false
-}
-const onFacebookPreview = ()=>{
-    updating.value = true
-    //
-    isFacebookPreviewed.value = true
-    updating.value = false
-}
-
-watch(()=>[ pageInfo.value?.description, pageInfo.value?.keywords, pageInfo.value?.tags ],
-    ()=>{
-        isDiscordPreviewed.value = false
-        isHtmlPreviewed.value = false
-        isFacebookPreviewed.value = false
-    },
-    {deep: true}
-)
-
-onMounted(async()=>{
-    await getPageInfo()
-})
-
 </script>
 
 <style style lang="sass">
