@@ -3,6 +3,7 @@ import asyncio
 
 # libraries
 import beanie
+import aiohttp
 
 # local
 from core.conf import app, settings, ENVEnum
@@ -28,7 +29,8 @@ class BackgroundRunner:
     async def run_keep_alive(self):
         if settings.ENV == ENVEnum.ADMIN.value:
             while True:
-                print("Keep alive")
+                async with aiohttp.ClientSession() as session:
+                    await session.get(url="http://localhost:8080/api/auth/self")
                 await asyncio.sleep(60)
 
 
