@@ -88,7 +88,7 @@
         <template v-slot:item.3>
             <v-card title="Tạo bài viết mới" flat></v-card>
                 <center class="my-5">
-                    <v-btn prepend-icon="$vuetify" :disabled="!canSave" :loading="updating" @click="onCreatePost">CREATE</v-btn>
+                    <v-btn prepend-icon="$vuetify" :disabled="pageInfo?.id" :loading="updating" @click="onCreatePost">CREATE</v-btn>
                 </center>
         </template>
         </v-stepper>
@@ -101,7 +101,7 @@
     <div class="text-subtitle-1 pb-2">View created post</div>
     <template v-slot:actions>
         <v-btn
-        color="indigo"
+        color="green"
         variant="text"
         :href='`${clientLink}/posts/${pageInfo?.id}`'
         target="_blank"
@@ -109,7 +109,15 @@
         View
         </v-btn>
         <v-btn
-        color="indigo"
+        color="green"
+        variant="text"
+        :href='`/posts/${pageInfo?.id}`'
+        target="_blank"
+        >
+        Edit
+        </v-btn>
+        <v-btn
+        color="green"
         variant="text"
         @click="snackbar = false"
         >
