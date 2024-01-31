@@ -1,4 +1,3 @@
-- API + UI: auth for admin
 - API: store original data
 ---- MVP ----
 - UI: admin validate

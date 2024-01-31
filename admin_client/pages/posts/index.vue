@@ -8,11 +8,13 @@
     :items="posts"
     :sort-by="[{ key: 'calories', order: 'asc' }]"
   >
-    <!-- <template v-slot:top>
+    <template v-slot:top>
       <v-toolbar flat >
         <v-spacer></v-spacer>
+        <v-text-field class="w-25" label="Post url" v-model="newPostUrl"></v-text-field>
+        <v-btn @click="onClickCreateNewPost">Create new post</v-btn>
       </v-toolbar>
-    </template> -->
+    </template>
     <template v-slot:item.title="{ item }">
         <a :href="`${clientLink}/posts/${item.id}`">{{ item.title }}</a>
     </template>
@@ -82,6 +84,7 @@
         { title: 'Actions', key: 'actions', sortable: false },
     ])
     const posts = ref<Array<GetPostListResponse>>([])
+    const newPostUrl = ref<string>('')
 
     const deleteDialog = ref<boolean>(false)
     const confirmDeletePostValue = ref<string>('')
@@ -112,7 +115,12 @@
         finally{
             deleteDialog.value = false
         }
+    }
 
+    const onClickCreateNewPost = () => {
+        if(newPostUrl.value === '') return
+        window.open(`/crawlers/ivolunteer_vn/${newPostUrl.value}`, '_blank');
+        newPostUrl.value = ''
     }
 
     onMounted(async () => {

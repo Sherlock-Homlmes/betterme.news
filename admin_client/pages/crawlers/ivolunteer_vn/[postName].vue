@@ -129,6 +129,7 @@
     import { ref, onMounted, watch, computed, getCurrentInstance } from 'vue';
     import { useRuntimeConfig } from 'nuxt/app';
     import { changeTracker } from '~/src/func'
+    import fetchWithAuth from '~/src/common/betterFetch'
     import Editor from '@tinymce/tinymce-vue';
     import type {GetCrawlersIvolunteerDataResponse, PostCrawlersPreviewDiscordDataPayload, PostCrawlersDataPayload, PostCrawlersResponse} from '~/src/types/responses'
     import {CrawlerDataResponseTypeEnum, OriginCrawlPagesEnum, IvolunteerPageTagsEnum} from '~/src/types/enums'
@@ -160,7 +161,7 @@
         )
         tags.value = await tagsResult.json()
 
-        const postResult = await fetch(
+        const postResult = await fetchWithAuth(
             `${fetchLink}/admin/crawlers/${link.value}?origin=ivolunteer_vn`
         )
         pageInfo.value = await postResult.json() as GetCrawlersIvolunteerDataResponse
@@ -169,11 +170,8 @@
 
     const onSaveDraft = async () => {
         updating.value = true
-        await fetch( `${fetchLink}/admin/crawlers/${link.value}`, {
+        await fetchWithAuth( `${fetchLink}/admin/crawlers/${link.value}`, {
             method: 'PATCH',
-            headers: {
-                "Content-Type": "application/json",
-            },
             body: JSON.stringify(changeTracker.getChange(pageInfo.value))
         })
         updating.value = false
@@ -188,11 +186,8 @@
             origin: OriginCrawlPagesEnum.IVOLUNTEER_VN,
             post_name: link.value.toString()
         }
-        const result = await fetch(`${fetchLink}/admin/crawlers`, {
+        const result = await fetchWithAuth(`${fetchLink}/admin/crawlers`, {
             method: 'POST',
-            headers: {
-                "Content-Type": "application/json",
-            },
             body: JSON.stringify(body)
         })
         const response_data = await result.json() as PostCrawlersResponse
@@ -208,11 +203,8 @@
             origin: OriginCrawlPagesEnum.IVOLUNTEER_VN,
             preview_source: [CrawlerDataResponseTypeEnum.DISCORD]
         }
-        await fetch(`${fetchLink}/admin/crawlers/${link.value}/_preview`, {
+        await fetchWithAuth(`${fetchLink}/admin/crawlers/${link.value}/_preview`, {
             method: 'POST',
-            headers: {
-                "Content-Type": "application/json",
-            },
             body: JSON.stringify(body)
         })
         isDiscordPreviewed.value = true
