@@ -61,7 +61,7 @@ async def get_list_post(
 
     # TODO: better pagination solution
     # model -> json
-    posts = [post.model_dump() for post in posts]
+    posts = [post.model_dump(mode="json") for post in posts]
 
     response = JSONResponse(content=posts)
     await return_with_pagination(cursor, response, params.page, params.per_page)

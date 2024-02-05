@@ -9,7 +9,7 @@ import fetchLink from 'src/utils/config'
 import type {GetPostListResponse} from '@/types/responses'
 
 const response = await fetch(`${fetchLink}/posts?per_page=11&` + Astro.url.searchParams)
-const postData = await response.json() as Array<GetPostListResponse>
+const postsData = await response.json() as GetPostListResponse[]
 
 let page = {
 	currentPage: 1,
@@ -34,7 +34,7 @@ if (
 
 	<div>
 		<h2 class='text-lg font-medium tracking-wide text-end'>Bài viết mới nhất</h2>
-		<ListPostsV2 posts={postData} />
+		<ListPostsV2 posts={postsData} />
 	</div>
 	<div>
 		<Pagination page={ page }></Pagination>

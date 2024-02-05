@@ -83,7 +83,7 @@
         { title: 'View', key: 'view' },
         { title: 'Actions', key: 'actions', sortable: false },
     ])
-    const posts = ref<Array<GetPostListResponse>>([])
+    const posts = ref<GetPostListResponse[]>([])
     const newPostUrl = ref<string>('')
 
     const deleteDialog = ref<boolean>(false)
@@ -95,7 +95,7 @@
             `${fetchLink}/posts?per_page=10000`
 
         )
-        posts.value = await postsResult.json() as Array<GetPostListResponse>
+        posts.value = await postsResult.json() as GetPostListResponse[]
     }
 
     const onClickDeletePost = (post: GetPostListResponse) => {
