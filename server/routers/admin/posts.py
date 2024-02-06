@@ -28,7 +28,7 @@ router = APIRouter(
     tags=["Admin-posts"],
     status_code=ResponseStatusEnum.NO_CONTENT.value,
 )
-async def get_post(
+async def patch_post(
     post_id: str, payload: PatchPostPayload, user: Users = Depends(auth_handler.auth_wrapper)
 ):
     try:
@@ -54,7 +54,7 @@ async def get_post(
     tags=["Admin-posts"],
     status_code=ResponseStatusEnum.NO_CONTENT.value,
 )
-async def get_crawler(post_id: str, user: Users = Depends(auth_handler.auth_wrapper)) -> None:
+async def delete_post(post_id: str, user: Users = Depends(auth_handler.auth_wrapper)) -> None:
     post = await Posts.get(post_id)
     if not post:
         raise HTTPException(

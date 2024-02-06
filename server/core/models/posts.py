@@ -9,6 +9,7 @@ from fastapi import HTTPException
 from pydantic import BaseModel, Field, field_validator
 
 # locals
+from core.conf import settings, ENVEnum
 from .users import Users
 from core.schemas.admin import ResponseStatusEnum
 
@@ -53,9 +54,10 @@ class Posts(Document):
 
     class Settings:
         validate_on_save = True
-        use_cache = True
+        # only use cache in user api
+        use_cache = True if settings.ENV == ENVEnum.USER.value else False
         cache_expiration_time = datetime.timedelta(seconds=60)
-        cache_capacity = 10
+        cache_capacity = 100
 
     ### Validate
     # TODO: check if working or not
@@ -75,3 +77,6 @@ class Posts(Document):
         await self.save()
 
     ### Event
+    # TODO: social posts to this func
+    async def after_create(self):
+        pass
