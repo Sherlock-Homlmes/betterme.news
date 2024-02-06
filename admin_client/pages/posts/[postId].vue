@@ -114,19 +114,13 @@
     const onSavePost = async () => {
         if(!postInfo.value) return
         updating.value = true
-        try{
-            await fetchWithAuth(`${fetchLink}/admin/posts/${vm.$route.params.postId}`, {
-                method: 'PATCH',
-                body: JSON.stringify(changeTracker.getChange(postInfo.value))
-            })
-            window.alert('Update success')
-        }
-        catch{
-            window.alert('Update fail')
-        }
-        finally{
-            updating.value = false
-        }
+        const response = await fetchWithAuth(`${fetchLink}/admin/posts/${vm.$route.params.postId}`, {
+            method: 'PATCH',
+            body: JSON.stringify(changeTracker.getChange(postInfo.value))
+        })
+        if(response.ok) window.alert('Update success')
+        else window.alert('UPDATE FAIL')
+        updating.value = false
     }
 
     onMounted(async()=>{

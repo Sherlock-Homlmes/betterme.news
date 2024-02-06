@@ -15,7 +15,6 @@
         <v-file-input clearable label="To do..." variant="solo-filled" class="w-50" :disabled='true'></v-file-input>
         <v-autocomplete
             v-model="pageInfo.tags"
-            ref="tags"
             class="w-50"
             clearable
             chips
@@ -209,12 +208,13 @@
         const updateFields = changeTracker.getChange(pageInfo.value)
         // TODO: check object empty using lodash
         if(Object.keys(updateFields).length === 0 && updateFields.constructor === Object) return
-        await fetchWithAuth( `${fetchLink}/admin/crawlers/${link.value}`, {
+        const response = await fetchWithAuth( `${fetchLink}/admin/crawlers/${link.value}`, {
             method: 'PATCH',
             body: JSON.stringify(updateFields)
         })
         updating.value = false
-        if(showAlert) window.alert('Update success')
+        if(response.ok && showAlert) window.alert('Update success')
+        else if(!response.ok) window.alert('UPDATE FAIL')
     }
 
     const onCreatePost = async () => {

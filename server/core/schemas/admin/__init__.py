@@ -1,6 +1,8 @@
 # mypy: disable-error-code="no-redef, assignment"
 from typing import List, Union, Optional
 
+from pydantic import Field
+
 from core.schemas.user.enums import *
 from .responses import *
 from .enums import *
@@ -32,4 +34,12 @@ class GetTagsParams(GetTagsParams):
 
 
 class PatchCrawlersDataPayload(PatchCrawlersDataPayload):
-    tags: Optional[List[Union[IvolunteerPageTagsEnum, KhoahocTvPageTagsEnum]]] = None
+    tags: Optional[List[Union[IvolunteerPageTagsEnum, KhoahocTvPageTagsEnum]]] = Field(
+        min_items=1, default=None
+    )
+
+
+class PatchPostPayload(PatchPostPayload):
+    tags: Optional[List[Union[IvolunteerPageTagsEnum, KhoahocTvPageTagsEnum]]] = Field(
+        min_items=1, default=None
+    )

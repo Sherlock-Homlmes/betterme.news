@@ -30,12 +30,12 @@ class PostCrawlersDataPayload(BaseModel):
 
 
 class PatchCrawlersDataPayload(BaseModel):
-    title: Optional[str] = None
-    description: Optional[str] = None
+    title: Optional[str] = Field(min_length=1, default=None)
+    description: Optional[str] = Field(min_length=1, default=None)
     banner: Optional[str] = None
-    content: Optional[str] = None
-    tags: Optional[List[str]] = None
-    keywords: Optional[List[str]] = None
+    content: Optional[str] = Field(min_length=1, default=None)
+    tags: Optional[List[str]] = Field(min_items=1, default=None)
+    keywords: Optional[List[str]] = Field(min_items=1, default=None)
 
 
 class PostCrawlersPreviewDiscordDataPayload(BaseModel):
@@ -83,9 +83,9 @@ class GetTagsParams(BaseModel):
 ### posts.py
 # Payload
 class PatchPostPayload(BaseModel):
-    title: Optional[str] = None
-    description: Optional[str] = None
+    title: Optional[str] = Field(min_length=1, default=None)
+    description: Optional[str] = Field(min_length=1, default=None)
     banner: Optional[str] = None
-    content: Optional[str] = None
-    tags: Optional[List[str]] = None
-    keywords: Optional[List[str]] = None
+    content: Optional[str] = Field(min_length=1, default=None)
+    tags: Optional[List[str]] = Field(min_items=1, default=None)
+    keywords: Optional[List[str]] = Field(min_items=1, default=None)
