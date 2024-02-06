@@ -2,10 +2,11 @@
 from typing import Annotated, Union
 
 # libraries
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
+from beanie.operators import Set
 
 # local
-from core.models import Posts, OtherPostInfo, Users
+from core.models import Posts, OtherPostInfo, Users, DraftPosts
 from core.schemas.admin import (
     # params
     CrawlersDataParams,
@@ -23,7 +24,7 @@ from core.schemas.admin import (
     CrawlerDataResponseTypeEnum,
 )
 from routers.auth import auth_handler
-from scrap.func import scrap_post_data, get_scrap_post_data, save_crawler_data
+from scrap.func import scrap_post_data
 from services.discord_bot.news import send_news
 from services.facebook_bot.func import post_to_fb
 from services.tebi import upload_image
@@ -39,12 +40,28 @@ router = APIRouter(
     tags=["Admin-backend-scrap"],
     status_code=ResponseStatusEnum.OK.value,
 )
-def get_crawler(
+async def get_crawler(
     post_name: str,
     params: Annotated[dict, Depends(CrawlersDataParams)],
     user: Users = Depends(auth_handler.auth_wrapper),
 ) -> Union[GetCrawlersIvolunteerDataResponse, GetCrawlersKhoahocTvDataResponse]:
-    return scrap_post_data(origin=params.origin, post_name=post_name)
+    draft_post_data = await DraftPosts.find_one(
+        DraftPosts.name == post_name,
+        DraftPosts.source == params.origin,
+    )
+    if draft_post_data:
+        return draft_post_data.draft_data
+
+    post_data = scrap_post_data(origin=params.origin, post_name=post_name)
+    if post_data.deadline:
+        post_data.deadline = post_data.deadline.strftime("%Y-%m-%d")
+    await DraftPosts(
+        source=params.origin,
+        name=post_name,
+        original_data=post_data,
+        draft_data=post_data,
+    ).insert()
+    return post_data
 
 
 @router.post(
@@ -55,7 +72,19 @@ def get_crawler(
 async def post_crawler(
     body: PostCrawlersDataPayload, user: Users = Depends(auth_handler.auth_wrapper)
 ):
-    current_data = get_scrap_post_data(origin=body.origin, post_name=body.post_name)
+    draft_post_data = await DraftPosts.find_one(
+        DraftPosts.name == body.post_name,
+        DraftPosts.source == body.origin,
+    )
+    if not draft_post_data:
+        raise HTTPException(
+            status_code=ResponseStatusEnum.BAD_REQUEST.value, detail="Not found post"
+        )
+    elif draft_post_data.draft_data.id:
+        raise HTTPException(
+            status_code=ResponseStatusEnum.BAD_REQUEST.value, detail="Post already exist"
+        )
+    current_data = draft_post_data.draft_data
     banner_img = None
     if current_data.banner is not None:
         banner_img = upload_image(current_data.banner)
@@ -99,22 +128,40 @@ async def post_crawler(
     await post.insert()
     # create discord post
     discord_post_id = await send_news(data=current_data, is_testing=False, post_id=post.id)
+    #
     post.discord_post_id = discord_post_id
     await post.save()
+    #
+    await draft_post_data.update(Set({DraftPosts.draft_data.id: str(post.id)}))
     return PostCrawlersResponse(id=str(post.id))
 
 
 @router.patch(
     "/crawlers/{post_name}",
     tags=["Admin-backend-scrap"],
-    status_code=ResponseStatusEnum.CREATED.value,
+    status_code=ResponseStatusEnum.NO_CONTENT.value,
 )
-def patch_crawler(
+async def patch_crawler(
     post_name: str,
-    payload: PatchCrawlersDataPayload,
+    body: PatchCrawlersDataPayload,
     user: Users = Depends(auth_handler.auth_wrapper),
 ):
-    save_crawler_data(post_name=post_name, data=payload)
+    draft_post_data = await DraftPosts.find_one(
+        DraftPosts.name == post_name,
+        # TODO: add this condition(low priority)
+        # DraftPosts.source == body.origin,
+    )
+    if not draft_post_data:
+        raise HTTPException(
+            status_code=ResponseStatusEnum.BAD_REQUEST.value, detail="Not found post"
+        )
+    original_update_fields = body.model_dump(mode="json", exclude_unset=True)
+    # TODO: refactor this
+    update_fields = {}
+    for key, value in original_update_fields.items():
+        update_fields[f"draft_data.{key}"] = value
+
+    await draft_post_data.update(Set(update_fields))
     return
 
 
@@ -129,7 +176,13 @@ async def post_crawler_preview(
     body: PostCrawlersPreviewDiscordDataPayload,
     user: Users = Depends(auth_handler.auth_wrapper),
 ):
-    current_data = get_scrap_post_data(origin=body.origin, post_name=post_name)
+    draft_post_data = await DraftPosts.find_one(DraftPosts.name == post_name)
+    # TODO: refactor raise error
+    if not draft_post_data:
+        raise HTTPException(
+            status_code=ResponseStatusEnum.BAD_REQUEST.value, detail="Not found post"
+        )
+    current_data = draft_post_data.draft_data
     if CrawlerDataResponseTypeEnum.DISCORD in body.preview_source:
         await send_news(data=current_data, is_testing=True)
     elif CrawlerDataResponseTypeEnum.FACEBOOK in body.preview_source:

@@ -47,11 +47,11 @@
         <template v-slot:item.1>
             <v-card title="Chỉnh sửa nội dung" flat></v-card>
                 <center class="my-5" :color='"green"'>
-                    <v-btn prepend-icon="$vuetify" @click="onSaveDraft" :disabled="true">
+                    <v-btn prepend-icon="$vuetify" @click="onSaveDraft" :disabled="!pageInfo.tags.length">
                         <template v-slot:prepend v-if="isHtmlPreviewed">
                             <v-icon color="success"></v-icon>
                         </template>
-                        Save draft(Coming soon...)
+                        Save draft
                     </v-btn>
                 </center>
         </template>
@@ -159,20 +159,22 @@
     const canSave = computed<Boolean>(
         ()=>
         isDiscordPreviewed.value &&
-        pageInfo.value && pageInfo.value.tags.length
+        pageInfo.value &&
+        pageInfo.value.tags.length && !pageInfo.value.id
     )
 
 
     const getPageInfo = async () => {
+        const postResult = await fetchWithAuth(
+            `${fetchLink}/admin/crawlers/${link.value}?origin=ivolunteer_vn`
+        )
+        pageInfo.value = await postResult.json() as GetCrawlersIvolunteerDataResponse
+        if(pageInfo.value.id) vm.$router.push(`/posts/${pageInfo.value.id}`)
         const tagsResult = await fetch(
             `${fetchLink}/tags?origin=ivolunteer_vn`
         )
         tags.value = await tagsResult.json()
 
-        const postResult = await fetchWithAuth(
-            `${fetchLink}/admin/crawlers/${link.value}?origin=ivolunteer_vn`
-        )
-        pageInfo.value = await postResult.json() as GetCrawlersIvolunteerDataResponse
         changeTracker.track(pageInfo.value)
     }
 

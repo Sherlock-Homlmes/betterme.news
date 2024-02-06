@@ -32,4 +32,4 @@ class GetTagsParams(GetTagsParams):
 
 
 class PatchCrawlersDataPayload(PatchCrawlersDataPayload):
-    tags: Optional[List[Union[IvolunteerPageTagsEnum, KhoahocTvPageTagsEnum]]]
+    tags: Optional[List[Union[IvolunteerPageTagsEnum, KhoahocTvPageTagsEnum]]] = None

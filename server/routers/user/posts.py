@@ -54,7 +54,7 @@ async def get_list_post(
     if params.match_tag:
         queries = ElemMatch(Posts.tags, {"$eq": params.match_tag})
     # TODO: refactor change to class method
-    cursor = Posts.find(queries).project(PostListProject)
+    cursor = Posts.find(queries, projection_model=PostListProject)
     posts = (
         await cursor.sort(-Posts.id)
         .skip(params.per_page * (params.page - 1))
@@ -65,10 +65,10 @@ async def get_list_post(
     for post in posts:
         post.slug = gen_slug_from_title(post.title)
 
-    # TODO: better pagination solution
     # model -> json
     posts = [post.model_dump(mode="json") for post in posts]
 
+    # TODO: better pagination solution
     response = JSONResponse(content=posts)
     await return_with_pagination(cursor, response, params.page, params.per_page)
     return response

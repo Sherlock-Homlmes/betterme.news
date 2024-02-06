@@ -3,14 +3,14 @@ import asyncio
 
 # libraries
 import beanie
-import aiohttp
 
 # local
-from core.conf import app, settings, ENVEnum
+from core.conf import app, settings
 from core.database.mongodb import client
 from core.models import (
-    Posts,
     Users,
+    Posts,
+    DraftPosts,
 )
 from services.discord_bot.conf import bot
 
@@ -25,13 +25,6 @@ class BackgroundRunner:
     async def run_discord_bot(self):
         print("Starting discord bot...")
         await bot.start(settings.DISCORD_BOT_TOKEN)
-
-    async def run_keep_alive(self):
-        if settings.ENV == ENVEnum.ADMIN.value:
-            while True:
-                async with aiohttp.ClientSession() as session:
-                    await session.get(url="http://localhost:8080/api/auth/self")
-                await asyncio.sleep(60)
 
 
 runner = BackgroundRunner()
@@ -54,15 +47,15 @@ async def startup():
     await beanie.init_beanie(
         database=client.betterme_news,
         document_models=[
-            Posts,
             Users,
+            Posts,
+            DraftPosts,
         ],
     )
     print("Connect to database success")
 
     # RUN BOT
     asyncio.create_task(runner.run_discord_bot())
-    asyncio.create_task(runner.run_keep_alive())
 
     print("Start up done")
 

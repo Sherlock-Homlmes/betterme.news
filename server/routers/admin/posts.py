@@ -2,6 +2,7 @@
 
 # libraries
 from fastapi import APIRouter, HTTPException, Depends
+from beanie.operators import Set
 
 # local
 from core.models import Posts, Users
@@ -38,13 +39,8 @@ async def patch_post(
             status_code=ResponseStatusEnum.NOT_FOUND.value,
             detail="Post not found",
         )
-    # TODO: refactor this
-    update_fields = {}
-    for key, value in payload.model_dump().items():
-        if value is not None:
-            update_fields[key] = value
-
-    await post.update({"$set": update_fields})
+    update_fields = payload.model_dump(mode="json", exclude_unset=True)
+    await post.update(Set(update_fields))
 
     return
 
