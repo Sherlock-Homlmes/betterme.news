@@ -53,6 +53,9 @@ class Posts(Document):
 
     class Settings:
         validate_on_save = True
+        use_cache = True
+        cache_expiration_time = datetime.timedelta(seconds=60)
+        cache_capacity = 10
 
     ### Validate
     # TODO: check if working or not
