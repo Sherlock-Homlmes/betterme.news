@@ -1,22 +1,27 @@
 # default
-from typing import List, Optional
+from typing import List, Optional, Dict
 
 # libraries
 from pydantic import BaseModel
 
 
 def get_projections_from_model(
-    pydantic_model: BaseModel, exclude_fields: Optional[List[str]] = []
+    pydantic_model: BaseModel,
+    exclude_fields: Optional[List[str]] = [],
+    map_fields: Optional[Dict[str, str]] = [],
 ) -> dict:
-    something = pydantic_model.__fields__.keys()
+    fields = pydantic_model.__fields__.keys()
     projections = {}
-    for some in something:
-        if some in exclude_fields:
+    for field in fields:
+        if field in exclude_fields:
             continue
-        if some == "id":
-            projections[some] = f"$_{some}"
+        if field in map_fields.keys():
+            projections[field] = f"${map_fields[field]}"
+            continue
+        if field == "id":
+            projections[field] = f"$_{field}"
         else:
-            projections[some] = f"${some}"
+            projections[field] = f"${field}"
     return projections
 
 

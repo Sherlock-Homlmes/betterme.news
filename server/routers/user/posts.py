@@ -33,7 +33,13 @@ class PostListProject(GetPostListResponse):
     slug: Optional[str] = None
 
     class Settings:
-        projection = get_projections_from_model(GetPostListResponse, exclude_fields=["slug"])
+        projection = get_projections_from_model(
+            GetPostListResponse,
+            exclude_fields=["slug"],
+            map_fields={
+                "deadline": "other_information.deadline",
+            },
+        )
 
 
 @router.get(

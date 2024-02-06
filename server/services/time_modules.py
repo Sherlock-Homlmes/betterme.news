@@ -23,16 +23,32 @@ def str_to_time(s: str) -> datetime.datetime:
 class Time:
     def __init__(self):
         now: datetime.datetime = vn_now()
+        self.value = None
         self.now: datetime.datetime = now
         self.today: datetime.datetime = datetime.datetime(now.year, now.month, now.day)
 
     def some_day_before(self, days: int) -> datetime.datetime:
         that_day = self.now - datetime.timedelta(days=days)
-        return datetime.datetime(that_day.year, that_day.month, that_day.day)
+        self.value = datetime.datetime(that_day.year, that_day.month, that_day.day)
+        return self.value
 
     def some_day_after(self, days: int) -> datetime.datetime:
         that_day = self.now + datetime.timedelta(days=days)
-        return datetime.datetime(that_day.year, that_day.month, that_day.day)
+        self.value = datetime.datetime(that_day.year, that_day.month, that_day.day)
+        return self.value
+
+    def to_str(self) -> str:
+        if self.value.isinstance(datetime.datetime):
+            return time_to_str(self.value)
+        raise ValueError
+
+    def to_date(self) -> datetime.date:
+        pass
+
+    def to_datetime(self) -> datetime.datetime:
+        if self.value.isinstance(str):
+            return str_to_time(self.value)
+        raise ValueError
 
 
 # test time module

@@ -1,7 +1,5 @@
-
 ---
 import { Image } from 'astro:assets'
-import FormattedDate from '@/components/FormattedDate'
 import ArrowUp from '@/components/icons/ArrowUp'
 import type {GetPostListResponse} from '@/types/responses'
 
@@ -30,9 +28,8 @@ const { postData } = Astro.props
 			<div class='z-10 absolute bottom-0 glass w-full min-h-full'></div>
 			<div class='flex items-center justify-end gap-x-1 text-white px-5 pt-2'>
 				<div class='flex flex-col gap-1 items-center justify-center'>
-					<!-- <FormattedDate date={postData.other_information?.deadline} /> -->
 					<span class='text-sm font-bold text-opacity-60'>
-						Deadline: {postData.other_information?.deadline ?? 'ASAP'}
+						Deadline: {postData.deadline ?? 'ASAP'}
 					</span>
 				</div>
 			</div>

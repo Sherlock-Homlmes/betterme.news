@@ -10,7 +10,17 @@ import type {GetPostResponse} from '@/types/responses'
 
 const {postName} = Astro.params
 const response = await fetch(`${fetchLink}/posts/${postName}`)
-const postData = await response.json() as GetPostResponse
+let postData = await response.json() as GetPostResponse
+postData = {
+	...postData,
+	other_information:{
+		...postData.other_information,
+		deadline:
+		postData.other_information?.deadline
+		? postData.other_information.deadline.split('-').reverse().join('/')
+		: null
+	}
+}
 ---
 <!-- TODO: Table of content, related post -->
 <BlogPostV2

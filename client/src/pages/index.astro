@@ -9,7 +9,14 @@ import fetchLink from 'src/utils/config'
 import type {GetPostListResponse} from '@/types/responses'
 
 const response = await fetch(`${fetchLink}/posts?per_page=11&` + Astro.url.searchParams)
-const postsData = await response.json() as GetPostListResponse[]
+let postsData = await response.json() as GetPostListResponse[]
+postsData = postsData.map(postData => {
+return{
+	...postData,
+	deadline: postData.deadline
+	? postData.deadline.split('-').reverse().join('/')
+	: null
+}})
 
 let page = {
 	currentPage: 1,

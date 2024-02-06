@@ -6,12 +6,12 @@ from typing import List, Optional, Union
 from pydantic import BaseModel
 
 
-# TODO: remove duplicate code
+# TODO: remove duplicate code(using project beanie)
 class OtherPostInfo(BaseModel):
-    deadline: Union[datetime.date, None] = None
+    deadline: Optional[Union[datetime.date, None]] = None
 
 
-# reponses
+# responses
 class GetPostListResponse(BaseModel):
     id: str
     slug: str
@@ -21,7 +21,7 @@ class GetPostListResponse(BaseModel):
     thumbnail_img: Optional[str] = None
     banner_img: Optional[str] = None
     tags: List[str]
-    other_information: Optional[OtherPostInfo] = None
+    deadline: Optional[str] = datetime.datetime
     # SEO
     keywords: List[str]
     # other info
