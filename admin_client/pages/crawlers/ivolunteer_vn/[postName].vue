@@ -2,18 +2,30 @@
 <template>
 <center class="mt-5 mb-15">
     <div v-if="pageInfo" class="w-75">
-        <v-text-field label="Title" v-model="pageInfo.title"></v-text-field>
+        <v-text-field
+            label="Title"
+            v-model="pageInfo.title"
+            ref="title"
+            :rules="[
+                (val) => val.length >= 1 || `Hãy điền title`,
+                (val) => val.length <= 100 || `Chỉnh title ít hơn 100 chữ. Hiện tại: ${val.length} chữ`
+            ]"
+        ></v-text-field>
         <img :src="`${fetchLink}/media/${pageInfo?.banner}`" >
         <v-file-input clearable label="To do..." variant="solo-filled" class="w-50" :disabled='true'></v-file-input>
         <v-autocomplete
-        v-model="pageInfo.tags"
-        class="w-50"
-        clearable
-        chips
-        label="Tags"
-        :items="tags"
-        multiple
-        variant="solo-filled"
+            v-model="pageInfo.tags"
+            ref="tags"
+            class="w-50"
+            clearable
+            chips
+            label="Tags"
+            :items="tags"
+            multiple
+            variant="solo-filled"
+            :rules="[
+                (val) => !!(val && val.length) || `Hãy chọn tags`,
+            ]"
         ></v-autocomplete>
         <v-combobox
             v-model="pageInfo.keywords"
@@ -47,7 +59,7 @@
         <template v-slot:item.1>
             <v-card title="Chỉnh sửa nội dung" flat></v-card>
                 <center class="my-5" :color='"green"'>
-                    <v-btn prepend-icon="$vuetify" @click="onSaveDraft" :disabled="!pageInfo.tags.length">
+                    <v-btn prepend-icon="$vuetify" @click="onSaveDraft(true)" :disabled="!canSave" >
                         <template v-slot:prepend v-if="isHtmlPreviewed">
                             <v-icon color="success"></v-icon>
                         </template>
@@ -77,7 +89,7 @@
                 </center>
             <v-card title="Xem trước bài đăng lên discord" flat></v-card>
                 <center class="my-5">
-                    <v-btn prepend-icon="$vuetify" :loading="updating" @click="onDiscordPreview">
+                    <v-btn prepend-icon="$vuetify" :loading="updating" @click="onDiscordPreview" :disabled="!canSave" >
                         <template v-slot:prepend v-if="isDiscordPreviewed">
                 <v-icon color="success"></v-icon>
             </template>
@@ -88,7 +100,7 @@
         <template v-slot:item.3>
             <v-card title="Tạo bài viết mới" flat></v-card>
                 <center class="my-5">
-                    <v-btn prepend-icon="$vuetify" :disabled="pageInfo?.id" :loading="updating" @click="onCreatePost">CREATE</v-btn>
+                    <v-btn prepend-icon="$vuetify" :disabled="!canCreatePost" :loading="updating" @click="onCreatePost">CREATE</v-btn>
                 </center>
         </template>
         </v-stepper>
@@ -150,7 +162,7 @@
     const snackbar = ref<Boolean>(false)
     const link = ref<String>(vm.$route.params.postName)
     const pageInfo = ref<GetCrawlersIvolunteerDataResponse>()
-    const tags = ref<IvolunteerPageTagsEnum[]>()
+    const tags = ref<IvolunteerPageTagsEnum[]>([])
     const updating = ref<Boolean>(false)
     const isFacebookPreviewed = ref<Boolean>(false)
     const isHtmlPreviewed = ref<Boolean>(false)
@@ -158,9 +170,15 @@
     // TODO: add conditions
     const canSave = computed<Boolean>(
         ()=>
-        isDiscordPreviewed.value &&
         pageInfo.value &&
-        pageInfo.value.tags.length && !pageInfo.value.id
+        !pageInfo.value.id &&
+        pageInfo.value.title.length &&
+        pageInfo.value.tags.length
+    )
+    const canCreatePost = computed<Boolean>(
+        ()=>
+        canSave.value &&
+        isDiscordPreviewed.value
     )
 
 
@@ -178,13 +196,25 @@
         changeTracker.track(pageInfo.value)
     }
 
-    const onSaveDraft = async () => {
+    const onSaveDraft = async (showAlert: boolean = false) => {
+        if(await vm?.$refs.title.validate().length){
+            window.alert('Invalid title')
+            return
+        }
+        // else if(await vm?.$refs.tags.validate().length){
+        //     window.alert('Invalid tags')
+        //     return
+        // }
         updating.value = true
+        const updateFields = changeTracker.getChange(pageInfo.value)
+        // TODO: check object empty using lodash
+        if(Object.keys(updateFields).length === 0 && updateFields.constructor === Object) return
         await fetchWithAuth( `${fetchLink}/admin/crawlers/${link.value}`, {
             method: 'PATCH',
-            body: JSON.stringify(changeTracker.getChange(pageInfo.value))
+            body: JSON.stringify(updateFields)
         })
         updating.value = false
+        if(showAlert) window.alert('Update success')
     }
 
     const onCreatePost = async () => {
