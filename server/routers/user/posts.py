@@ -1,5 +1,5 @@
 # default
-from typing import List, Annotated
+from typing import List, Annotated, Optional
 
 # libraries
 from fastapi import APIRouter, HTTPException, Depends, BackgroundTasks
@@ -31,7 +31,7 @@ router = APIRouter(
 
 class PostListProject(GetPostListResponse):
     id: PydanticObjectId
-    slug: str
+    slug: Optional[str] = ""
 
     class Settings:
         projection = get_projections_from_model(
