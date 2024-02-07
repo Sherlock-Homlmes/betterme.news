@@ -105,7 +105,7 @@
         tags.value = await tagsResult.json()
 
         const postResult = await fetchWithAuth(
-            `${fetchLink}/posts/${vm.$route.params.postId}`
+            `${fetchLink}/posts/${vm.$route.params.postId}?increase_view=false`
         )
         postInfo.value = await postResult.json() as GetPostResponse
         changeTracker.track(postInfo.value)

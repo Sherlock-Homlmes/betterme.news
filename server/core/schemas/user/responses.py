@@ -53,3 +53,7 @@ class GetPostListParams(BaseModel):
     page: Optional[int] = 1
     per_page: Optional[int] = 10
     match_tag: Optional[str] = None
+
+
+class GetPostParams(BaseModel):
+    increase_view: Optional[bool] = True

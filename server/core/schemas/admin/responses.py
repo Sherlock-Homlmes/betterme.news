@@ -6,6 +6,11 @@ from typing import List, Optional, Union
 from pydantic import BaseModel, Field
 
 
+# TODO: remove duplicate code(using project beanie)
+class OtherPostInfo(BaseModel):
+    deadline: Optional[Union[datetime.date, None]] = None
+
+
 ### CrawlersData.PY
 # Types
 DiscordContentType = List[Union[str, List[str]]]
@@ -89,3 +94,13 @@ class PatchPostPayload(BaseModel):
     content: Optional[str] = Field(min_length=1, default=None)
     tags: Optional[List[str]] = Field(min_items=1, default=None)
     keywords: Optional[List[str]] = Field(min_items=1, default=None)
+
+
+### draftposts.py
+class GetDraftPostListResponse(BaseModel):
+    id: str
+    source: str
+    name: str
+    original_data: GetCrawlersIvolunteerDataResponse
+    draft_data: GetCrawlersIvolunteerDataResponse
+    post: Union[str, None]

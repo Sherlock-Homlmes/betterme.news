@@ -43,3 +43,7 @@ class PatchPostPayload(PatchPostPayload):
     tags: Optional[List[Union[IvolunteerPageTagsEnum, KhoahocTvPageTagsEnum]]] = Field(
         min_items=1, default=None
     )
+
+
+class GetDraftPostListResponse(GetDraftPostListResponse):
+    source: OriginCrawlPagesEnum

@@ -8,7 +8,7 @@ from pydantic import BaseModel
 def get_projections_from_model(
     pydantic_model: BaseModel,
     exclude_fields: Optional[List[str]] = [],
-    map_fields: Optional[Dict[str, str]] = [],
+    map_fields: Optional[Dict[str, str]] = {},
 ) -> dict:
     fields = pydantic_model.__fields__.keys()
     projections = {}
@@ -19,7 +19,7 @@ def get_projections_from_model(
             projections[field] = f"${map_fields[field]}"
             continue
         if field == "id":
-            projections[field] = f"$_{field}"
+            projections["id"] = "$_id"
         else:
             projections[field] = f"${field}"
     return projections

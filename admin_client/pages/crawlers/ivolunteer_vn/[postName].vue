@@ -230,10 +230,13 @@
             method: 'POST',
             body: JSON.stringify(body)
         })
-        const response_data = await result.json() as PostCrawlersResponse
-        pageInfo.value.id = response_data["id"]
+        if(!result.ok) window.alert('CREATE FAIL')
+        else{
+            const response_data = await result.json() as PostCrawlersResponse
+            pageInfo.value.id = response_data["id"]
+            snackbar.value = true
+        }
         updating.value = false
-        snackbar.value = true
     }
 
     const onDiscordPreview = async () => {

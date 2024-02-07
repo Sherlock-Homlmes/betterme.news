@@ -1,5 +1,5 @@
 # default
-from typing import List, Optional, Annotated
+from typing import List, Annotated
 
 # libraries
 from fastapi import APIRouter, HTTPException, Depends, BackgroundTasks
@@ -17,6 +17,7 @@ from core.schemas.user import (
     GetPostResponse,
     # payload
     GetPostListParams,
+    GetPostParams,
     # enums
     ResponseStatusEnum,
 )
@@ -29,8 +30,8 @@ router = APIRouter(
 
 
 class PostListProject(GetPostListResponse):
-    id: Optional[PydanticObjectId] = None
-    slug: Optional[str] = None
+    id: PydanticObjectId
+    slug: str
 
     class Settings:
         projection = get_projections_from_model(
@@ -79,11 +80,16 @@ async def get_list_post(
     tags=["Post"],
     status_code=ResponseStatusEnum.OK.value,
 )
-async def get_post(post_name: str, background_tasks: BackgroundTasks) -> GetPostResponse:
+async def get_post(
+    post_name: str,
+    params: Annotated[dict, Depends(GetPostParams)],
+    background_tasks: BackgroundTasks,
+) -> GetPostResponse:
     post_id: str = post_name.split("_")[-1]
     try:
         post = await Posts.get(post_id)
-        background_tasks.add_task(post.increase_view)
+        if params.increase_view:
+            background_tasks.add_task(post.increase_view)
         return post
     except AttributeError:
         raise HTTPException(
