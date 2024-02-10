@@ -20,7 +20,8 @@ class FacebookPostInfo(BaseModel):
 
 
 class OtherPostInfo(BaseModel):
-    deadline: Optional[Union[datetime.date, None]] = None
+    # TODO: remove str type when lib support get date in projection
+    deadline: Optional[Union[datetime.date, str, None]] = None
 
 
 # TODO: after create process: change title, insert to search engine, caching

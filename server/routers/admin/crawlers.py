@@ -27,7 +27,7 @@ from scrap.func import scrap_post_data
 from services.discord_bot.news import send_news
 from services.facebook_bot.func import post_to_fb
 from services.tebi import upload_image
-from services.time_modules import Time
+from services.time_modules import Time, date_to_str
 
 router = APIRouter(
     responses={404: {"description": "Not found"}},
@@ -101,7 +101,8 @@ async def post_crawler(
     # )
     # TODO: fix html data -> fix this data
     if body.origin == OriginCrawlPagesEnum.IVOLUNTEER_VN:
-        other_info = OtherPostInfo(deadline=current_data.deadline)
+        # TODO: remove date_to_str when lib support
+        other_info = OtherPostInfo(deadline=date_to_str(current_data.deadline))
         post = Posts(
             # info
             created_at=now,

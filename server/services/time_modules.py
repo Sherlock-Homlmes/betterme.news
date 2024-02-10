@@ -12,8 +12,12 @@ def vn_now() -> datetime.datetime:
     return now
 
 
-def time_to_str(t: datetime.datetime) -> str:
+def datetime_to_str(t: datetime.datetime) -> str:
     return t.strftime("%Y-%m-%d %H:%M:%S")
+
+
+def date_to_str(t: datetime.date) -> str:
+    return t.strftime("%Y-%m-%d")
 
 
 def str_to_datetime(s: str) -> datetime.datetime:
@@ -44,7 +48,7 @@ class Time:
 
     def to_str(self) -> str:
         if self.value.isinstance(datetime.datetime):
-            return time_to_str(self.value)
+            return datetime_to_str(self.value)
         raise ValueError
 
     def to_date(self) -> datetime.date:
