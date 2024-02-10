@@ -35,14 +35,7 @@ def stop_server(*args):
     running = False
 
 
-@app.on_event("startup")
-async def startup():
-    global is_discord_bot_started, running
-
-    # Set signal to detach when app stop
-    signal.signal(signal.SIGTERM, stop_server)
-
-    # CONNECT DB
+async def connect_db() -> None:
     print("Connecting to database...")
     await beanie.init_beanie(
         database=client.betterme_news,
@@ -53,6 +46,17 @@ async def startup():
         ],
     )
     print("Connect to database success")
+
+
+@app.on_event("startup")
+async def startup():
+    global is_discord_bot_started, running
+
+    # Set signal to detach when app stop
+    signal.signal(signal.SIGTERM, stop_server)
+
+    # CONNECT DB
+    await connect_db()
 
     # RUN BOT
     asyncio.create_task(runner.run_discord_bot())

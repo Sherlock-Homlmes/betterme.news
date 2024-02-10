@@ -16,8 +16,13 @@ def time_to_str(t: datetime.datetime) -> str:
     return t.strftime("%Y-%m-%d %H:%M:%S")
 
 
-def str_to_time(s: str) -> datetime.datetime:
+def str_to_datetime(s: str) -> datetime.datetime:
     return datetime.datetime.strptime(s, "%Y-%m-%d %H:%M:%S")
+
+
+def str_to_date(s: str) -> datetime.date:
+    something = str_to_datetime(s)
+    return something.date()
 
 
 class Time:
@@ -47,14 +52,14 @@ class Time:
 
     def to_datetime(self) -> datetime.datetime:
         if self.value.isinstance(str):
-            return str_to_time(self.value)
+            return str_to_datetime(self.value)
         raise ValueError
 
 
 # test time module
-# time1=str_to_time('2023-03-20 23:38:00')
+# time1=str_to_datetime('2023-03-20 23:38:00')
 # midnight=Now().some_day_before(0)
-# time2=str_to_time('2023-03-22 21:17:00')
+# time2=str_to_datetime('2023-03-22 21:17:00')
 # def timedelta_to_daily_list(time1: datetime.datetime, time2: datetime.datetime):
 #     time2_hour = time2.hour
 #     if time2.hour != time1.hour or time1.day != time2.day:

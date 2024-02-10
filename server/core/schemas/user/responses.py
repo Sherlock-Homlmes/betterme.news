@@ -21,7 +21,7 @@ class GetPostListResponse(BaseModel):
     thumbnail_img: Optional[str] = None
     banner_img: Optional[str] = None
     tags: List[str]
-    deadline: Optional[str] = datetime.datetime
+    deadline: Optional[str] = datetime.date
     # SEO
     keywords: List[str]
     # other info
