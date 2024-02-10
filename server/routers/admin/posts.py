@@ -2,10 +2,9 @@
 
 # libraries
 from fastapi import APIRouter, HTTPException, Depends
-from beanie.operators import Set
 
 # local
-from core.models import Posts, Users
+from core.models import Posts, Users, DraftPosts
 from core.schemas.admin import (
     # params
     # payload
@@ -40,7 +39,10 @@ async def patch_post(
             detail="Post not found",
         )
     update_fields = payload.model_dump(mode="json", exclude_unset=True)
-    await post.update(Set(update_fields))
+    if update_fields:
+        await post.set(update_fields)
+        post.updated_by = await Users.get(user["id"])
+        await post.save()
 
     return
 
@@ -52,18 +54,22 @@ async def patch_post(
 )
 async def delete_post(post_id: str, user: Users = Depends(auth_handler.auth_wrapper)) -> None:
     post = await Posts.get(post_id)
-    if not post:
+    draft_post = await DraftPosts.find_one(DraftPosts.draft_data.id == post_id)
+    if not post or not draft_post:
         raise HTTPException(
             status_code=ResponseStatusEnum.NOT_FOUND.value,
             detail="Post not found",
         )
 
+    # TODO: to trigger before delete
     if post.discord_post_id:
         await delete_news(post.discord_post_id)
     if post.banner_img:
         delete_image(post.banner_img)
     if post.thumbnail_img:
         delete_image(post.thumbnail_img)
-    await post.delete()
+
+    draft_post.deleted_by = await Users.get(user["id"])
+    await draft_post.save()
 
     return

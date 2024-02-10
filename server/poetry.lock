@@ -231,13 +231,13 @@ visualize = ["Twisted (>=16.1.1)", "graphviz (>0.5.1)"]
 
 [[package]]
 name = "beanie"
-version = "1.23.6"
+version = "1.25.0"
 description = "Asynchronous Python ODM for MongoDB"
 optional = false
 python-versions = ">=3.7,<4.0"
 files = [
-    {file = "beanie-1.23.6-py3-none-any.whl", hash = "sha256:c780e0f951ee40faa688e7b0e56dc963486087c7e3970cd5a3d99cb47703e677"},
-    {file = "beanie-1.23.6.tar.gz", hash = "sha256:9a9a36936188a44dcf16aa8930b450249eaa5c7ebc0edc056ad194bdec3539ca"},
+    {file = "beanie-1.25.0-py3-none-any.whl", hash = "sha256:4436ac740718ccd62b21576778679ac972359fce2938557890c576adbbf5e244"},
+    {file = "beanie-1.25.0.tar.gz", hash = "sha256:f153866b9ba015274102e10a397602d088fc039b705bd806cb447c898cd2979b"},
 ]
 
 [package.dependencies]
@@ -251,7 +251,7 @@ typing-extensions = {version = ">=4.7", markers = "python_version < \"3.11\""}
 [package.extras]
 doc = ["Markdown (>=3.3)", "Pygments (>=2.8.0)", "jinja2 (>=3.0.3)", "mkdocs (>=1.4)", "mkdocs-material (>=9.0)", "pydoc-markdown (>=4.8)"]
 queue = ["beanie-batteries-queue (>=0.2)"]
-test = ["asgi-lifespan (>=1.0.1)", "dnspython (>=2.1.0)", "fastapi (>=0.100)", "flake8 (>=3)", "httpx (>=0.23.0)", "pre-commit (>=2.3.0)", "pydantic-extra-types (>=2)", "pydantic-settings (>=2)", "pyright (>=0)", "pytest (>=6.0.0)", "pytest-asyncio (>=0.21.0)", "pytest-cov (>=2.8.1)"]
+test = ["asgi-lifespan (>=1.0.1)", "dnspython (>=2.1.0)", "fastapi (>=0.100)", "flake8 (>=3)", "httpx (>=0.23.0)", "pre-commit (>=2.3.0)", "pydantic-extra-types (>=2)", "pydantic-settings (>=2)", "pydantic[email]", "pyright (>=0)", "pytest (>=6.0.0)", "pytest-asyncio (>=0.21.0)", "pytest-cov (>=2.8.1)"]
 
 [[package]]
 name = "boto3"
@@ -2161,4 +2161,4 @@ testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9.0"
-content-hash = "280185ceacfd59b6aa80a3a32222a47d6f2eb85021bde2a16e303715bef9e9bd"
+content-hash = "e19e5e35056e7b986dee86c3b70bc01e33e0aca811dca26816aa083f7af1f889"

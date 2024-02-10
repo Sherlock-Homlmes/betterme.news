@@ -4,6 +4,7 @@ from typing import List, Union, Optional
 from pydantic import Field
 
 from core.schemas.user.enums import *
+from core.schemas.common.enums import *
 from .responses import *
 from .enums import *
 

@@ -34,7 +34,7 @@ class DraftPostListProject(GetDraftPostListResponse):
 
 
 @router.get(
-    "/draftposts",
+    "/draft_posts",
     tags=["Admin-draft-posts"],
     status_code=ResponseStatusEnum.OK.value,
 )
@@ -52,7 +52,6 @@ async def get_crawler(
     )
     draft_posts = await cursor.to_list()
     # draft_posts = [draft_post.model_dump(mode='json') for draft_post in draft_posts]
-    print(draft_posts)
     # model -> json
     draft_posts = [draft_post.model_dump(mode="json") for draft_post in draft_posts]
     response = JSONResponse(content=draft_posts)

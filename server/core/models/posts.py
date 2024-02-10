@@ -20,8 +20,7 @@ class FacebookPostInfo(BaseModel):
 
 
 class OtherPostInfo(BaseModel):
-    # TODO: change type str to datetime when lib support
-    deadline: Optional[Union[str, None]] = None
+    deadline: Optional[Union[datetime.date, None]] = None
 
 
 # TODO: after create process: change title, insert to search engine, caching
@@ -56,7 +55,7 @@ class Posts(Document):
         validate_on_save = True
         # only use cache in user api
         use_cache = True if settings.ENV == ENVEnum.USER.value else False
-        cache_expiration_time = datetime.timedelta(seconds=60)
+        cache_expiration_time = datetime.timedelta(seconds=10)
         cache_capacity = 100
 
     ### Validate

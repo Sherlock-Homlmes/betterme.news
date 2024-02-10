@@ -3,7 +3,6 @@ from typing import Annotated, Union
 
 # libraries
 from fastapi import APIRouter, Depends, HTTPException
-from beanie.operators import Set
 
 # local
 from core.models import Posts, OtherPostInfo, Users, DraftPosts
@@ -64,6 +63,7 @@ async def get_crawler(
     return post_data
 
 
+# TODO: to /posts api
 @router.post(
     "/crawlers",
     tags=["Admin-backend-scrap"],
@@ -101,12 +101,11 @@ async def post_crawler(
     # )
     # TODO: fix html data -> fix this data
     if body.origin == OriginCrawlPagesEnum.IVOLUNTEER_VN:
-        other_info = OtherPostInfo()
-        if current_data.deadline:
-            other_info.deadline = current_data.deadline.strftime("%Y-%m-%d")
+        other_info = OtherPostInfo(deadline=current_data.deadline)
         post = Posts(
             # info
             created_at=now,
+            created_by=await Users.get(user["id"]),
             raw_data=None,
             # other service
             # facebook_post=facebook_post,
@@ -132,10 +131,11 @@ async def post_crawler(
     post.discord_post_id = discord_post_id
     await post.save()
     #
-    await draft_post_data.update(Set({DraftPosts.draft_data.id: str(post.id)}))
+    await draft_post_data.set({DraftPosts.draft_data.id: str(post.id)})
     return PostCrawlersResponse(id=str(post.id))
 
 
+# TODO: to /draftposts api
 @router.patch(
     "/crawlers/{post_name}",
     tags=["Admin-backend-scrap"],
@@ -144,7 +144,6 @@ async def post_crawler(
 async def patch_crawler(
     post_name: str,
     body: PatchCrawlersDataPayload,
-    user: Users = Depends(auth_handler.auth_wrapper),
 ):
     draft_post_data = await DraftPosts.find_one(
         DraftPosts.name == post_name,
@@ -161,7 +160,7 @@ async def patch_crawler(
     for key, value in original_update_fields.items():
         update_fields[f"draft_data.{key}"] = value
 
-    await draft_post_data.update(Set(update_fields))
+    await draft_post_data.set(update_fields)
     return
 
 
