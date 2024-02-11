@@ -48,15 +48,7 @@ async def get_discord_oauth(code: str, request: Request):
         except Exception:
             raise HTTPException(status_code=404, detail="Invalid code")
 
-    if int(discord_user["id"]) not in [
-        880359404036317215,
-        278423331026501633,
-        825342243833380875,
-        746355581043998811,
-    ]:
-        raise HTTPException(status_code=403, detail="Permission denied")
-
-    await Users.find_one(Users.discord_id == int(discord_user["id"])).upsert(
+    await Users.find_one(Users.discord_id == discord_user["id"]).upsert(
         Set(
             {
                 Users.email: discord_user["email"],
@@ -71,13 +63,13 @@ async def get_discord_oauth(code: str, request: Request):
             locale=discord_user["locale"],
             name=discord_user["username"],
             avatar_url=discord_user["avatar_url"],
-            discord_id=int(discord_user["id"]),
+            discord_id=discord_user["id"],
             last_logged_in_at=Time().now,
             created_at=Time().now,
-            roles=[UserRoleEnum.ADMIN],
+            roles=[UserRoleEnum.USER],
         ),
     )
-    user = await Users.find_one(Users.discord_id == int(discord_user["id"]))
+    user = await Users.find_one(Users.discord_id == discord_user["id"])
 
     user_info = user.get_info()
     token = auth_handler.encode_token(user_info)
