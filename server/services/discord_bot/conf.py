@@ -21,6 +21,20 @@ class Bot(commands.Bot):
     async def on_ready(self):
         global is_app_running, server_info
         await get_server_info()
+
+        #         channel = await server_info.guild.fetch_channel(891909866355048548)
+        #         message = await channel.send("""
+        # **Reaction để nhận thông tin mới nhất về các tin tức của Betterme.news**
+        # 💛: CLB-Tình nguyện
+        # 💚: Khóa học-Kĩ năng
+        # 💙: Học bổng
+        # 💜: Sự kiện-Cuộc thi
+        #         """)
+        #         await message.add_reaction("💛")
+        #         await message.add_reaction("💚")
+        #         await message.add_reaction("💙")
+        #         await message.add_reaction("💜")
+
         print(f"We have logged in as {self.user} news bot")
 
         if is_dev_env:

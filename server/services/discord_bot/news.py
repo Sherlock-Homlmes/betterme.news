@@ -5,6 +5,7 @@ import discord
 
 # local
 from .conf import server_info
+from core.conf import settings, ENVEnum
 from core.schemas.admin import GetCrawlersIvolunteerDataResponse, IvolunteerPageTagsEnum
 from services.text_convertion import gen_slug_from_title
 
@@ -33,6 +34,14 @@ test_map_tags = {
     IvolunteerPageTagsEnum.EVENT: 1195438832846389280,
 }
 
+map_tag_reactions = {
+    IvolunteerPageTagsEnum.CLUB: "💛",
+    IvolunteerPageTagsEnum.VOLUNTEER: "💛",
+    IvolunteerPageTagsEnum.COURSE: "💚",
+    IvolunteerPageTagsEnum.SCHORLARSHIP: "💙",
+    IvolunteerPageTagsEnum.EVENT: "💜",
+}
+
 
 async def send_news(
     data: GetCrawlersIvolunteerDataResponse,
@@ -45,15 +54,12 @@ async def send_news(
         if is_testing
         else [map_tags[tag] for tag in data.tags]
     )
-    applied_tags = []
-    if is_testing:
-        for x in server_info.test_news_channel.available_tags:
-            if x.id in tags:
-                applied_tags.append(x)
-    else:
-        for x in server_info.news_channel.available_tags:
-            if x.id in tags:
-                applied_tags.append(x)
+    avaiable_tags = (
+        server_info.test_news_channel.available_tags
+        if is_testing
+        else server_info.news_channel.available_tags
+    )
+    applied_tags = [x for x in avaiable_tags if x.id in tags]
 
     embed = discord.Embed(
         title=data.title,
@@ -84,6 +90,8 @@ async def send_news(
         )
         # add emoji reaction
         await post.message.add_reaction("❤️")
+        if settings.ENV == ENVEnum.ADMIN.value:
+            await send_noti_to_subcribers(data, embed)
 
     return post.thread.id
 
@@ -96,3 +104,28 @@ async def delete_news(
         await post.delete()
     except discord.errors.NotFound:
         print("Thread not exist")
+
+
+async def send_noti_to_subcribers(data, embed):
+    tags = data.tags
+    file = discord.File(f"scrap/data/media/{data.banner}", filename=data.banner)
+
+    channel = await server_info.guild.fetch_channel(891909866355048548)
+    message = await channel.fetch_message(1206679624059199520)
+    noti_users = []
+    for reaction in message.reactions:
+        noti_users.extend(
+            [
+                user
+                async for user in reaction.users()
+                for tag in tags
+                if map_tag_reactions[tag] == reaction.emoji and not user.bot
+            ]
+        )
+
+    # TODO: refactor this for handle large amount of users
+    for user in noti_users:
+        try:
+            await user.send(embed=embed, file=file, content=f"<@{user.id}>")
+        except discord.errors.HTTPException:
+            pass
