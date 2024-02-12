@@ -108,7 +108,6 @@ async def delete_news(
 
 async def send_noti_to_subcribers(data, embed):
     tags = data.tags
-    file = discord.File(f"scrap/data/media/{data.banner}", filename=data.banner)
 
     channel = await server_info.guild.fetch_channel(891909866355048548)
     message = await channel.fetch_message(1206679624059199520)
@@ -126,6 +125,7 @@ async def send_noti_to_subcribers(data, embed):
     # TODO: refactor this for handle large amount of users
     for user in noti_users:
         try:
+            file = discord.File(f"scrap/data/media/{data.banner}", filename=data.banner)
             await user.send(embed=embed, file=file, content=f"<@{user.id}>")
         except discord.errors.HTTPException:
             pass
