@@ -44,13 +44,6 @@ async def get_crawler(
     params: Annotated[dict, Depends(CrawlersDataParams)],
     user: Users = Depends(auth_handler.auth_wrapper),
 ) -> Union[GetCrawlersIvolunteerDataResponse, GetCrawlersKhoahocTvDataResponse]:
-    draft_post_data = await DraftPosts.find_one(
-        DraftPosts.name == post_name,
-        DraftPosts.source == params.origin,
-    )
-    if draft_post_data:
-        return draft_post_data.draft_data
-
     post_data = scrap_post_data(origin=params.origin, post_name=post_name)
     if post_data.deadline:
         post_data.deadline = post_data.deadline.strftime("%Y-%m-%d")
@@ -196,3 +189,19 @@ async def post_crawler_preview(
         pass
 
     return
+
+
+# import os
+# def abc():
+#     # To check server restart or not
+#     directory_path = "scrap/data/general"
+#     contents = os.listdir(directory_path)
+#     is_server_restarted = len(contents) == 1
+
+#     if params.use_cache or not is_server_restarted:
+#         draft_post_data = await DraftPosts.find_one(
+#             DraftPosts.name == post_name,
+#             DraftPosts.source == params.origin,
+#         )
+#         if draft_post_data:
+#             return draft_post_data.draft_data

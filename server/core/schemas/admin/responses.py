@@ -26,6 +26,7 @@ class CrawlerListParams(BaseModel):
 
 class CrawlersDataParams(BaseModel):
     origin: str
+    use_cache: bool = True
 
 
 # Payloads
