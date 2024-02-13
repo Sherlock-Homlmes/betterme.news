@@ -24,6 +24,7 @@
         <v-textarea label="Description" variant="solo-filled" v-model="postInfo.description"></v-textarea>
         <v-card>
             <editor
+                api-key='xidtifz02mui7lrdh7iq49zlrykxh4o1lqbdcrxy9zsfpnwi'
                 :init="{
                     height: 1000,
                     menubar: false,
