@@ -22,11 +22,11 @@
             const data = await response.json()
             if(data?.token){
                 // set auth to localstorage
-                localStorage.clear();
                 localStorage.setItem("Authorization", data.token);
                 // check if user is accessable or not
-                const response = await fetchWithAuth(`${fetchLink}/auth/self`)
-                if(response.ok) isAuth = true
+                // const response = await fetchWithAuth(`${fetchLink}/auth/self`)
+                // if(response.ok) isAuth = true
+                isAuth = true
             }
         }
         // Case 1: if auth: redirect to posts page
