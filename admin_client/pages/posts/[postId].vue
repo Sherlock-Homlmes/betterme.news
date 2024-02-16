@@ -119,7 +119,10 @@
             method: 'PATCH',
             body: JSON.stringify(changeTracker.getChange(postInfo.value))
         })
-        if(response.ok) window.alert('Update success')
+        if(response.ok) {
+            window.alert('Update success')
+            changeTracker.track(postInfo.value)
+        }
         else window.alert('UPDATE FAIL')
         updating.value = false
     }
