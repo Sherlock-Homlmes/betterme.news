@@ -121,6 +121,8 @@ async def send_noti_to_subcribers(data, embed):
                 if map_tag_reactions[tag] == reaction.emoji and not user.bot
             ]
         )
+    # remove duplicate from list
+    noti_users = list(set(noti_users))
 
     # TODO: refactor this for handle large amount of users
     for user in noti_users:
