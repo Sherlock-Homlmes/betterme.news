@@ -29,6 +29,12 @@ class CrawlersDataParams(BaseModel):
     use_cache: bool = True
 
 
+class CrawlersListDataParams(BaseModel):
+    origin: str
+    page: int = 1
+    content_type: str
+
+
 # Payloads
 class PostCrawlersDataPayload(BaseModel):
     origin: str

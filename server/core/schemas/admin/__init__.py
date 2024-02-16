@@ -13,6 +13,11 @@ class CrawlersDataParams(CrawlersDataParams):
     origin: OriginCrawlPagesEnum
 
 
+class CrawlersListDataParams(CrawlersListDataParams):
+    origin: OriginCrawlPagesEnum
+    content_type: IvolunteerPageContentTypeEnum
+
+
 class CrawlerListParams(CrawlerListParams):
     origin: OriginCrawlPagesEnum
 

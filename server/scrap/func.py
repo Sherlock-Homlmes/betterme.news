@@ -1,4 +1,6 @@
+# TODO: refactor to OOP
 # default
+from typing import List
 import json
 import os
 import io
@@ -12,6 +14,7 @@ from fastapi import HTTPException
 from core.schemas.admin import (
     # payload
     PatchCrawlersDataPayload,
+    CrawlersListDataParams,
     # response
     GetCrawlersKhoahocTvDataResponse,
     GetCrawlersIvolunteerDataResponse,
@@ -21,16 +24,39 @@ from core.schemas.admin import (
 )
 
 
-def check_if_crawl_success(post_name: str) -> bool:
-    if os.path.exists(f"scrap/data/general/{post_name}.json"):
+def check_if_crawl_post_success(post_name: str) -> bool:
+    if os.path.exists(f"scrap/data/post/{post_name}.json"):
         return True
     return False
 
 
+def check_if_crawl_page_success(params: CrawlersListDataParams) -> bool:
+    if os.path.exists(
+        f"scrap/data/page/{params.origin.value}-{params.content_type.value}-{params.page}.json"
+    ):
+        return True
+    return False
+
+
+# page
+def scrap_page_data(params: CrawlersListDataParams) -> List[str]:
+    os.system(
+        f"python3 scrap/{params.origin.value}/__init__.py {params.content_type.value} {params.page}"
+    )
+    if check_if_crawl_page_success(params):
+        with open(
+            f"scrap/data/page/{params.origin.value}-{params.content_type.value}-{params.page}.json",
+            encoding="utf-8",
+        ) as general_json_file:
+            return json.load(general_json_file)
+    return []
+
+
+# post
 def get_scrap_post_data(
     origin: OriginCrawlPagesEnum, post_name: str
 ) -> Union[GetCrawlersIvolunteerDataResponse, GetCrawlersKhoahocTvDataResponse]:
-    with open(f"scrap/data/general/{post_name}.json", encoding="utf-8") as general_json_file:
+    with open(f"scrap/data/post/{post_name}.json", encoding="utf-8") as general_json_file:
         general_data = json.load(general_json_file)
 
     if origin == OriginCrawlPagesEnum.IVOLUNTEER_VN:
@@ -50,11 +76,9 @@ def scrap_post_data(
     # crawl post data
     os.system(f"python3 scrap/{origin.value}/__init__.py {post_name}")
     # check if
-    if check_if_crawl_success(post_name=post_name):
+    if check_if_crawl_post_success(post_name=post_name):
         if origin == OriginCrawlPagesEnum.IVOLUNTEER_VN:
-            with open(
-                f"scrap/data/general/{post_name}.json", encoding="utf-8"
-            ) as general_json_file:
+            with open(f"scrap/data/post/{post_name}.json", encoding="utf-8") as general_json_file:
                 general_data = json.load(general_json_file)
             image_process(origin=origin, image=general_data["banner"])
         return get_scrap_post_data(origin=origin, post_name=post_name)
@@ -64,15 +88,15 @@ def scrap_post_data(
 def srap_post_data_find_or_create(
     origin: OriginCrawlPagesEnum, post_name: str
 ) -> Union[GetCrawlersIvolunteerDataResponse, GetCrawlersKhoahocTvDataResponse]:
-    if check_if_crawl_success(post_name=post_name):
+    if check_if_crawl_post_success(post_name=post_name):
         return get_scrap_post_data(origin=origin, post_name=post_name)
     return scrap_post_data(origin=origin, post_name=post_name)
 
 
 def save_crawler_data(post_name: str, data: PatchCrawlersDataPayload) -> None:
-    if check_if_crawl_success(post_name=post_name):
+    if check_if_crawl_post_success(post_name=post_name):
         # open file to get old data
-        with open(f"scrap/data/general/{post_name}.json", encoding="utf-8") as general_json_file:
+        with open(f"scrap/data/post/{post_name}.json", encoding="utf-8") as general_json_file:
             general_data = json.load(general_json_file)
 
         # update if key match
@@ -87,9 +111,7 @@ def save_crawler_data(post_name: str, data: PatchCrawlersDataPayload) -> None:
                     general_data[key] = update_data[key]
 
         # write to js file
-        with io.open(
-            f"scrap/data/general/{post_name}.json", "w", encoding="utf8"
-        ) as html_json_file:
+        with io.open(f"scrap/data/post/{post_name}.json", "w", encoding="utf8") as html_json_file:
             json.dump(general_data, html_json_file, ensure_ascii=False, indent=4)
 
     else:

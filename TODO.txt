@@ -1,9 +1,6 @@
-- API: store original data
 ---- MVP ----
-- UI: admin validate
 - UI + SEO: RSS
 - API + UI: post to facebook
-- UI: Deadline in post, post list
 - API + UI: admin self create new post
 - SE + API + UI: add search engine
 - UX/UI + API: Redesign the crawler flow

@@ -66,7 +66,7 @@ def ivolunteer_crawl(url: str):
 
             # write to js file
             with io.open(
-                f"{DATA_DIR}/general/{file_name}.json", "w", encoding="utf8"
+                f"{DATA_DIR}/post/{file_name}.json", "w", encoding="utf8"
             ) as html_json_file:
                 json.dump(general_data, html_json_file, ensure_ascii=False, indent=4)
 
@@ -91,9 +91,13 @@ def ivolunteer_page_crawl(content_type: str, page_number: int):
             data.extend(response.css(".mvp-widget-feat1-cont").css("a::attr(href)").getall())
             data.extend(response.css(".mvp-main-blog-cont").css("a::attr(href)").getall())
 
+            # remove ivolunteer post
+            data = [x.replace("https://ivolunteer.vn/", "") for x in data]
+            data = [x for x in data if "ivolunteer" not in x]
+
             # write to js file
             with io.open(
-                f"{DATA_DIR}/pages/{content_type}-{page_number}.json",
+                f"{DATA_DIR}/page/ivolunteer_vn-{content_type}-{page_number}.json",
                 "w",
                 encoding="utf8",
             ) as json_file:

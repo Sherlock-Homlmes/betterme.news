@@ -27,6 +27,15 @@ class IvolunteerPageTagsEnum(Enum):
     EVENT = "Sự kiện-Cuộc thi"
 
 
+class IvolunteerPageContentTypeEnum(Enum):
+    CLUB = "tinh-nguyen"
+    VOLUNTEER = "tinh-nguyen"
+    COURSE = "khoa-hoc"
+    # SKILL = "Kĩ năng"
+    SCHORLARSHIP = "hoc-bong"
+    EVENT = "su-kien"
+
+
 class KhoahocTvPageTagsEnum(Enum):
     SOMETHING1 = "something1"
     SOMETHING2 = "something2"

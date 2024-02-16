@@ -153,8 +153,11 @@ cython_debug/
 #.idea/
 
 others/data/
-server/scrap/data/general/*
+server/scrap/data/post/*
+server/scrap/data/page/*
 server/scrap/data/media/*
+!server/scrap/data/post/__init__.json
+!server/scrap/data/page/__init__.json
 
 # ---------- Client ----------
 # build output

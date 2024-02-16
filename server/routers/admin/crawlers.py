@@ -1,5 +1,5 @@
 # default
-from typing import Annotated, Union
+from typing import Annotated, Union, List
 
 # libraries
 from fastapi import APIRouter, Depends, HTTPException
@@ -9,6 +9,7 @@ from core.models import Posts, OtherPostInfo, Users, DraftPosts
 from core.schemas.admin import (
     # params
     CrawlersDataParams,
+    CrawlersListDataParams,
     # payload
     PostCrawlersDataPayload,
     PatchCrawlersDataPayload,
@@ -23,7 +24,7 @@ from core.schemas.admin import (
     CrawlerDataResponseTypeEnum,
 )
 from routers.auth import auth_handler
-from scrap.func import scrap_post_data
+from scrap.func import scrap_post_data, scrap_page_data
 from services.discord_bot.news import send_news
 from services.facebook_bot.func import post_to_fb
 from services.tebi import upload_image
@@ -35,6 +36,17 @@ router = APIRouter(
 
 
 @router.get(
+    "/crawlers",
+    tags=["Admin-backend-scrap"],
+    status_code=ResponseStatusEnum.OK.value,
+)
+async def get_crawler_list(
+    params: Annotated[dict, Depends(CrawlersListDataParams)],
+) -> List[str]:
+    return scrap_page_data(params)
+
+
+@router.get(
     "/crawlers/{post_name}",
     tags=["Admin-backend-scrap"],
     status_code=ResponseStatusEnum.OK.value,
@@ -42,7 +54,6 @@ router = APIRouter(
 async def get_crawler(
     post_name: str,
     params: Annotated[dict, Depends(CrawlersDataParams)],
-    user: Users = Depends(auth_handler.auth_wrapper),
 ) -> Union[GetCrawlersIvolunteerDataResponse, GetCrawlersKhoahocTvDataResponse]:
     post_data = scrap_post_data(origin=params.origin, post_name=post_name)
     if post_data.deadline:
@@ -194,7 +205,7 @@ async def post_crawler_preview(
 # import os
 # def abc():
 #     # To check server restart or not
-#     directory_path = "scrap/data/general"
+#     directory_path = "scrap/data/post"
 #     contents = os.listdir(directory_path)
 #     is_server_restarted = len(contents) == 1
 
