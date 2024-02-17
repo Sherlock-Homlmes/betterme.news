@@ -3,17 +3,14 @@
   <NuxtLayout name="default">
     <center class="mt-5 mb-15">
         <h1>Manage posts</h1>
+        <div class="d-flex justify-center align-center w-25">
+            <v-btn class="ml-2" @click="onClickCreateNewPost" :disabled="true">Create new post(TODO...)</v-btn>
+        </div>
   <v-data-table
     :headers="headers"
     :items="posts"
     :loading="loading"
   >
-    <template v-slot:top>
-      <v-toolbar flat >
-        <v-spacer></v-spacer>
-        <v-btn @click="onClickCreateNewPost">Create new post</v-btn>
-      </v-toolbar>
-    </template>
     <template v-slot:item.title="{ item }">
         <a
             :href="`${clientLink}/posts/${item.id}`"

@@ -11,7 +11,7 @@
         ></v-select>
         <div class="d-flex justify-center align-center w-25">
             <v-text-field label="Post url" v-model="newPostUrl" variant="outlined" hide-details></v-text-field>
-            <v-btn class="ml-2" @click="onClickCreateNewPost">Create</v-btn>
+            <v-btn class="ml-2" @click="onClickCreateNewPost">Crawl</v-btn>
         </div>
         <v-data-table
             items-per-page="100"
@@ -23,7 +23,7 @@
             </template>
             <template v-slot:item.url="{ item }">
                 <a
-                    :href="`/crawlers/ivolunteer_vn/${item}`"
+                    :href="`/crawlers/ivolunteer_vn/${item}?content_type=${crawlContentType}`"
                     target="_blank"
                 >
                     {{ item }}
