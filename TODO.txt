@@ -1,13 +1,12 @@
----- MVP ----
+---- MVP ----(DONE)
 - API: disable API on user portal
-- API: crawler exclude exist post
 - API: check if post image not exist
 - API + UI: admin self create new post
 - API + UI: post to facebook
 - UI: prettier
 - UI + SEO: RSS
 - SE + API + UI: add search engine
----- PHASE 1 ----
+---- PHASE 1 ----(COMING)
 - UX/UI + API: Redesign the crawler flow
 - API + UI: crawler get more information
 - API: pytest

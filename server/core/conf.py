@@ -55,13 +55,16 @@ class Settings(BaseSettings):
 
 settings = Settings()
 is_dev_env = settings.ENV == ENVEnum.DEV.value
+is_user_portal = settings.ENV == ENVEnum.USER.value
+is_admin_portal = settings.ENV == ENVEnum.ADMIN.value
 
 # basic config
 app = FastAPI(
     title="BETTERME.NEWS API",
     version="0.1.0",
-    docs_url="/api/docs",
-    openapi_url="/openapi.json",
+    # disable docs in user portal
+    docs_url="/api/docs" if not is_user_portal else None,
+    openapi_url="/openapi.json" if not is_user_portal else None,
 )
 
 allow_origins = (

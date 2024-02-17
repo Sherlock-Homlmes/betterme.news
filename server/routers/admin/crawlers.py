@@ -3,6 +3,7 @@ from typing import Annotated, Union, List
 
 # libraries
 from fastapi import APIRouter, Depends, HTTPException
+from pydantic import BaseModel
 
 # local
 from core.models import Posts, OtherPostInfo, Users, DraftPosts
@@ -35,6 +36,10 @@ router = APIRouter(
 )
 
 
+class DraftPostNameProjection(BaseModel):
+    name: str
+
+
 @router.get(
     "/crawlers",
     tags=["Admin-backend-scrap"],
@@ -43,7 +48,14 @@ router = APIRouter(
 async def get_crawler_list(
     params: Annotated[dict, Depends(CrawlersListDataParams)],
 ) -> List[str]:
-    return scrap_page_data(params)
+    # crawler
+    page_data = scrap_page_data(params)
+    # get exist crawler
+    draft_posts = await DraftPosts.find().project(DraftPostNameProjection).to_list()
+    draft_post_names = [x.name for x in draft_posts]
+    # exclude exist crawler from return data
+    page_data = [x for x in page_data if x not in draft_post_names]
+    return page_data
 
 
 @router.get(
@@ -106,7 +118,8 @@ async def post_crawler(
     # TODO: fix html data -> fix this data
     if body.origin == OriginCrawlPagesEnum.IVOLUNTEER_VN:
         # TODO: remove date_to_str when lib support
-        other_info = OtherPostInfo(deadline=date_to_str(current_data.deadline))
+        other_info = OtherPostInfo()
+        other_info.deadline = date_to_str(current_data.deadline) if current_data.deadline else None
         post = Posts(
             # info
             created_at=now,

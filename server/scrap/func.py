@@ -39,6 +39,7 @@ def check_if_crawl_page_success(params: CrawlersListDataParams) -> bool:
 
 
 # page
+# TODO: add cache to this func
 def scrap_page_data(params: CrawlersListDataParams) -> List[str]:
     os.system(
         f"python3 scrap/{params.origin.value}/__init__.py {params.content_type.value} {params.page}"

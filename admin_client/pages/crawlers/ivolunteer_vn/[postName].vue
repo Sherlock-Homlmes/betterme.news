@@ -146,7 +146,7 @@
     // to store - component
     // facebook preview
     // vue use
-    import { ref, onMounted, watch, computed, getCurrentInstance } from 'vue';
+    import { ref, onMounted, watch, computed, getCurrentInstance, createTextVNode } from 'vue';
     import { useRuntimeConfig } from 'nuxt/app';
     import { changeTracker } from '~/src/func'
     import fetchWithAuth from '~/src/common/betterFetch'
@@ -167,9 +167,12 @@
     const isFacebookPreviewed = ref<Boolean>(false)
     const isHtmlPreviewed = ref<Boolean>(false)
     const isDiscordPreviewed = ref<Boolean>(false)
+    const created = ref<Boolean>(false)
     // TODO: add conditions
     const canSave = computed<Boolean>(
         ()=>
+        !created.value &&
+        !updating.value &&
         pageInfo.value &&
         !pageInfo.value.id &&
         pageInfo.value.title.length &&
@@ -231,22 +234,28 @@
         if(!pageInfo.value) return
 
         updating.value = true
+        created.value = true
         await onSaveDraft()
         const body: PostCrawlersDataPayload = {
             origin: OriginCrawlPagesEnum.IVOLUNTEER_VN,
             post_name: link.value.toString()
         }
-        const result = await fetchWithAuth(`${fetchLink}/admin/crawlers`, {
-            method: 'POST',
-            body: JSON.stringify(body)
-        })
-        if(!result.ok) window.alert('CREATE FAIL')
-        else{
+        try{
+            const result = await fetchWithAuth(`${fetchLink}/admin/crawlers`, {
+                method: 'POST',
+                body: JSON.stringify(body)
+            })
             const response_data = await result.json() as PostCrawlersResponse
             pageInfo.value.id = response_data["id"]
             snackbar.value = true
         }
-        updating.value = false
+        catch{
+            created.value = false
+            window.alert('CREATE FAIL')
+        }
+        finally{
+            updating.value = false
+        }
     }
 
     const onDiscordPreview = async () => {
