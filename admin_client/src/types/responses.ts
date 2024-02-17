@@ -11,6 +11,12 @@ export interface CrawlerListParams {
 }
 export interface CrawlersDataParams {
   origin: string;
+  use_cache?: boolean;
+}
+export interface CrawlersListDataParams {
+  origin: string;
+  page?: number;
+  content_type: string;
 }
 export interface GetCrawlersIvolunteerDataResponse {
   id?: string;
@@ -31,8 +37,19 @@ export interface GetCrawlersKhoahocTvDataResponse {
   content: string;
   keywords: string[];
 }
+export interface GetDraftPostListResponse {
+  id: string;
+  source: string;
+  name: string;
+  original_data: GetCrawlersIvolunteerDataResponse;
+  draft_data: GetCrawlersIvolunteerDataResponse;
+  post?: string;
+}
 export interface GetTagsParams {
   origin: string;
+}
+export interface OtherPostInfo {
+  deadline?: string;
 }
 export interface PatchBotPayload {
   action: string;
@@ -42,16 +59,28 @@ export interface PatchCrawlersDataPayload {
   description?: string;
   banner?: string;
   content?: string;
-  tags?: string[];
-  keywords?: string[];
+  /**
+   * @minItems 1
+   */
+  tags?: [string, ...string[]];
+  /**
+   * @minItems 1
+   */
+  keywords?: [string, ...string[]];
 }
 export interface PatchPostPayload {
   title?: string;
   description?: string;
   banner?: string;
   content?: string;
-  tags?: string[];
-  keywords?: string[];
+  /**
+   * @minItems 1
+   */
+  tags?: [string, ...string[]];
+  /**
+   * @minItems 1
+   */
+  keywords?: [string, ...string[]];
 }
 export interface PostCrawlersDataPayload {
   origin: string;
@@ -86,6 +115,9 @@ export interface GetPostListResponse {
   tags: string[];
   keywords: string[];
   view: number;
+}
+export interface GetPostParams {
+  increase_view?: boolean;
 }
 export interface GetPostResponse {
   created_at: string;

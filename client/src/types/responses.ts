@@ -21,6 +21,9 @@ export interface GetPostListResponse {
   keywords: string[];
   view: number;
 }
+export interface GetPostParams {
+  increase_view?: boolean;
+}
 export interface GetPostResponse {
   created_at: string;
   title: string;

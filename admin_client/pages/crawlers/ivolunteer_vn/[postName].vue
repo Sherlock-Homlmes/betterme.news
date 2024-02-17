@@ -173,6 +173,8 @@
         pageInfo.value &&
         !pageInfo.value.id &&
         pageInfo.value.title.length &&
+        pageInfo.value.description.length &&
+        pageInfo.value.content.length &&
         pageInfo.value.tags.length
     )
     const canCreatePost = computed<Boolean>(
@@ -183,17 +185,24 @@
 
 
     const getPageInfo = async () => {
-        const postResult = await fetchWithAuth(
-            `${fetchLink}/admin/crawlers/${link.value}?origin=ivolunteer_vn`
-        )
-        pageInfo.value = await postResult.json() as GetCrawlersIvolunteerDataResponse
-        if(pageInfo.value.id) vm.$router.push(`/posts/${pageInfo.value.id}`)
-        const tagsResult = await fetch(
-            `${fetchLink}/tags?origin=ivolunteer_vn`
-        )
-        tags.value = await tagsResult.json()
-
-        changeTracker.track(pageInfo.value)
+        try{
+            const postResult = await fetchWithAuth(
+                `${fetchLink}/admin/crawlers/${link.value}?origin=ivolunteer_vn`
+            )
+            pageInfo.value = await postResult.json() as GetCrawlersIvolunteerDataResponse
+            if(pageInfo.value.id) vm.$router.push(`/posts/${pageInfo.value.id}`)
+            const tagsResult = await fetch(
+                `${fetchLink}/tags?origin=ivolunteer_vn`
+            )
+            tags.value = await tagsResult.json()
+            changeTracker.track(pageInfo.value)
+        }
+        catch{
+            window.alert("Crawler fail")
+        }
+        finally{
+            // pass
+        }
     }
 
     const onSaveDraft = async (showAlert: boolean = false) => {

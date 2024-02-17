@@ -83,17 +83,11 @@ def ivolunteer_page_crawl(content_type: str, page_number: int):
         start_urls = [f"{PAGE_URL}/{content_type}/page/{page_number}"]
 
         def parse(self, response):
-            data = response.css(".mvp-feat1-mid-wrap").css("a::attr(href)").getall()
-            data.extend(response.css(".mvp-feat1-left-wrap").css("a::attr(href)").getall())
-            temp_data = response.css(".mvp-feat1-right-wrap").css("a::attr(href)").getall()
-            temp_data.pop()
-            data.extend(temp_data)
-            data.extend(response.css(".mvp-widget-feat1-cont").css("a::attr(href)").getall())
-            data.extend(response.css(".mvp-main-blog-cont").css("a::attr(href)").getall())
-
+            data = response.css(".mvp-feat1-main").css("a::attr(href)").getall()
+            data.extend(response.css(".mvp-widget-feat1-wrap").css("a::attr(href)").getall())
             # remove ivolunteer post
             data = [x.replace("https://ivolunteer.vn/", "") for x in data]
-            data = [x for x in data if "ivolunteer" not in x]
+            data = [x for x in data if "ivolunteer" not in x and "ngo-recruitment" not in x]
 
             # write to js file
             with io.open(

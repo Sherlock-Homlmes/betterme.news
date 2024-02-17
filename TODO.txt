@@ -1,12 +1,22 @@
 ---- MVP ----
-- UI + SEO: RSS
-- API + UI: post to facebook
+- API: disable API on user portal
+- API: crawler exclude exist post
+- API: check if post image not exist
 - API + UI: admin self create new post
-- SE + API + UI: add search engine
-- UX/UI + API: Redesign the crawler flow
-- UI: prettier
 - API + UI: post to facebook
+- UI: prettier
+- UI + SEO: RSS
+- SE + API + UI: add search engine
+---- PHASE 1 ----
+- UX/UI + API: Redesign the crawler flow
+- API + UI: crawler get more information
+- API: pytest
+- UI: cypress
+---- PHASE 2 ----
 - API + UI: Emphasis post for SEO: Show first in post + Ping every 5'
 - API: post to Linkedin
+
+
+---- BACK LOG ----
 - API: refactor scrap code -> UI: TOC -> UI: Custom text editor
 - MOBILE

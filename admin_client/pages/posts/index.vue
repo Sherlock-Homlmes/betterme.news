@@ -6,17 +6,21 @@
   <v-data-table
     :headers="headers"
     :items="posts"
-    :sort-by="[{ key: 'calories', order: 'asc' }]"
+    :loading="loading"
   >
     <template v-slot:top>
       <v-toolbar flat >
         <v-spacer></v-spacer>
-        <v-text-field class="w-25" label="Post url" v-model="newPostUrl"></v-text-field>
         <v-btn @click="onClickCreateNewPost">Create new post</v-btn>
       </v-toolbar>
     </template>
     <template v-slot:item.title="{ item }">
-        <a :href="`${clientLink}/posts/${item.id}`">{{ item.title }}</a>
+        <a
+            :href="`${clientLink}/posts/${item.id}`"
+            target="_blank"
+        >
+            {{ item.title }}
+        </a>
     </template>
     <template v-slot:item.banner_img="{ item }">
         <v-img :src="item.banner_img" :alt="item.name" height="150px"></v-img>
@@ -33,18 +37,18 @@
                 mdi-pencil
             </v-icon>
         </a>
-        <v-icon
+        <!-- <v-icon
             size="small"
             @click="onClickDeletePost(item)"
         >
             mdi-delete
-        </v-icon>
+        </v-icon> -->
 
         <!-- Not work -->
     </template>
   </v-data-table>
 
-    <v-dialog v-model="deleteDialog" max-width="500px">
+    <!-- <v-dialog v-model="deleteDialog" max-width="500px">
         <v-card>
         <v-card-title class="text-h5">Are you sure you want to delete this post?</v-card-title>
         <v-card-text class="text-h5">Please type: "{{ deletePost.title }}" to confirm</v-card-text>
@@ -55,7 +59,7 @@
             <v-btn color="blue-darken-1" variant="text" @click="onDeletePostConfirm(deletePost)" :disabled="confirmDeletePostValue != deletePost.title">OK</v-btn>
         </v-card-actions>
         </v-card>
-    </v-dialog>
+    </v-dialog> -->
 
     </center>
     </NuxtLayout>
@@ -89,33 +93,37 @@
     const deleteDialog = ref<boolean>(false)
     const confirmDeletePostValue = ref<string>('')
     const deletePost = ref<GetPostListResponse>()
+    const loading = ref(false)
 
     const getPostList = async () => {
+        loading.value = true
         const postsResult = await fetch(
             `${fetchLink}/posts?per_page=10000`
 
         )
         posts.value = await postsResult.json() as GetPostListResponse[]
+        loading.value = false
     }
 
-    const onClickDeletePost = (post: GetPostListResponse) => {
-        deletePost.value = post
-        deleteDialog.value = true
-    }
-    const onDeletePostConfirm = async (deletePost: GetPostListResponse) => {
-        try{
-            await fetchWithAuth(
-                `${fetchLink}/admin/posts/${deletePost.id}`,{method: 'DELETE'}
-            )
-            posts.value = posts.value.filter(post => post.id !== deletePost.id)
-        }
-        catch(err){
-            console.error(err)
-        }
-        finally{
-            deleteDialog.value = false
-        }
-    }
+    // const onClickDeletePost = (post: GetPostListResponse) => {
+    //     deletePost.value = post
+    //     deleteDialog.value = true
+    // }
+
+    // const onDeletePostConfirm = async (deletePost: GetPostListResponse) => {
+    //     try{
+    //         await fetchWithAuth(
+    //             `${fetchLink}/admin/posts/${deletePost.id}`,{method: 'DELETE'}
+    //         )
+    //         posts.value = posts.value.filter(post => post.id !== deletePost.id)
+    //     }
+    //     catch(err){
+    //         console.error(err)
+    //     }
+    //     finally{
+    //         deleteDialog.value = false
+    //     }
+    // }
 
     const onClickCreateNewPost = () => {
         if(newPostUrl.value === '') return
