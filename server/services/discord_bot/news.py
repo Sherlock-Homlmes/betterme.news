@@ -4,8 +4,7 @@
 import discord
 
 # local
-from .conf import server_info
-from core.conf import settings, ENVEnum
+from .conf import server_info, is_dev_env
 from core.schemas.admin import GetCrawlersIvolunteerDataResponse, IvolunteerPageTagsEnum
 from services.text_convertion import gen_slug_from_title
 
@@ -43,6 +42,31 @@ map_tag_reactions = {
 }
 
 
+def create_embed(
+    data: GetCrawlersIvolunteerDataResponse,
+    is_testing: bool = True,
+    post_id: int = None,
+):
+    embed = discord.Embed(
+        title=data.title,
+        color=discord.Colour.yellow(),
+        description=f"_{data.description}_",
+    )
+    # from yyyy-mm-dd -> dd/mm/yyy
+    deadline = "ASAP" if data.deadline is None else data.deadline.strftime("%d/%m/%Y")
+    embed.add_field(name="Deadline", value=deadline, inline=False)
+
+    # TODO: post name
+    if is_testing is False and post_id is not None:
+        embed.add_field(
+            name="Xem thêm",
+            value=f"https://betterme.news/posts/{gen_slug_from_title(name=data.title)}_{post_id}",
+            inline=False,
+        )
+
+    return embed
+
+
 async def send_news(
     data: GetCrawlersIvolunteerDataResponse,
     is_testing: bool = True,
@@ -61,22 +85,7 @@ async def send_news(
     )
     applied_tags = [x for x in avaiable_tags if x.id in tags]
 
-    embed = discord.Embed(
-        title=data.title,
-        color=discord.Colour.yellow(),
-        description=f"_{data.description}_",
-    )
-    # from yyyy-mm-dd -> dd/mm/yyy
-    deadline = "ASAP" if data.deadline is None else data.deadline.strftime("%d/%m/%Y")
-    embed.add_field(name="Deadline", value=deadline, inline=False)
-
-    # TODO: post name
-    if is_testing is False and post_id is not None:
-        embed.add_field(
-            name="Xem thêm",
-            value=f"https://betterme.news/posts/{gen_slug_from_title(name=data.title)}_{post_id}",
-            inline=False,
-        )
+    embed = create_embed(data, is_testing, post_id)
     file = discord.File(f"scrap/data/media/{data.banner}", filename=data.banner)
 
     post: discord.Thread = None
@@ -90,8 +99,6 @@ async def send_news(
         )
         # add emoji reaction
         await post.message.add_reaction("❤️")
-        if settings.ENV == ENVEnum.ADMIN.value:
-            await send_noti_to_subcribers(data, embed)
 
     return post.thread.id
 
@@ -106,11 +113,17 @@ async def delete_news(
         print("Thread not exist")
 
 
-async def send_noti_to_subcribers(data, embed):
+async def send_noti_to_subcribers(data, is_testing, post_id):
+    if is_testing:
+        return
     tags = data.tags
 
-    channel = await server_info.guild.fetch_channel(891909866355048548)
-    message = await channel.fetch_message(1206679624059199520)
+    channel = await server_info.guild.fetch_channel(
+        1178003717702811769 if is_dev_env else 891909866355048548
+    )
+    message = await channel.fetch_message(
+        1208698140371197962 if is_dev_env else 1206679624059199520
+    )
     noti_users = []
     for reaction in message.reactions:
         noti_users.extend(
@@ -123,6 +136,7 @@ async def send_noti_to_subcribers(data, embed):
         )
     # remove duplicate from list
     noti_users = list(set(noti_users))
+    embed = create_embed(data, is_testing, post_id)
 
     # TODO: refactor this for handle large amount of users
     for user in noti_users:

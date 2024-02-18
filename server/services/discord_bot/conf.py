@@ -22,7 +22,7 @@ class Bot(commands.Bot):
         global is_app_running, server_info
         await get_server_info()
 
-        #         channel = await server_info.guild.fetch_channel(891909866355048548)
+        #         channel = await server_info.guild.fetch_channel(1178003717702811769 if is_dev_env else 891909866355048548)
         #         message = await channel.send("""
         # **Reaction để nhận thông tin mới nhất về các tin tức của Betterme.news**
         # 💛: CLB-Tình nguyện

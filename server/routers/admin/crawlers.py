@@ -2,7 +2,7 @@
 from typing import Annotated, Union, List
 
 # libraries
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, BackgroundTasks
 from pydantic import BaseModel
 
 # local
@@ -26,7 +26,7 @@ from core.schemas.admin import (
 )
 from routers.auth import auth_handler
 from scrap.func import scrap_post_data, scrap_page_data
-from services.discord_bot.news import send_news
+from services.discord_bot.news import send_news, send_noti_to_subcribers
 from services.facebook_bot.func import post_to_fb
 from services.tebi import upload_image
 from services.time_modules import Time, date_to_str
@@ -86,7 +86,9 @@ async def get_crawler(
     status_code=ResponseStatusEnum.OK.value,
 )
 async def post_crawler(
-    body: PostCrawlersDataPayload, user: Users = Depends(auth_handler.auth_wrapper)
+    body: PostCrawlersDataPayload,
+    background_tasks: BackgroundTasks,
+    user: Users = Depends(auth_handler.auth_wrapper),
 ):
     draft_post_data = await DraftPosts.find_one(
         DraftPosts.name == body.post_name,
@@ -143,13 +145,14 @@ async def post_crawler(
     else:
         pass
     await post.insert()
+    # save id to draft post
+    await draft_post_data.set({DraftPosts.draft_data.id: str(post.id)})
     # create discord post
     discord_post_id = await send_news(data=current_data, is_testing=False, post_id=post.id)
-    #
+    # discord_post_id to draft_post
     post.discord_post_id = discord_post_id
     await post.save()
-    #
-    await draft_post_data.set({DraftPosts.draft_data.id: str(post.id)})
+    background_tasks.add_task(send_noti_to_subcribers, current_data, False, post.id)
     return PostCrawlersResponse(id=str(post.id))
 
 

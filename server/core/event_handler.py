@@ -5,7 +5,7 @@ import asyncio
 import beanie
 
 # local
-from core.conf import app, settings
+from core.conf import app, settings, is_user_portal
 from core.database.mongodb import client
 from core.models import (
     Users,
@@ -59,7 +59,8 @@ async def startup():
     await connect_db()
 
     # RUN BOT
-    asyncio.create_task(runner.run_discord_bot())
+    if not is_user_portal:
+        asyncio.create_task(runner.run_discord_bot())
 
     print("Start up done")
 

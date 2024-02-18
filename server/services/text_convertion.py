@@ -76,6 +76,7 @@ replace_string = {
     "’": "",
     "”": "",
     ":": "",
+    "–": "",
     "{": "",
     "}": "",
     "[": "",
@@ -85,17 +86,21 @@ replace_string = {
     "!": "",
     "#": "",
     "@": "",
-    " ": "-",
 }
 
 
 def gen_slug_from_title(name: str) -> str:
     global name_check, replace_string
 
+    # remove special charactors
     name = name.lower()
     for key, value in replace_string.items():
         name = name.replace(key, value)
+    # remove empty string
+    name = "".join(["-" if val.isspace() else val for idx, val in enumerate(name)])
+    # remove duplicate dash
     while "--" in name:
         name = name.replace("--", "-")
-    convert_name = [name_check[x] if x in name_check.keys() else x for x in name]
-    return "".join(convert_name)
+    # convert to non-operator string
+    name = "".join([name_check[x] if x in name_check.keys() else x for x in name])
+    return name
