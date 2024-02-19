@@ -1,5 +1,5 @@
 ---- MVP ----(DONE)
-- API: disable API on user portal
+- API + UI: get related post
 - API: check if post image not exist
 - API + UI: admin self create new post
 - API + UI: post to facebook
