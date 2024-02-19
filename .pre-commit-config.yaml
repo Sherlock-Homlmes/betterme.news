@@ -25,7 +25,7 @@ repos:
     rev: "" # Use the sha / tag you want to point at
     hooks:
       - id: prettier
-        types_or: [css, javascript]
+        types_or: [css, javascript, ts, vue]
         additional_dependencies:
           - prettier@3.0.3
         args: [--check]
