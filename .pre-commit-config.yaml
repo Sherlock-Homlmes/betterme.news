@@ -27,7 +27,7 @@ repos:
       - id: prettier
         types_or: [css, javascript, ts, vue]
         additional_dependencies:
-          - prettier@3.0.3
+          - prettier@3.2.5
         args: [--check]
 
   - repo: https://github.com/haocheng6/mirrors-oxlint
