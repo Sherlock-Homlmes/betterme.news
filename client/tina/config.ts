@@ -11,13 +11,13 @@ export default defineConfig({
 
 	build: {
 		outputFolder: 'admin',
-		publicFolder: 'public'
+		publicFolder: 'public',
 	},
 	media: {
 		tina: {
 			mediaRoot: '/src/assets/images',
-			publicFolder: ''
-		}
+			publicFolder: '',
+		},
 	},
 	schema: {
 		collections: [
@@ -32,7 +32,7 @@ export default defineConfig({
 						label: 'Cover Image',
 						required: true,
 						name: 'heroImage',
-						description: 'The image used for the cover of the post'
+						description: 'The image used for the cover of the post',
 					},
 
 					{
@@ -41,26 +41,26 @@ export default defineConfig({
 						name: 'category',
 						label: 'Category',
 						description: 'Select an category for this post',
-						options: [...CATEGORIES]
+						options: [...CATEGORIES],
 					},
 					{
 						type: 'string',
 						label: 'description',
 						required: true,
 						name: 'description',
-						description: 'A short description of the post'
+						description: 'A short description of the post',
 					},
 					{
 						type: 'datetime',
 						name: 'pubDate',
 						label: 'Publication Date',
-						required: true
+						required: true,
 					},
 					{
 						name: 'draft',
 						label: 'Draft',
 						type: 'boolean',
-						description: 'If this is checked the post will not be published'
+						description: 'If this is checked the post will not be published',
 					},
 					{
 						type: 'string',
@@ -70,15 +70,15 @@ export default defineConfig({
 						description: 'Tags for this post',
 						list: true,
 						ui: {
-							component: 'tags'
-						}
+							component: 'tags',
+						},
 					},
 					{
 						type: 'string',
 						name: 'title',
 						label: 'Title',
 						isTitle: true,
-						required: true
+						required: true,
 					},
 					{
 						type: 'rich-text',
@@ -95,14 +95,14 @@ export default defineConfig({
 										type: 'rich-text',
 										label: 'SButton',
 										name: 'children',
-										isBody: true
-									}
-								]
-							}
-						]
-					}
-				]
-			}
-		]
-	}
+										isBody: true,
+									},
+								],
+							},
+						],
+					},
+				],
+			},
+		],
+	},
 })

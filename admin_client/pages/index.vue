@@ -1,18 +1,17 @@
 <!-- refactor this -->
 <template>
-    <p>Auth page</p>
+  <p>Auth page</p>
 </template>
 <script setup lang="ts">
-    import { onMounted } from 'vue';
-    import { useRuntimeConfig } from 'nuxt/app';
+import { onMounted } from "vue";
+import { useRuntimeConfig } from "nuxt/app";
 
-    const config = useRuntimeConfig()
-    const { fetchLink } = config.public
+const config = useRuntimeConfig();
+const { fetchLink } = config.public;
 
-    onMounted(async()=>{
-        const response = await fetch(`${fetchLink}/auth/oauth-link`)
-        const oauthLinks = await response.json()
-        window.location.replace(oauthLinks.discord_link)
-    })
-
+onMounted(async () => {
+  const response = await fetch(`${fetchLink}/auth/oauth-link`);
+  const oauthLinks = await response.json();
+  window.location.replace(oauthLinks.discord_link);
+});
 </script>
