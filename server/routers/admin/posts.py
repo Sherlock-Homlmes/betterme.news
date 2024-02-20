@@ -71,5 +71,6 @@ async def delete_post(post_id: str, user: Users = Depends(auth_handler.auth_wrap
 
     draft_post.deleted_by = await Users.get(user["id"])
     await draft_post.save()
+    await post.delete()
 
     return
