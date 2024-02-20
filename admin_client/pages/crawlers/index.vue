@@ -24,11 +24,21 @@
         :items="draftPosts"
         :loading="loadingDraftPosts"
       >
-        <template v-slot:top> </template>
+        <template v-slot:top>
+          <h1>Draft posts</h1>
+        </template>
         <template v-slot:item.name="{ item }">
+          {{ item.title }}
+        </template>
+        <template v-slot:item.actions="{ item }">
           <a :href="`/crawlers/${item.source}/${item.slug}`" target="_blank">
-            {{ item.title }}
+            <v-icon size="small" class="me-2"> mdi-pencil </v-icon>
           </a>
+          <v-icon size="small" @click="deleteDraftPost(item)">
+            mdi-delete
+          </v-icon>
+
+          <!-- Not work -->
         </template>
       </v-data-table>
       <v-data-table
@@ -37,7 +47,9 @@
         :items="posts"
         :loading="loadingPosts"
       >
-        <template v-slot:top> </template>
+        <template v-slot:top>
+          <h1>Crawlers</h1>
+        </template>
         <template v-slot:item.url="{ item }">
           <a
             :href="`/crawlers/ivolunteer_vn/${item}?content_type=${crawlContentType}`"
@@ -75,7 +87,10 @@ const { fetchLink, clientLink } = config.public;
 // const vm = getCurrentInstance().proxy
 
 const postHeaders = ref([{ title: "URL", key: "url", sortable: false }]);
-const draftPostHeaders = ref([{ title: "Name", key: "name", sortable: false }]);
+const draftPostHeaders = ref([
+  { title: "Name", key: "name", sortable: false },
+  { title: "Actions", key: "actions", sortable: false },
+]);
 const posts = ref<string[]>([]);
 const draftPosts = ref([]);
 const newPostUrl = ref<string>("");
@@ -91,9 +106,10 @@ const getDraftPosts = async () => {
   );
   draftPosts.value = (await draftPostsResult.json()).map((draftPost) => {
     return {
-      source: draftPost.source,
-      slug: draftPost.name,
+      id: draftPost.id,
       title: draftPost.draft_data.title,
+      slug: draftPost.name,
+      source: draftPost.source,
     };
   });
   loadingDraftPosts.value = false;
@@ -112,6 +128,21 @@ const onClickCreateNewPost = () => {
   if (newPostUrl.value === "") return;
   window.open(`/crawlers/ivolunteer_vn/${newPostUrl.value}`, "_blank");
   newPostUrl.value = "";
+};
+
+const deleteDraftPost = async (deleteDraftPost) => {
+  try {
+    await fetchWithAuth(
+      `${fetchLink}/admin/draft_posts/${deleteDraftPost.id}`,
+      { method: "DELETE" },
+    );
+    draftPosts.value = draftPosts.value.filter(
+      (draftPost) => draftPost.id !== deleteDraftPost.id,
+    );
+    window.alert("Delete success");
+  } catch (err) {
+    window.alert("Delete fail");
+  }
 };
 
 watch(

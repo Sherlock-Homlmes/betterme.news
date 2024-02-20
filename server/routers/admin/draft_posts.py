@@ -2,7 +2,7 @@
 from typing import List
 
 # libraries
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, HTTPException, Depends
 from beanie import PydanticObjectId
 
 # local
@@ -38,7 +38,7 @@ class DraftPostListProject(GetDraftPostListResponse):
     tags=["Admin-draft-posts"],
     status_code=ResponseStatusEnum.OK.value,
 )
-async def get_crawler(
+async def get_draft_post(
     user: Users = Depends(auth_handler.auth_wrapper),
 ) -> List[GetDraftPostListResponse]:
     draft_posts = await DraftPosts.find(
@@ -47,3 +47,28 @@ async def get_crawler(
     ).to_list()
     draft_posts = [draft_post.model_dump(mode="json") for draft_post in draft_posts]
     return draft_posts
+
+
+@router.delete(
+    "/draft_posts/{draft_post_id}",
+    tags=["Admin-draft-posts"],
+    status_code=ResponseStatusEnum.NO_CONTENT.value,
+)
+async def delete_draft_post(
+    draft_post_id: str,
+):
+    # TODO: refactor -> error handler
+    draft_post = None
+    try:
+        draft_post = await DraftPosts.get(draft_post_id)
+    except Exception:
+        pass
+
+    if not draft_post:
+        raise HTTPException(
+            status_code=ResponseStatusEnum.NOT_FOUND.value,
+            detail="Draft post not found",
+        )
+
+    await draft_post.delete()
+    return
