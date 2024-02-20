@@ -69,8 +69,10 @@ async def delete_post(post_id: str, user: Users = Depends(auth_handler.auth_wrap
     if post.thumbnail_img:
         delete_image(post.thumbnail_img)
 
-    draft_post.deleted_by = await Users.get(user["id"])
-    await draft_post.save()
+    # TODO: use this code when lib support
+    # draft_post.deleted_by = await Users.get(user["id"])
+    # await draft_post.save()
+    await post.set({"draft_post.delete": str(user["id"])})
     await post.delete()
 
     return
