@@ -34,7 +34,6 @@ repos:
     rev: v0.2.9
     hooks:
     -   id: oxlint
-        verbose: true
 
   # python
   - repo: https://github.com/astral-sh/ruff-pre-commit

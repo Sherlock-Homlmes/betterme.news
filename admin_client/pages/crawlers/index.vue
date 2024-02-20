@@ -20,9 +20,22 @@
       </div>
       <v-data-table
         items-per-page="100"
-        :headers="headers"
+        :headers="draftPostHeaders"
+        :items="draftPosts"
+        :loading="loadingDraftPosts"
+      >
+        <template v-slot:top> </template>
+        <template v-slot:item.name="{ item }">
+          <a :href="`/crawlers/${item.source}/${item.slug}`" target="_blank">
+            {{ item.title }}
+          </a>
+        </template>
+      </v-data-table>
+      <v-data-table
+        items-per-page="100"
+        :headers="postHeaders"
         :items="posts"
-        :loading="loading"
+        :loading="loadingPosts"
       >
         <template v-slot:top> </template>
         <template v-slot:item.url="{ item }">
@@ -61,20 +74,38 @@ const config = useRuntimeConfig();
 const { fetchLink, clientLink } = config.public;
 // const vm = getCurrentInstance().proxy
 
-const headers = ref([{ title: "URL", key: "url", sortable: false }]);
+const postHeaders = ref([{ title: "URL", key: "url", sortable: false }]);
+const draftPostHeaders = ref([{ title: "Name", key: "name", sortable: false }]);
 const posts = ref<string[]>([]);
+const draftPosts = ref([]);
 const newPostUrl = ref<string>("");
-const loading = ref(false);
+const loadingDraftPosts = ref(false);
+const loadingPosts = ref(false);
 const contentTypes = [...new Set(Object.values(IvolunteerPageContentTypeEnum))];
 const crawlContentType = ref<IvolunteerPageContentTypeEnum>(contentTypes[0]);
 
+const getDraftPosts = async () => {
+  loadingDraftPosts.value = true;
+  const draftPostsResult = await fetchWithAuth(
+    `${fetchLink}/admin/draft_posts`,
+  );
+  draftPosts.value = (await draftPostsResult.json()).map((draftPost) => {
+    return {
+      source: draftPost.source,
+      slug: draftPost.name,
+      title: draftPost.draft_data.title,
+    };
+  });
+  loadingDraftPosts.value = false;
+};
+
 const getPostList = async () => {
-  loading.value = true;
+  loadingPosts.value = true;
   const postsResult = await fetchWithAuth(
     `${fetchLink}/admin/crawlers?origin=ivolunteer_vn&content_type=${crawlContentType.value}`,
   );
   posts.value = (await postsResult.json()) as string[];
-  loading.value = false;
+  loadingPosts.value = false;
 };
 
 const onClickCreateNewPost = () => {
@@ -92,6 +123,7 @@ watch(
 );
 
 onMounted(async () => {
+  await getDraftPosts();
   await getPostList();
 });
 </script>
