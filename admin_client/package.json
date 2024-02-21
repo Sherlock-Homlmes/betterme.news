@@ -11,6 +11,8 @@
   },
   "devDependencies": {
     "@nuxt/devtools": "latest",
+    "@playwright/test": "^1.41.2",
+    "@types/node": "^20.11.19",
     "nuxt": "^3.8.2",
     "vite-plugin-vuetify": "^2.0.1",
     "vue": "^3.3.12",
