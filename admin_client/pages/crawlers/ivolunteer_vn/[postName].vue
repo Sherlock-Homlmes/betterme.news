@@ -21,7 +21,7 @@
         :disabled="true"
       ></v-file-input>
       <v-chip variant="flat" color="primary" size="x-large" class="mb-5">
-        Deadline: {{ pageInfo.deadline }}
+        Deadline: {{ pageInfo.deadline || "ASAP" }}
       </v-chip>
       <v-autocomplete
         v-model="pageInfo.tags"
