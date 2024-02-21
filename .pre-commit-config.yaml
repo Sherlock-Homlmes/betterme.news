@@ -34,6 +34,7 @@ repos:
     rev: v0.2.9
     hooks:
     -   id: oxlint
+        types_or: [css, javascript, ts, vue]
 
   # python
   - repo: https://github.com/astral-sh/ruff-pre-commit
