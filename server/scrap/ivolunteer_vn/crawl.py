@@ -32,7 +32,10 @@ def ivolunteer_crawl(url: str):
             # crawl
             title = response.css("h1::text").get().replace("  ", "").replace("\n", "")
             deadline = response.css(".mvp-post-cat::text").get().replace("Deadline: ", "")
-            deadline = "-".join(deadline.split("/")[::-1])
+            deadline = deadline.split("/")[::-1]
+            if len(deadline) == 3 and len(deadline[1]) == 1:
+                deadline[1] = "0" + deadline[1]
+            deadline = "-".join(deadline)
             if deadline in ["ASAP", "All year round"]:
                 deadline = None
             banner = response.css("#mvp-content-main").css("img::attr(data-src)").get()
