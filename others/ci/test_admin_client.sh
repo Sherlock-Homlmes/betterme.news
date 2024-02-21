@@ -1,2 +1,2 @@
-cd admin-client
+cd admin_client
 npx playwright test

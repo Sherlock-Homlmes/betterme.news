@@ -1,5 +1,5 @@
 # TODO: cannot run docker-compose
-name: Server test
+name: Server Tests
 on:
   push:
     branches: [master]

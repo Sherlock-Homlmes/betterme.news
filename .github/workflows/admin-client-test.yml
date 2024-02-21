@@ -1,4 +1,4 @@
-name: Playwright Tests
+name: Admin Client Tests
 on:
   push:
     branches: [master]
