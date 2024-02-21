@@ -25,7 +25,7 @@ repos:
     rev: "" # Use the sha / tag you want to point at
     hooks:
       - id: prettier
-        types_or: [css, javascript, ts, vue]
+        types_or: [css, javascript, ts, vue, html]
         additional_dependencies:
           - prettier@3.2.5
         args: [--check]
@@ -34,7 +34,7 @@ repos:
     rev: v0.2.9
     hooks:
     -   id: oxlint
-        types_or: [css, javascript, ts, vue]
+        types_or: [css, javascript, ts, vue, html]
 
   # python
   - repo: https://github.com/astral-sh/ruff-pre-commit
