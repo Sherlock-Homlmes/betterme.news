@@ -20,6 +20,9 @@
         class="w-50"
         :disabled="true"
       ></v-file-input>
+      <v-chip variant="flat" color="primary" size="x-large" class="mb-5">
+        Deadline: {{ pageInfo.deadline }}
+      </v-chip>
       <v-autocomplete
         v-model="pageInfo.tags"
         class="w-50"
