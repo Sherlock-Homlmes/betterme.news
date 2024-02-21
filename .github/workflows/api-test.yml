@@ -1,0 +1,34 @@
+# TODO: cannot run docker-compose
+name: Server test
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+jobs:
+  server-code-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.9
+          cache: "pip"
+
+      - name: Install dependencies
+        run: bash others/ci/install_server.sh
+
+      - name: Run tests
+        run: bash others/ci/test_server.sh
+
+  # - name: Build image docker
+  #   run: docker-compose build server
+
+  # - name: Install dependencies
+  #   # create sample .env file
+  #   # install dependencies
+  #   run: |
+  #     bash others/create_sample_env.sh
+  #     docker-compose up server
+  #     docker-compose exec server poetry install --only-root
