@@ -37,8 +37,6 @@
           <v-icon size="small" @click="deleteDraftPost(item)">
             mdi-delete
           </v-icon>
-
-          <!-- Not work -->
         </template>
       </v-data-table>
       <v-data-table
@@ -56,6 +54,11 @@
             target="_blank"
           >
             {{ item }}
+          </a>
+        </template>
+        <template v-slot:item.original="{ item }">
+          <a :href="`https://ivolunteer.vn/${item}`" target="_blank">
+            <v-btn>See original post</v-btn>
           </a>
         </template>
       </v-data-table>
@@ -86,7 +89,10 @@ const config = useRuntimeConfig();
 const { fetchLink, clientLink } = config.public;
 // const vm = getCurrentInstance().proxy
 
-const postHeaders = ref([{ title: "URL", key: "url", sortable: false }]);
+const postHeaders = ref([
+  { title: "URL", key: "url", sortable: false },
+  { title: "Original post", key: "original", sortable: false },
+]);
 const draftPostHeaders = ref([
   { title: "Name", key: "name", sortable: false },
   { title: "Actions", key: "actions", sortable: false },
