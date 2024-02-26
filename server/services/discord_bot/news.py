@@ -119,10 +119,10 @@ async def send_noti_to_subcribers(data, is_testing, post_id):
     tags = data.tags
 
     channel = await server_info.guild.fetch_channel(
-        1178003717702811769 if is_dev_env else 891909866355048548
+        1081937675151482945 if is_dev_env else 891909866355048548
     )
     message = await channel.fetch_message(
-        1208698140371197962 if is_dev_env else 1206679624059199520
+        1211679774515138601 if is_dev_env else 1206679624059199520
     )
     noti_users = []
     for reaction in message.reactions:
