@@ -22,7 +22,7 @@ class Bot(commands.Bot):
         global is_app_running, server_info
         await get_server_info()
 
-        #         channel = await server_info.guild.fetch_channel(1178003717702811769 if is_dev_env else 891909866355048548)
+        #         channel = await server_info.guild.fetch_channel(1081937675151482945 if is_dev_env else 891909866355048548)
         #         message = await channel.send("""
         # **Reaction để nhận thông tin mới nhất về các tin tức của Betterme.news**
         # 💛: CLB-Tình nguyện
@@ -55,8 +55,8 @@ class Bot(commands.Bot):
 @dataclass
 class ServerInfo:
     # ids
-    guild_id: int = 880360143768924210
-    admin_role_id: int = 890244740174467082
+    guild_id: int = 1081937673033351218 if is_dev_env else 880360143768924210
+    admin_role_id: int = 0 if is_dev_env else 0
     # guild
     guild: discord.Guild = None
     # role
@@ -71,8 +71,8 @@ async def get_server_info():
 
     ### Get server info
     server_info_data = {
-        "test_news_channel": 1195438410807120022,
-        "news_channel": 1195438410807120022 if is_dev_env else 1094468765527330918,
+        "news_channel": 1211687517829472266 if is_dev_env else 1094468765527330918,
+        "test_news_channel": 1211687587924672563 if is_dev_env else 1195438410807120022,
     }
 
     # get guild
