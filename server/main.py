@@ -6,6 +6,6 @@ from core.routes import api_router
 app.include_router(api_router)
 
 
-@app.get("/api/")
+@app.get("/api")
 def main_router():
     return {"status": "alive"}

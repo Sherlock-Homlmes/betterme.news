@@ -1,6 +1,7 @@
 # default
 import os
 from enum import Enum
+from functools import lru_cache
 
 # libraries
 from fastapi import FastAPI
@@ -11,6 +12,7 @@ from dotenv import load_dotenv
 
 
 # testing
+@lru_cache
 def is_testing():  # pragma: no cover
     """Return whether or not this code is being executed under test env"""
     import sys
@@ -19,7 +21,8 @@ def is_testing():  # pragma: no cover
 
 
 # env
-load_dotenv(override=True, dotenv_path="example.env" if is_testing() else ".env")
+is_test_env = is_testing()
+load_dotenv(override=True, dotenv_path="example.env" if is_test_env else ".env")
 get_env = os.environ.get
 
 
