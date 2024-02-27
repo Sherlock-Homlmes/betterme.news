@@ -5,14 +5,11 @@ import asyncio
 import beanie
 
 # local
-from core.conf import app, settings, is_user_portal
+from core.conf import app, settings, is_user_portal, is_test_env
+from core.models import document_models
 from core.database.mongodb import client
-from core.models import (
-    Users,
-    Posts,
-    DraftPosts,
-)
 from services.discord_bot.conf import bot
+
 
 running = True
 
@@ -39,11 +36,7 @@ async def connect_db() -> None:
     print("Connecting to database...")
     await beanie.init_beanie(
         database=client.betterme_news,
-        document_models=[
-            Users,
-            Posts,
-            DraftPosts,
-        ],
+        document_models=document_models,
     )
     print("Connect to database success")
 
@@ -57,6 +50,9 @@ async def startup():
 
     # CONNECT DB
     await connect_db()
+
+    if is_test_env:
+        return
 
     # RUN BOT
     if not is_user_portal:

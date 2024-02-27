@@ -1,2 +1,2 @@
 cd server
-pytest
+pytest --disable-warnings
