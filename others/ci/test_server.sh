@@ -1,2 +1,2 @@
 cd server
-pytest --disable-warnings
+python -m pytest --disable-warnings
