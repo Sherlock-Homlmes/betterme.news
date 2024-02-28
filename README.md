@@ -8,6 +8,7 @@
 
     - Linux
     - Python >= 3.9
+    - Bun >= 1.0.29
     - Docker >= 2
 
 ## SETUP:
