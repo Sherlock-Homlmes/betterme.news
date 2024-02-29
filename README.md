@@ -13,13 +13,13 @@
 
 ## SETUP:
 
-    bash others/model_to_ts/setup.sh
+    bash others/setup.sh
 
 ## RUN SERVICES:
 
     - docker compose up -d
     - docker compose logs <service_name> -f --tails=50
 
-## RUN TOOLS:
+## TOOLS COMMANDS WHEN DEV:
 
     - Model to typescript: bash others/model2ts.sh
