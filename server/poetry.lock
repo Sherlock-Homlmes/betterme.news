@@ -1923,6 +1923,23 @@ typing-extensions = {version = ">=3.10.0", markers = "python_version < \"3.10\""
 full = ["httpx (>=0.22.0)", "itsdangerous", "jinja2", "python-multipart", "pyyaml"]
 
 [[package]]
+name = "tinify"
+version = "1.6.0"
+description = "Tinify API client."
+optional = false
+python-versions = "*"
+files = [
+    {file = "tinify-1.6.0-py2.py3-none-any.whl", hash = "sha256:67ac46f5e6c3b0978ee5f85bc4b499951c217d54a429f6d9e42b8956f4e336f5"},
+    {file = "tinify-1.6.0.tar.gz", hash = "sha256:7c985953796dcaeb7e50ea6073ee6688dd4a5789d97f268b6d30ef8e42858491"},
+]
+
+[package.dependencies]
+requests = ">=2.7.0,<3.0.0"
+
+[package.extras]
+test = ["httpretty (<1.1.5)", "pytest"]
+
+[[package]]
 name = "tldextract"
 version = "5.1.1"
 description = "Accurately separates a URL's subdomain, domain, and public suffix, using the Public Suffix List (PSL). By default, this includes the public ICANN TLDs and their exceptions. You can optionally support the Public Suffix List's private domains as well."
@@ -2263,4 +2280,4 @@ testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9.0"
-content-hash = "e1dd80a980ddc96c07e51b72ed5d39ef5e3dd0a488b311044c08893dd5079701"
+content-hash = "df66fba8e25f04b4a73856ea37a881d5ef275a281d46a8dd043ce92b2f1fa82c"

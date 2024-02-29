@@ -45,6 +45,8 @@ class Settings(BaseSettings):
     AWS_ACCESS_ACCESS_KEY: str
     AWS_BUCKET: str
 
+    TINY_PNG_API_KEY: str
+
     DISCORD_BOT_TOKEN: str
     DISCORD_OAUTH_URL: str
     DISCORD_CLIENT_ID: str

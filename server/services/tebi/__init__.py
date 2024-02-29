@@ -6,6 +6,7 @@ import boto3
 
 # local
 from core.conf import settings, is_dev_env
+from services.tinify import compress_image
 
 # Let's use S3
 s3 = boto3.resource(
@@ -17,10 +18,22 @@ s3 = boto3.resource(
 bucket = s3.Bucket(settings.AWS_BUCKET)
 
 
+def remove_unexpected_element_from_image_name(image_name: str) -> str:
+    return (
+        image_name.replace(".png", "")
+        .lower()
+        .replace("-ivolunteer", "")
+        .replace("-ivo", "")
+        .replace("copy-of-", "")
+        .replace("ban-sao-cua-", "")
+    )
+
+
 def upload_image(image_name: str):
     uid = str(uuid.uuid4())[:8]
+    image_name = compress_image(image_name)
     data = open(f"scrap/data/media/{image_name}", "rb")
-    object_id = f"{uid}_{image_name}"
+    object_id = f"{uid}_{remove_unexpected_element_from_image_name(image_name)}"
     bucket.put_object(Key=object_id, Body=data)
 
     return (
