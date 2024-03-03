@@ -8,7 +8,7 @@ from beanie.odm.operators.update.general import Set
 
 # local
 from .auth_handler import auth_handler
-from core.conf import settings
+from core.conf import settings, is_dev_env
 from core.models import Users, UserRoleEnum
 from services.time_modules import Time
 
@@ -66,7 +66,7 @@ async def get_discord_oauth(code: str, request: Request):
             discord_id=discord_user["id"],
             last_logged_in_at=Time().now,
             created_at=Time().now,
-            roles=[UserRoleEnum.USER],
+            roles=[UserRoleEnum.ADMIN] if is_dev_env else [UserRoleEnum.USER],
         ),
     )
     user = await Users.find_one(Users.discord_id == discord_user["id"])
