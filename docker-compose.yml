@@ -1,4 +1,6 @@
 # this only for dev, not for production
+version: "3.8"
+
 services:
   nginx:
     image: nginx:latest
