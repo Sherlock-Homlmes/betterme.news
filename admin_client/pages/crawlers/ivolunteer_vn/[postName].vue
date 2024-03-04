@@ -146,7 +146,7 @@
       indeterminate
       color="green"
     ></v-progress-circular>
-    <v-snackbar v-model="snackbar" vertical>
+    <v-snackbar v-model="snackbar" vertical :timeout="-1">
       <div class="text-subtitle-1 pb-2">View created post</div>
       <template v-slot:actions>
         <v-btn
