@@ -1,20 +1,15 @@
-
 ---
 import TagV2 from '@/components/TagV2'
 import fetchLink from 'src/utils/config'
-import type {IvolunteerPageTagsEnum} from '@/types/enums'
+import type { IvolunteerPageTagsEnum } from '@/types/enums'
 
 const response = await fetch(`${fetchLink}/tags?origin=ivolunteer_vn`)
-const tagsData = await response.json() as IvolunteerPageTagsEnum[]
+const tagsData = (await response.json()) as IvolunteerPageTagsEnum[]
 ---
 
 <div class='relative flex flex-wrap min-w-full gap-5'>
 	<TagV2 />
-	{
-		tagsData.map((tag: string) => (
-			<TagV2 name={tag} />
-		))
-	}
+	{tagsData.map((tag: string) => <TagV2 name={tag} />)}
 
 	<div class='hidden sm:block absolute w-full bottom-0 border-b-2 -z-40 dark:border-gray-600'></div>
 </div>

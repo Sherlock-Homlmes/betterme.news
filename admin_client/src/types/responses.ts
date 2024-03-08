@@ -6,92 +6,92 @@
 */
 
 export interface CrawlerListParams {
-  origin: string;
-  page?: number;
+	origin: string
+	page?: number
 }
 export interface CrawlersDataParams {
-  origin: string;
-  use_cache?: boolean;
+	origin: string
+	use_cache?: boolean
 }
 export interface CrawlersListDataParams {
-  origin: string;
-  page?: number;
-  content_type: string;
+	origin: string
+	page?: number
+	content_type: string
 }
 export interface GetCrawlersIvolunteerDataResponse {
-  id?: string;
-  title: string;
-  description: string;
-  tags: string[];
-  banner: string;
-  deadline?: string;
-  content: string;
-  keywords: string[];
+	id?: string
+	title: string
+	description: string
+	tags: string[]
+	banner: string
+	deadline?: string
+	content: string
+	keywords: string[]
 }
 export interface GetCrawlersKhoahocTvDataResponse {
-  title: string;
-  description: string;
-  tags: string[];
-  banner: string;
-  thumbnail: string;
-  content: string;
-  keywords: string[];
+	title: string
+	description: string
+	tags: string[]
+	banner: string
+	thumbnail: string
+	content: string
+	keywords: string[]
 }
 export interface GetDraftPostListResponse {
-  id: string;
-  source: string;
-  name: string;
-  original_data: GetCrawlersIvolunteerDataResponse;
-  draft_data: GetCrawlersIvolunteerDataResponse;
-  post?: string;
+	id: string
+	source: string
+	name: string
+	original_data: GetCrawlersIvolunteerDataResponse
+	draft_data: GetCrawlersIvolunteerDataResponse
+	post?: string
 }
 export interface GetTagsParams {
-  origin: string;
+	origin: string
 }
 export interface OtherPostInfo {
-  deadline?: string;
+	deadline?: string
 }
 export interface PatchBotPayload {
-  action: string;
+	action: string
 }
 export interface PatchCrawlersDataPayload {
-  title?: string;
-  description?: string;
-  banner?: string;
-  content?: string;
-  /**
-   * @minItems 1
-   */
-  tags?: [string, ...string[]];
-  /**
-   * @minItems 1
-   */
-  keywords?: [string, ...string[]];
+	title?: string
+	description?: string
+	banner?: string
+	content?: string
+	/**
+	 * @minItems 1
+	 */
+	tags?: [string, ...string[]]
+	/**
+	 * @minItems 1
+	 */
+	keywords?: [string, ...string[]]
 }
 export interface PatchPostPayload {
-  title?: string;
-  description?: string;
-  banner?: string;
-  content?: string;
-  /**
-   * @minItems 1
-   */
-  tags?: [string, ...string[]];
-  /**
-   * @minItems 1
-   */
-  keywords?: [string, ...string[]];
+	title?: string
+	description?: string
+	banner?: string
+	content?: string
+	/**
+	 * @minItems 1
+	 */
+	tags?: [string, ...string[]]
+	/**
+	 * @minItems 1
+	 */
+	keywords?: [string, ...string[]]
 }
 export interface PostCrawlersDataPayload {
-  origin: string;
-  post_name: string;
+	origin: string
+	post_name: string
 }
 export interface PostCrawlersPreviewDiscordDataPayload {
-  origin: string;
-  preview_source: string[];
+	origin: string
+	preview_source: string[]
 }
 export interface PostCrawlersResponse {
-  id: string;
+	id: string
 }
 /* tslint:disable */
 /* eslint-disable */
@@ -101,38 +101,38 @@ export interface PostCrawlersResponse {
 */
 
 export interface GetPostListParams {
-  page?: number;
-  per_page?: number;
-  match_tag?: string;
+	page?: number
+	per_page?: number
+	match_tag?: string
 }
 export interface GetPostListResponse {
-  id: string;
-  slug: string;
-  title: string;
-  description: string;
-  thumbnail_img?: string;
-  banner_img?: string;
-  tags: string[];
-  keywords: string[];
-  view: number;
+	id: string
+	slug: string
+	title: string
+	description: string
+	thumbnail_img?: string
+	banner_img?: string
+	tags: string[]
+	keywords: string[]
+	view: number
 }
 export interface GetPostParams {
-  increase_view?: boolean;
+	increase_view?: boolean
 }
 export interface GetPostResponse {
-  created_at: string;
-  title: string;
-  description: string;
-  thumbnail_img?: string;
-  banner_img?: string;
-  content: string;
-  author: string;
-  other_information?: OtherPostInfo;
-  view: number;
-  tags: string[];
-  keywords: string[];
-  og_img: string;
+	created_at: string
+	title: string
+	description: string
+	thumbnail_img?: string
+	banner_img?: string
+	content: string
+	author: string
+	other_information?: OtherPostInfo
+	view: number
+	tags: string[]
+	keywords: string[]
+	og_img: string
 }
 export interface OtherPostInfo {
-  deadline?: string;
+	deadline?: string
 }
