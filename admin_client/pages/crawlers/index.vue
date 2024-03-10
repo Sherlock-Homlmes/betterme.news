@@ -19,7 +19,7 @@
         <v-btn class="ml-2" @click="onClickCreateNewPost">Crawl</v-btn>
       </div>
       <v-data-table
-        items-per-page="100"
+        items-per-page="10"
         :headers="draftPostHeaders"
         :items="draftPosts"
         :loading="loadingDraftPosts"
