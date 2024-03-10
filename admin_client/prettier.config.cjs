@@ -6,16 +6,9 @@ module.exports = {
 	semi: false,
 	singleQuote: true,
 	jsxSingleQuote: true,
-	tabWidth: 2,
+	tabWidth: 4,
 	useTabs: true,
-
-	plugins: [require.resolve('prettier-plugin-astro')],
-	overrides: [
-		{
-			files: '*.astro',
-			options: {
-				parser: 'astro',
-			},
-		},
-	],
+	bracketSpacing: false,
+	vueIndentScriptAndStyle: true,
+	bracketSameLine: false,
 }

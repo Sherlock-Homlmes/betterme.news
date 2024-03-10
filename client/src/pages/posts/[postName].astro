@@ -2,32 +2,28 @@
 import BlogPostV2 from '@/layouts/BlogPostV2'
 import Share from '@/components/Share'
 import fetchLink from 'src/utils/config'
-import type {GetPostResponse} from '@/types/responses'
+import type { GetPostResponse } from '@/types/responses'
 // TODO
 // import ListRelatedPosts from '@/components/ListRelatedPosts'
 // import TableOfContents from '@/components/TableOfContents'
 
-
-const {postName} = Astro.params
+const { postName } = Astro.params
 const response = await fetch(`${fetchLink}/posts/${postName}`)
-let postData = await response.json() as GetPostResponse
+let postData = (await response.json()) as GetPostResponse
 postData = {
 	...postData,
-	other_information:{
+	other_information: {
 		...postData.other_information,
-		deadline:
-		postData.other_information?.deadline
-		? postData.other_information.deadline.split('-').reverse().join('/')
-		: null
-	}
+		deadline: postData.other_information?.deadline
+			? postData.other_information.deadline.split('-').reverse().join('/')
+			: null,
+	},
 }
 ---
-<!-- TODO: Table of content, related post -->
-<BlogPostV2
-	postData={postData}
->
-	<div class='grid grid-cols-1 md:grid-cols-[20%_auto] gap-10 mt-8'>
 
+<!-- TODO: Table of content, related post -->
+<BlogPostV2 postData={postData}>
+	<div class='grid grid-cols-1 md:grid-cols-[20%_auto] gap-10 mt-8'>
 		<aside class='md:flex flex-col gap-8 hidden'>
 			<Share />
 			<!-- <div class='sticky top-24 self-start hidden md:block transition-all duration-200'>
@@ -40,7 +36,7 @@ postData = {
 			<div class='prose prose-md dark:prose-invert mb-12 min-w-full'>
 				<em>{postData.description}</em>
 			</div>
-			<div class='prose prose-md dark:prose-invert mb-12 min-w-full' set:html={postData.content}></div>
+			<div class='prose prose-md dark:prose-invert mb-12 min-w-full' set:html={postData.content} />
 
 			<!-- related posts -->
 			<footer>
@@ -48,6 +44,5 @@ postData = {
 				<ListRelatedPosts posts={relatedPosts} /> -->
 			</footer>
 		</article>
-
 	</div>
 </BlogPostV2>

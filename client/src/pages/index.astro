@@ -1,4 +1,3 @@
-
 ---
 import ListTagsV2 from '@/components/ListTagsV2'
 import ListPostsV2 from '@/components/ListPostsV2'
@@ -6,17 +5,16 @@ import TitlePage from '@/components/TitlePage'
 import Pagination from '@/components/Pagination'
 import BaseLayout from '@/layouts/BaseLayout'
 import fetchLink from 'src/utils/config'
-import type {GetPostListResponse} from '@/types/responses'
+import type { GetPostListResponse } from '@/types/responses'
 
 const response = await fetch(`${fetchLink}/posts?per_page=11&` + Astro.url.searchParams)
-let postsData = await response.json() as GetPostListResponse[]
-postsData = postsData.map(postData => {
-return{
-	...postData,
-	deadline: postData.deadline
-	? postData.deadline.split('-').reverse().join('/')
-	: null
-}})
+let postsData = (await response.json()) as GetPostListResponse[]
+postsData = postsData.map((postData) => {
+	return {
+		...postData,
+		deadline: postData.deadline ? postData.deadline.split('-').reverse().join('/') : null,
+	}
+})
 
 let page = {
 	currentPage: 1,
@@ -26,7 +24,7 @@ if (
 	response.headers.get('x-current-page') &&
 	response.headers.get('x-total-count') &&
 	response.headers.get('x-per-page')
-){
+) {
 	const totalPosts: number = parseInt(response.headers.get('x-total-count'))
 	const currentPage: number = parseInt(response.headers.get('x-current-page'))
 	const perPage: number = parseInt(response.headers.get('x-per-page'))
@@ -44,7 +42,7 @@ if (
 		<ListPostsV2 posts={postsData} />
 	</div>
 	<div>
-		<Pagination page={ page }></Pagination>
+		<Pagination page={page} />
 	</div>
 </BaseLayout>
 
@@ -60,8 +58,8 @@ if (
 				duration: 2.5,
 				opacity: { duration: 3 },
 
-				offset: [0, 0.55, 0.75]
-			}
+				offset: [0, 0.55, 0.75],
+			},
 		)
 	}
 </script>
