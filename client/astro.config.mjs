@@ -4,11 +4,14 @@ import cloudflare from '@astrojs/cloudflare'
 import sitemap from '@astrojs/sitemap'
 import tailwind from '@astrojs/tailwind'
 
+import partytown from '@astrojs/partytown'
+
 // https://astro.build/config
 export default defineConfig({
 	output: 'server',
 	adapter: cloudflare(),
-	site: 'https://betterme.news/', // Write here your website url
+	site: 'https://betterme.news/',
+	// Write here your website url
 	markdown: {
 		drafts: true,
 		shikiConfig: {
@@ -16,16 +19,5 @@ export default defineConfig({
 			wrap: true,
 		},
 	},
-	integrations: [
-		mdx({
-			syntaxHighlight: 'shiki',
-			shikiConfig: {
-				theme: 'material-theme-palenight',
-				wrap: true,
-			},
-			drafts: true,
-		}),
-		sitemap(),
-		tailwind(),
-	],
+	integrations: [sitemap(), tailwind(), partytown()],
 })
