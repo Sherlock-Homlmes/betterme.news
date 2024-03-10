@@ -13,6 +13,12 @@ const { title, description, image, articleDate, keywords } = Astro.props
 		<BaseHead title={title} description={description} ogImage={image} keywords={keywords} articleDate={articleDate} />
 		<ProviderTheme />
 		<ProviderAnimations />
+		<script
+			async
+			type="text/partytown"
+			src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9628590149452797" crossorigin="anonymous"
+		>
+		</script>
 	</head>
 
 	<body class='bg-white text-stone-950 dark:bg-[#0a0910] dark:text-white w-full h-full'>
@@ -26,9 +32,3 @@ const { title, description, image, articleDate, keywords } = Astro.props
 		<TwSizeIndicator />
 	</body>
 </html>
-<script
-	async
-	type="text/partytown"
-	src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9628590149452797" crossorigin="anonymous"
->
-</script>
