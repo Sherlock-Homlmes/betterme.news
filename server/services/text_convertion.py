@@ -1,4 +1,6 @@
-name_check = {
+import re
+
+vietnamese_name_convertions = {
     "ă": "a",
     "â": "a",
     "á": "a",
@@ -68,49 +70,28 @@ name_check = {
     "ỹ": "y",
 }
 
-replace_string = {
-    ".": "",
-    '"': "",
-    "'": "",
-    "`": "",
-    "’": "",
-    "”": "",
-    ":": "",
-    "–": "",
-    "_": "",
-    "+": "",
-    "=": "",
-    "^": "",
-    "*": "",
-    "|": "",
-    ">": "",
-    "<": "",
-    "/": "",
-    "?": "",
-    "{": "",
-    "}": "",
-    "[": "",
-    "]": "",
-    "(": "",
-    ")": "",
-    "!": "",
-    "#": "",
-    "@": "",
-}
+
+def generate_slug(s: str) -> str:
+    """Generates a slug from the given text, handling various cases."""
+    s = s.lower().strip()
+    s = re.sub(r"[^\w\s-]", "", s)
+    s = re.sub(r"[\s_-]+", "-", s)
+    s = re.sub(r"^-+|-+$", "", s)
+    return s
 
 
 def gen_slug_from_title(name: str) -> str:
-    global name_check, replace_string
+    global vietnamese_name_convertions
 
-    # remove special charactors
+    # lower name
     name = name.lower()
-    for key, value in replace_string.items():
-        name = name.replace(key, value)
-    # remove empty string
-    name = "".join(["-" if val.isspace() else val for idx, val in enumerate(name)])
-    # remove duplicate dash
-    while "--" in name:
-        name = name.replace("--", "-")
     # convert to non-operator string
-    name = "".join([name_check[x] if x in name_check.keys() else x for x in name])
+    name = "".join(
+        [
+            vietnamese_name_convertions[x] if x in vietnamese_name_convertions.keys() else x
+            for x in name
+        ]
+    )
+    # remove special charactors
+    name = generate_slug(name)
     return name
