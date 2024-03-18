@@ -11,7 +11,6 @@ from scrapy.crawler import CrawlerProcess
 # local
 from data_process import (
     save_image,
-    # process_detail_page_data_discord,
     process_detail_page_data_html,
     replace_html,
 )
@@ -42,6 +41,8 @@ def ivolunteer_crawl(url: str):
             banner = None if banner is None else asyncio.run(save_image(banner)).split("/")[-1]
             content = response.css("#mvp-content-main").css("h4, p, ul")
             content.pop(0)
+            # remove last 3 <p> from content
+            content.pop()
             content.pop()
             content.pop()
             keywords = response.xpath("//meta[@name='keywords']/@content")[0].get().split(",")
@@ -61,8 +62,6 @@ def ivolunteer_crawl(url: str):
                 # SEO
                 "keywords": keywords,
             }
-            # html_content = process_detail_page_data_html(content)
-            # discord_content = process_detail_page_data_discord(content)
 
             # write to file
             file_name = self.start_urls[0].split("/")[3]
