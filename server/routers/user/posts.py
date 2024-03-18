@@ -53,8 +53,10 @@ async def get_list_post(
     params: Annotated[dict, Depends(GetPostListParams)],
 ) -> List[GetPostListResponse]:
     queries = {}
+    # TODO: better match filter
     if params.match_tag:
-        queries = ElemMatch(Posts.tags, {"$eq": params.match_tag})
+        match_tags = params.match_tag.split(",")
+        queries = ElemMatch(Posts.tags, {"$in": match_tags})
     # TODO: refactor change to class method
     cursor = Posts.find(queries, projection_model=PostListProject)
     posts = (
