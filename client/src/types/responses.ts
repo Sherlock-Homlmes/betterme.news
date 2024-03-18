@@ -25,6 +25,7 @@ export interface GetPostParams {
 	increase_view?: boolean
 }
 export interface GetPostResponse {
+	id: string
 	created_at: string
 	title: string
 	description: string

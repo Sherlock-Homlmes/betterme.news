@@ -91,6 +91,7 @@ async def get_post(
     post_id: str = post_name.split("_")[-1]
     try:
         post = await Posts.get(post_id)
+        post.id = str(post.id)
         if params.increase_view:
             background_tasks.add_task(post.increase_view)
         return post

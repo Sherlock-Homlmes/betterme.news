@@ -29,6 +29,7 @@ class GetPostListResponse(BaseModel):
 
 
 class GetPostResponse(BaseModel):
+    id: str
     # info
     created_at: datetime.datetime
 
