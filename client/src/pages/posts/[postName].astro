@@ -2,9 +2,10 @@
 import BlogPostV2 from '@/layouts/BlogPostV2'
 import Share from '@/components/Share'
 import fetchLink from 'src/utils/config'
+import ListRelatedPosts from '@/components/ListRelatedPosts'
 import type {GetPostResponse} from '@/types/responses'
+import {IvolunteerPageTagsEnum} from '@/types/enums'
 // TODO
-// import ListRelatedPosts from '@/components/ListRelatedPosts'
 // import TableOfContents from '@/components/TableOfContents'
 
 
@@ -15,8 +16,7 @@ postData = {
 	...postData,
 	other_information:{
 		...postData.other_information,
-		deadline:
-		postData.other_information?.deadline
+		deadline: postData.other_information?.deadline
 		? postData.other_information.deadline.split('-').reverse().join('/')
 		: null
 	}
@@ -44,8 +44,8 @@ postData = {
 
 			<!-- related posts -->
 			<footer>
-				<!-- <h2 class='font-bold text-lg dark:text-white mb-6'>Related Posts</h2>
-				<ListRelatedPosts posts={relatedPosts} /> -->
+				<h2 class='flex justify-center font-bold text-lg dark:text-white mb-2'>🌚🌚🌚 Bài viết liên quan 🌝🌝🌝</h2>
+				<ListRelatedPosts tags={postData.tags as IvolunteerPageTagsEnum[]} currentPostId={postData.id} />
 			</footer>
 		</article>
 

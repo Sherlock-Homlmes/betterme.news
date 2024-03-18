@@ -5,5 +5,6 @@ from .responses import *
 from .enums import *
 
 
-class GetPostListParams(GetPostListParams):
-    match_tag: Optional[Union[IvolunteerPageTagsEnum, KhoahocTvPageTagsEnum]] = None
+# TODO
+# class GetPostListParams(GetPostListParams):
+#     match_tag: Optional[Union[IvolunteerPageTagsEnum, KhoahocTvPageTagsEnum]] = None
