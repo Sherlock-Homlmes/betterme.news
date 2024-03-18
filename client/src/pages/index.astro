@@ -8,7 +8,7 @@ import BaseLayout from '@/layouts/BaseLayout'
 import fetchLink from 'src/utils/config'
 import type {GetPostListResponse} from '@/types/responses'
 
-const response = await fetch(`${fetchLink}/posts?per_page=11&` + Astro.url.searchParams)
+const response = await fetch(`${fetchLink}/posts?per_page=17&` + Astro.url.searchParams)
 let postsData = await response.json() as GetPostListResponse[]
 postsData = postsData.map(postData => {
 return{
