@@ -18,7 +18,7 @@ const { postData } = Astro.props
                 width={600}
                 height={200}
                 format='webp'
-                class='h-full min-w-full object-cover hover:scale-[101%] transition-all duration-200 rounded-[2px]'
+                class='banner h-full min-w-full object-cover hover:scale-[101%] transition-all duration-200 rounded-[2px]'
                 alt={`img of ${postData.title}`}
             />
             )
@@ -68,25 +68,13 @@ const { postData } = Astro.props
 
 <script>
 	import { animate } from 'motion'
+	animate(
+		'.banner',
+		{
+			opacity: [0, 1],
+			clipPath: ['circle(0% at 0% 0%)', 'circle(100% at 50% 50%)']
+		},
+		{ duration: 2, easing: 'ease' }
+	)
 
-	const images = document.querySelectorAll('img')
-
-	document.addEventListener('DOMContentLoaded', function () {
-		const showAnimations = localStorage.getItem('animations') === 'true'
-
-		if (showAnimations) {
-			animate(
-				'.effect',
-				{
-					opacity: [0, 1],
-					clipPath: ['circle(0% at 0% 0%)', 'circle(100% at 50% 50%)']
-				},
-				{ duration: 2, easing: 'ease' }
-			)
-		} else {
-			images.forEach((img) => {
-				img.classList.remove('opacity-0')
-			})
-		}
-	})
 </script>
