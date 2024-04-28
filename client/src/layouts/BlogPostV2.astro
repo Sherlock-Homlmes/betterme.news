@@ -11,6 +11,14 @@ type Props = {
 const { postData } = Astro.props
 const createdAt = new Date(postData.created_at);
 const articleDate = createdAt.toISOString()
+const currentDate = new Date()
+const isPostExpired = (deadline: string) =>{
+	if(!deadline) return false
+	const dateParts = deadline.split("/")
+	const expiredDate = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0])
+	return expiredDate <= currentDate
+}
+const shouldShowExpiredTag = isPostExpired(postData.other_information?.deadline)
 ---
 
 <BaseLayout
@@ -45,7 +53,7 @@ const articleDate = createdAt.toISOString()
 			</span>
 		</header>
 
-		<>
+		<div class='relative'>
 			{
 				postData.banner_img && (
 					<Image
@@ -60,7 +68,19 @@ const articleDate = createdAt.toISOString()
 					/>
 				)
 			}
-		</>
+			{
+				shouldShowExpiredTag && (
+					<Image
+						src='/expired-news-tag.png'
+						width={150}
+						height={150}
+						format='png'
+						class='z-30 absolute top-0 right-0'
+						alt="Expired tag"
+					/>
+				)
+			}
+		<div/>
 
 		<hr />
 
