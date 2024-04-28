@@ -2,11 +2,13 @@
 import { Image } from 'astro:assets'
 import ArrowUp from '@/components/icons/ArrowUp'
 import type {GetPostListResponse} from '@/types/responses'
+import ExpiredNewsTagIcon from '@/components/icons/ExpiredNewsTagIcon'
 
 type Props = {
-	postData: GetPostListResponse
+	postData: GetPostListResponse,
+	shouldShowExpiredTag: Boolean
 }
-const { postData } = Astro.props
+const { postData, shouldShowExpiredTag=false } = Astro.props
 ---
 
 <article class='grid grid-rows-[300px_auto] md:grid-rows-[300px_220px] min-h-full group'>
@@ -18,12 +20,18 @@ const { postData } = Astro.props
                 width={600}
                 height={200}
                 format='webp'
-                class='banner h-full min-w-full object-cover hover:scale-[101%] transition-all duration-200 rounded-[2px]'
+                class='banner relative h-full min-w-full object-cover hover:scale-[101%] transition-all duration-200 rounded-[2px]'
                 alt={`img of ${postData.title}`}
             />
             )
         }
+		{
+			shouldShowExpiredTag && (
 
+		<ExpiredNewsTagIcon/>
+)
+
+		}
 		<div class='z-30 absolute bottom-0 w-full h-9'>
 			<div class='z-10 absolute bottom-0 glass w-full min-h-full'></div>
 			<div class='flex items-center justify-end gap-x-1 text-white px-5 pt-2'>
