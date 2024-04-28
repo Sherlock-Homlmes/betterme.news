@@ -26,11 +26,7 @@ const { postData, shouldShowExpiredTag=false } = Astro.props
             )
         }
 		{
-			shouldShowExpiredTag && (
-
-		<ExpiredNewsTagIcon/>
-)
-
+			shouldShowExpiredTag && <ExpiredNewsTagIcon/>
 		}
 		<div class='z-30 absolute bottom-0 w-full h-9'>
 			<div class='z-10 absolute bottom-0 glass w-full min-h-full'></div>
