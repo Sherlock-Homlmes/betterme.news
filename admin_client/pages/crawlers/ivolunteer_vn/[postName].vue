@@ -201,8 +201,17 @@ import {
   CrawlerDataResponseTypeEnum,
   OriginCrawlPagesEnum,
   IvolunteerPageTagsEnum,
+  IvolunteerPageContentTypeEnum,
 } from "~/src/types/enums";
 
+const contentTypeMap = {
+  // [IvolunteerPageContentTypeEnum.CLUB]: IvolunteerPageTagsEnum.CLUB,
+  [IvolunteerPageContentTypeEnum.VOLUNTEER]: IvolunteerPageTagsEnum.VOLUNTEER,
+  [IvolunteerPageContentTypeEnum.SCHORLARSHIP]:
+    IvolunteerPageTagsEnum.SCHORLARSHIP,
+  [IvolunteerPageContentTypeEnum.COURSE]: IvolunteerPageTagsEnum.COURSE,
+  [IvolunteerPageContentTypeEnum.EVENT]: IvolunteerPageTagsEnum.EVENT,
+};
 const config = useRuntimeConfig();
 const { fetchLink, clientLink } = config.public;
 
@@ -241,6 +250,11 @@ const getPageInfo = async () => {
     pageInfo.value =
       (await postResult.json()) as GetCrawlersIvolunteerDataResponse;
     if (pageInfo.value.id) vm.$router.push(`/posts/${pageInfo.value.id}`);
+    pageInfo.value.tags = [
+      contentTypeMap[
+        vm.$route.query.content_type as IvolunteerPageContentTypeEnum
+      ],
+    ];
     const tagsResult = await fetch(`${fetchLink}/tags?origin=ivolunteer_vn`);
     tags.value = await tagsResult.json();
     changeTracker.track(pageInfo.value);
