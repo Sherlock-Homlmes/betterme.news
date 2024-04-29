@@ -250,14 +250,14 @@ const getPageInfo = async () => {
     pageInfo.value =
       (await postResult.json()) as GetCrawlersIvolunteerDataResponse;
     if (pageInfo.value.id) vm.$router.push(`/posts/${pageInfo.value.id}`);
+    const tagsResult = await fetch(`${fetchLink}/tags?origin=ivolunteer_vn`);
+    tags.value = await tagsResult.json();
+    changeTracker.track(pageInfo.value);
     pageInfo.value.tags = [
       contentTypeMap[
         vm.$route.query.content_type as IvolunteerPageContentTypeEnum
       ],
     ];
-    const tagsResult = await fetch(`${fetchLink}/tags?origin=ivolunteer_vn`);
-    tags.value = await tagsResult.json();
-    changeTracker.track(pageInfo.value);
   } catch {
     window.alert("Crawler fail");
   } finally {
