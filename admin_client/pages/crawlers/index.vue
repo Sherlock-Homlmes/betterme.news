@@ -19,13 +19,18 @@
         <v-btn class="ml-2" @click="onClickCreateNewPost">Crawl</v-btn>
       </div>
       <v-data-table
+        class="mt-4"
         items-per-page="10"
         :headers="draftPostHeaders"
         :items="draftPosts"
         :loading="loadingDraftPosts"
       >
         <template v-slot:top>
-          <h1>Draft posts</h1>
+          <v-toolbar flat>
+            <h1>Draft posts</h1>
+            <v-spacer></v-spacer>
+            <v-btn @click="deleteAllDraftPost">Delete all draft posts</v-btn>
+          </v-toolbar>
         </template>
         <template v-slot:item.name="{ item }">
           {{ item.title }}
@@ -136,7 +141,7 @@ const onClickCreateNewPost = () => {
   newPostUrl.value = "";
 };
 
-const deleteDraftPost = async (deleteDraftPost) => {
+const deleteDraftPost = async (deleteDraftPost, enableAlert = true) => {
   try {
     await fetchWithAuth(
       `${fetchLink}/admin/draft_posts/${deleteDraftPost.id}`,
@@ -145,10 +150,27 @@ const deleteDraftPost = async (deleteDraftPost) => {
     draftPosts.value = draftPosts.value.filter(
       (draftPost) => draftPost.id !== deleteDraftPost.id,
     );
-    window.alert("Delete success");
+    if (enableAlert) window.alert("Delete success");
   } catch (err) {
-    window.alert("Delete fail");
+    if (enableAlert) window.alert("Delete fail");
   }
+};
+
+const deleteAllDraftPost = async () => {
+  await Promise.all(
+    draftPosts.value.map((draftPost) => {
+      return new Promise((resolve, reject) => {
+        resolve(deleteDraftPost(draftPost, false));
+      });
+    }),
+  )
+    .then(() => {
+      window.alert("Delete success");
+      draftPosts.value = [];
+    })
+    .catch(() => {
+      window.alert("Delete fail");
+    });
 };
 
 watch(
