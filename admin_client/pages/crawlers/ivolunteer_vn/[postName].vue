@@ -220,7 +220,9 @@ const vm = getCurrentInstance().proxy;
 const snackbar = ref<Boolean>(false);
 const link = ref<String>(vm.$route.params.postName);
 const pageInfo = ref<GetCrawlersIvolunteerDataResponse>();
-const tags = ref<IvolunteerPageTagsEnum[]>([]);
+const tags = ref<IvolunteerPageTagsEnum[]>(
+  Object.values(IvolunteerPageTagsEnum),
+);
 const updating = ref<Boolean>(false);
 const isFacebookPreviewed = ref<Boolean>(false);
 const isHtmlPreviewed = ref<Boolean>(false);
@@ -250,8 +252,6 @@ const getPageInfo = async () => {
     pageInfo.value =
       (await postResult.json()) as GetCrawlersIvolunteerDataResponse;
     if (pageInfo.value.id) vm.$router.push(`/posts/${pageInfo.value.id}`);
-    const tagsResult = await fetch(`${fetchLink}/tags?origin=ivolunteer_vn`);
-    tags.value = await tagsResult.json();
     changeTracker.track(pageInfo.value);
     pageInfo.value.tags = [
       contentTypeMap[
