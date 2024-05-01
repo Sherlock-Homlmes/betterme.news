@@ -1,4 +1,5 @@
 # default
+import asyncio
 from typing import Annotated, Union, List
 
 # libraries
@@ -48,6 +49,8 @@ class DraftPostNameProjection(BaseModel):
 async def get_crawler_list(
     params: Annotated[dict, Depends(CrawlersListDataParams)],
 ) -> List[str]:
+    # avoid blocking request when crawl multi posts
+    await asyncio.sleep(0.1)
     # crawler
     page_data = scrap_page_data(params)
     # get exist crawler
