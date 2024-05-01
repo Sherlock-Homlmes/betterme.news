@@ -22,6 +22,15 @@ def generate_slug(s: str) -> str:
     return s
 
 
+def remove_empty_string(s: str) -> str:
+    """"""
+    s = s.lower().strip()
+    s = re.sub(r"[^\w\s-]", "", s)
+    # s = re.sub(r"[\s_-]+", "-", s)
+    s = re.sub(r"^-+|-+$", "", s)
+    return s
+
+
 async def save_image(url: str) -> str:
     async with aiohttp.ClientSession() as session:
         async with session.get(url) as resp:

@@ -13,6 +13,7 @@ from data_process import (
     save_image,
     process_detail_page_data_html,
     replace_html,
+    remove_empty_string,
 )
 
 DATA_DIR = f"{Path(__file__).resolve().parent.parent}/data"
@@ -35,7 +36,7 @@ def ivolunteer_crawl(url: str):
             if len(deadline) == 3 and len(deadline[1]) == 1:
                 deadline[1] = "0" + deadline[1]
             deadline = "-".join(deadline)
-            if deadline in ["ASAP", "All year round"]:
+            if deadline in ["ASAP", "All year round", ""] or remove_empty_string(deadline) == "":
                 deadline = None
             banner = response.css("#mvp-content-main").css("img::attr(data-src)").get()
             banner = None if banner is None else asyncio.run(save_image(banner)).split("/")[-1]
