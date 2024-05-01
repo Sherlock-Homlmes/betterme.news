@@ -12,11 +12,23 @@ from scrapy import Selector
 DATA_DIR = f"{Path(__file__).resolve().parent.parent}/data"
 
 
+# TODO: this func duplicate code from services
+def generate_slug(s: str) -> str:
+    """Generates a slug from the given text, handling various cases."""
+    s = s.lower().strip()
+    s = re.sub(r"[^\w\s-]", "", s)
+    s = re.sub(r"[\s_-]+", "-", s)
+    s = re.sub(r"^-+|-+$", "", s)
+    return s
+
+
 async def save_image(url: str) -> str:
     async with aiohttp.ClientSession() as session:
         async with session.get(url) as resp:
             if resp.status == 200:
-                img_name = url.split("/")[-1].replace(".png", "").replace(".jpg", "") + ".png"
+                img_name = url.split("/")[-1].replace(".png", "").replace(".jpg", "")
+                img_name = generate_slug(img_name)
+                img_name += ".png"
                 f = await aiofiles.open(f"{DATA_DIR}/media/{img_name}", mode="wb")
                 await f.write(await resp.read())
                 await f.close()
