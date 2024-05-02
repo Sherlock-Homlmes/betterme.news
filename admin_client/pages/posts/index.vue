@@ -29,6 +29,13 @@
 
           <!-- Not work -->
         </template>
+        <template v-slot:tfoot>
+          <tr>
+            <td>
+              <h4>Total view: {{ posts.reduce((a, b) => a + b.view, 0) }}</h4>
+            </td>
+          </tr>
+        </template>
       </v-data-table>
 
       <!-- <v-dialog v-model="deleteDialog" max-width="500px">
