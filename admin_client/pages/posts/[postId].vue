@@ -92,7 +92,7 @@
 import { ref, onMounted, watch, computed, getCurrentInstance } from "vue";
 import { useRuntimeConfig } from "nuxt/app";
 import { changeTracker } from "~/src/func";
-import fetchWithAuth from "~/src/common/betterFetch";
+import { fetchWithAuth } from "~/src/common/betterFetch";
 import Editor from "@tinymce/tinymce-vue";
 import type { GetPostResponse } from "~/src/types/responses";
 import { IvolunteerPageTagsEnum } from "~/src/types/enums";

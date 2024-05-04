@@ -189,7 +189,7 @@ import {
 } from "vue";
 import { useRuntimeConfig } from "nuxt/app";
 import { changeTracker } from "~/src/func";
-import fetchWithAuth from "~/src/common/betterFetch";
+import { fetchWithAuth } from "~/src/common/betterFetch";
 import Editor from "@tinymce/tinymce-vue";
 import type {
   GetCrawlersIvolunteerDataResponse,
@@ -266,7 +266,10 @@ const getPageInfo = async () => {
 };
 
 const onSaveDraft = async (showAlert: boolean = false) => {
-  if (await vm?.$refs.title.validate().length) {
+  if (
+    (await vm?.$refs.title.validate().length) ||
+    pageInfo.value?.title?.length > 100
+  ) {
     window.alert("Invalid title");
     return;
   }

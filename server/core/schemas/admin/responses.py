@@ -94,6 +94,16 @@ class GetTagsParams(BaseModel):
 
 ### posts.py
 # Payload
+class PostPostPayload(BaseModel):
+    title: str = Field(min_length=1, default=None)
+    description: str = Field(min_length=1, default=None)
+    banner: str
+    deadline: Optional[datetime.date] = None
+    content: str = Field(min_length=1, default=None)
+    tags: List[str] = Field(min_items=1, default=None)
+    keywords: List[str] = Field(min_items=1, default=None)
+
+
 class PatchPostPayload(BaseModel):
     title: Optional[str] = Field(min_length=1, default=None)
     description: Optional[str] = Field(min_length=1, default=None)

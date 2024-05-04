@@ -1,4 +1,4 @@
-const fetchWithAuth = async (url: string, options?: any) => {
+export const fetchWithAuth = async (url: string, options?: any) => {
   const token = window.localStorage.getItem("Authorization");
   return fetch(url, {
     headers: {
@@ -9,4 +9,12 @@ const fetchWithAuth = async (url: string, options?: any) => {
   });
 };
 
-export default fetchWithAuth;
+export const fetchMultiPartWithAuth = async (url: string, options?: any) => {
+  const token = window.localStorage.getItem("Authorization");
+  return fetch(url, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    ...options,
+  });
+};

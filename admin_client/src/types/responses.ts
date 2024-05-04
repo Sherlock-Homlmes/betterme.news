@@ -93,6 +93,21 @@ export interface PostCrawlersPreviewDiscordDataPayload {
 export interface PostCrawlersResponse {
   id: string;
 }
+export interface PostPostPayload {
+  title?: string;
+  description?: string;
+  banner: string;
+  deadline?: string;
+  content?: string;
+  /**
+   * @minItems 1
+   */
+  tags?: [string, ...string[]];
+  /**
+   * @minItems 1
+   */
+  keywords?: [string, ...string[]];
+}
 /* tslint:disable */
 /* eslint-disable */
 /**

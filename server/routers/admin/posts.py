@@ -1,26 +1,110 @@
 # default
 
 # libraries
-from fastapi import APIRouter, HTTPException, Depends
+from fastapi import APIRouter, HTTPException, Depends, File, UploadFile, Form, BackgroundTasks
+import aiofiles
 
 # local
-from core.models import Posts, Users, DraftPosts
+from core.models import Posts, Users, DraftPosts, OtherPostInfo
 from core.schemas.admin import (
     # params
     # payload
+    PostPostPayload,
     PatchPostPayload,
     # responses
+    PostCrawlersResponse,
     # enums
     ResponseStatusEnum,
 )
 from routers.auth import auth_handler
+from scrap.func import image_process
 from services.tebi import delete_image
-from services.discord_bot.news import delete_news
+from services.discord_bot.news import delete_news, send_news, send_noti_to_subcribers
+from services.text_convertion import gen_slug_from_title
+from services.tebi import upload_image
+from services.time_modules import Time, date_to_str
 
 
 router = APIRouter(
     responses={404: {"description": "Not found"}},
 )
+
+
+@router.post(
+    "/posts/",
+    tags=["Admin-posts"],
+    status_code=ResponseStatusEnum.ACCEPTED.value,
+)
+async def new_post(
+    payload: PostPostPayload,
+    background_tasks: BackgroundTasks,
+    user: Users = Depends(auth_handler.auth_wrapper),
+):
+    is_post_exist = await Posts.find_one(
+        Posts.title == payload.title,
+    )
+    if is_post_exist:
+        raise HTTPException(
+            status_code=ResponseStatusEnum.BAD_REQUEST.value, detail="Post already exist"
+        )
+
+    now = Time().now
+    # facebook_post = post_to_fb(
+    #     origin=body.origin,
+    #     content=current_data.discord.title,
+    #     comment="test comment",
+    #     hashtags=["hashtag1", "hashtag2"],
+    # )
+    other_info = OtherPostInfo(deadline=date_to_str(payload.deadline) if payload.deadline else None)
+    banner_img = upload_image(payload.banner)
+    post = Posts(
+        # info
+        created_at=now,
+        created_by=await Users.get(user["id"]),
+        raw_data=None,
+        # other service
+        # facebook_post=facebook_post,
+        discord_post_id=0,
+        # content
+        title=payload.title,
+        description=payload.description,
+        tags=payload.tags,
+        other_information=other_info,
+        banner_img=banner_img,
+        content=payload.content,
+        author="Betterme.news",
+        # SEO
+        keywords=payload.keywords,
+        og_img=banner_img,
+    )
+    await post.insert()
+    # save id to draft post
+    await post.set({DraftPosts.draft_data.id: str(post.id)})
+    # create discord post
+    discord_post_id = await send_news(data=payload, is_testing=False, post_id=post.id)
+    # discord_post_id to draft_post
+    post.discord_post_id = discord_post_id
+    await post.save()
+    background_tasks.add_task(send_noti_to_subcribers, payload, False, post.id)
+    return PostCrawlersResponse(id=str(post.id))
+
+
+@router.post(
+    "/posts/_file",
+    tags=["Admin-posts"],
+    status_code=ResponseStatusEnum.ACCEPTED.value,
+)
+async def new_post_file(
+    file: UploadFile = File(...),
+    title: str = Form(...),
+):
+    img_name = gen_slug_from_title(title) + ".png"
+    f = await aiofiles.open(f"scrap/data/media/{img_name}", mode="wb")
+    await f.write(await file.read())
+    await f.close()
+    image_process(img_name)
+
+    return {"file": img_name}
 
 
 @router.patch(

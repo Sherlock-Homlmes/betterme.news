@@ -3,9 +3,9 @@
     <center class="mt-5 mb-15">
       <h1>Manage posts</h1>
       <div class="d-flex justify-center align-center w-25">
-        <v-btn class="ml-2" @click="onClickCreateNewPost" :disabled="true"
-          >Create new post(TODO...)</v-btn
-        >
+        <v-btn class="ml-2" @click="onClickCreateNewPost">
+          <a href="/posts/create"> Create new post </a>
+        </v-btn>
       </div>
       <v-data-table :headers="headers" :items="posts" :loading="loading">
         <template v-slot:item.title="{ item }">
@@ -63,7 +63,7 @@
 import { useRuntimeConfig } from "nuxt/app";
 import { ref, getCurrentInstance, onMounted } from "vue";
 import type { GetPostListResponse } from "~/src/types/responses";
-import fetchWithAuth from "~/src/common/betterFetch";
+import { fetchWithAuth } from "~/src/common/betterFetch";
 const config = useRuntimeConfig();
 const { fetchLink, clientLink } = config.public;
 // const vm = getCurrentInstance().proxy

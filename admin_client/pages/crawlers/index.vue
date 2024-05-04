@@ -88,7 +88,7 @@
 import { useRuntimeConfig } from "nuxt/app";
 import { ref, onMounted, watch } from "vue";
 import type {} from "~/src/types/enum";
-import fetchWithAuth from "~/src/common/betterFetch";
+import { fetchWithAuth } from "~/src/common/betterFetch";
 import { IvolunteerPageContentTypeEnum } from "~/src/types/enums";
 const config = useRuntimeConfig();
 const { fetchLink, clientLink } = config.public;

@@ -45,6 +45,10 @@ class PatchCrawlersDataPayload(PatchCrawlersDataPayload):
     )
 
 
+class PostPostPayload(PostPostPayload):
+    tags: List[IvolunteerPageTagsEnum] = Field(min_items=1)
+
+
 class PatchPostPayload(PatchPostPayload):
     tags: Optional[List[Union[IvolunteerPageTagsEnum, KhoahocTvPageTagsEnum]]] = Field(
         min_items=1, default=None

@@ -81,7 +81,7 @@ def scrap_post_data(
         if origin == OriginCrawlPagesEnum.IVOLUNTEER_VN:
             with open(f"scrap/data/post/{post_name}.json", encoding="utf-8") as general_json_file:
                 general_data = json.load(general_json_file)
-            image_process(origin=origin, image=general_data["banner"])
+            image_process(image=general_data["banner"])
         return get_scrap_post_data(origin=origin, post_name=post_name)
     raise HTTPException(status_code=ResponseStatusEnum.BAD_REQUEST.value, detail="Not found post")
 
@@ -121,14 +121,18 @@ def save_crawler_data(post_name: str, data: PatchCrawlersDataPayload) -> None:
         )
 
 
-def image_process(origin: OriginCrawlPagesEnum, image: str) -> None:
+def image_process(image: str) -> None:
     # Opens a image
-    if origin == OriginCrawlPagesEnum.IVOLUNTEER_VN:
-        frame_img = Image.open("scrap/media/betterme_news.png")
-        img = Image.open(f"scrap/data/media/{image}")
+    frame_img = Image.open("scrap/media/betterme_news.png")
+    img = Image.open(f"scrap/data/media/{image}")
+    if img.size != (800, 500):
+        raise HTTPException(
+            status_code=ResponseStatusEnum.BAD_REQUEST.value,
+            detail="Make sure image size is 800x500px",
+        )
 
-        # Add foreground
-        img.paste(frame_img, (0, 0), frame_img)
+    # Add foreground
+    img.paste(frame_img, (0, 0), frame_img)
 
-        # Save the image
-        img.save(f"scrap/data/media/{image}")
+    # Save the image
+    img.save(f"scrap/data/media/{image}")

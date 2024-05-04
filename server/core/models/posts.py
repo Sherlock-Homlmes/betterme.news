@@ -63,7 +63,7 @@ class Posts(Document):
     # TODO: check if working or not
     @field_validator("thumbnail_img")
     @classmethod
-    def validate_x(cls, thumbnail_img: str) -> int:
+    def validate_thumbnail_banner(cls, thumbnail_img: str) -> int:
         if thumbnail_img or cls.banner_img:
             return thumbnail_img
         raise HTTPException(
