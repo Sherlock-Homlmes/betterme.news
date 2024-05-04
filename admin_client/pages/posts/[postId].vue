@@ -10,6 +10,12 @@
         class="w-50"
         :disabled="true"
       ></v-file-input>
+      <v-text-field
+        class="w-25"
+        v-model="postInfo.other_information.deadline"
+        variant="solo-filled"
+        type="date"
+      ></v-text-field>
       <v-autocomplete
         v-model="postInfo.tags"
         class="w-50"

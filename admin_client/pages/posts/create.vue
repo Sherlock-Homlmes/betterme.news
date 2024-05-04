@@ -16,10 +16,10 @@
       ></v-file-input>
       <!-- USE DATE PICKER INSTEAD -->
       <v-text-field
-        class="w-50"
-        label="Deadline(YYYY-MM-DD)"
-        variant="solo-filled"
+        class="w-25"
         v-model="postInfo.deadline"
+        variant="solo-filled"
+        type="date"
       ></v-text-field>
       <v-autocomplete
         v-model="postInfo.tags"

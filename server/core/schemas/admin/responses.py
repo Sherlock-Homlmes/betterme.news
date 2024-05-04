@@ -108,6 +108,7 @@ class PatchPostPayload(BaseModel):
     title: Optional[str] = Field(min_length=1, default=None)
     description: Optional[str] = Field(min_length=1, default=None)
     banner: Optional[str] = None
+    other_information: Optional[OtherPostInfo] = None
     content: Optional[str] = Field(min_length=1, default=None)
     tags: Optional[List[str]] = Field(min_items=1, default=None)
     keywords: Optional[List[str]] = Field(min_items=1, default=None)
