@@ -38,7 +38,7 @@ repos:
 
   # python
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.1.11
+    rev: v0.4.4
     hooks:
       # linter
       - id: ruff
@@ -47,5 +47,6 @@ repos:
         files: ^server/
       # formatter
       - id: ruff-format
-        # args: [--check]
+        name: ruff-formatter
+        args: [--fix]
         files: ^server/
