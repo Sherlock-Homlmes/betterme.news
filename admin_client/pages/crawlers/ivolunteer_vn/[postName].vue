@@ -300,9 +300,9 @@ const onSaveDraft = async (showAlert: boolean = false) => {
 const onCreatePost = async () => {
   if (!pageInfo.value) return;
 
-  updating.value = true;
   created.value = true;
   await onSaveDraft();
+  updating.value = true;
   const body: PostCrawlersDataPayload = {
     origin: OriginCrawlPagesEnum.IVOLUNTEER_VN,
     post_name: link.value.toString(),
@@ -324,8 +324,8 @@ const onCreatePost = async () => {
 };
 
 const onDiscordPreview = async () => {
-  updating.value = true;
   await onSaveDraft();
+  updating.value = true;
   const body: PostCrawlersPreviewDiscordDataPayload = {
     origin: OriginCrawlPagesEnum.IVOLUNTEER_VN,
     preview_source: [CrawlerDataResponseTypeEnum.DISCORD],
