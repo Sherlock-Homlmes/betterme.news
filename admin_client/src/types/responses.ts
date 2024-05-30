@@ -72,6 +72,7 @@ export interface PatchPostPayload {
   title?: string;
   description?: string;
   banner?: string;
+  other_information?: OtherPostInfo;
   content?: string;
   /**
    * @minItems 1
@@ -123,6 +124,7 @@ export interface GetPostListParams {
 export interface GetPostListResponse {
   id: string;
   slug: string;
+  created_at: string;
   title: string;
   description: string;
   thumbnail_img?: string;

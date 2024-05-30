@@ -14,7 +14,10 @@ class OtherPostInfo(BaseModel):
 # responses
 class GetPostListResponse(BaseModel):
     id: str
+    # custom data
     slug: str
+    # info
+    created_at: datetime.datetime
     # content
     title: str
     description: str

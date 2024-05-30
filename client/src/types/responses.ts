@@ -13,6 +13,7 @@ export interface GetPostListParams {
 export interface GetPostListResponse {
 	id: string
 	slug: string
+	created_at: string
 	title: string
 	description: string
 	thumbnail_img?: string
