@@ -57,7 +57,7 @@ class Posts(Document):
         validate_on_save = True
         # only use cache in user api
         use_cache = True if settings.ENV == ENVEnum.USER.value else False
-        cache_expiration_time = datetime.timedelta(seconds=10)
+        cache_expiration_time = datetime.timedelta(seconds=30)
         cache_capacity = 100
 
     ### Validate
