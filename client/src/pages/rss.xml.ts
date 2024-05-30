@@ -6,12 +6,6 @@ import type { GetPostListResponse } from '@/types/responses'
 export async function get() {
 	const response = await fetch(`${fetchLink}/posts?per_page=1000000`)
 	const posts = (await response.json()) as GetPostListResponse[]
-	console.log(
-		posts.map((post) => ({
-			...post,
-			link: `posts/${post.slug}/`,
-		})),
-	)
 	return rss({
 		title: siteConfig.title,
 		description: siteConfig.description,
