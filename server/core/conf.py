@@ -6,6 +6,7 @@ from functools import lru_cache
 # libraries
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.middleware.gzip import GZipMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import ORJSONResponse
 from pydantic_settings import BaseSettings
@@ -87,5 +88,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+app.add_middleware(GZipMiddleware, minimum_size=1000)
 
 app.mount("/api/media", StaticFiles(directory="scrap/data/media"), name="media")
