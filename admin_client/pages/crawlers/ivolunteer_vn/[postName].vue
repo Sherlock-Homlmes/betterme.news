@@ -266,6 +266,7 @@ const getPageInfo = async () => {
 };
 
 const onSaveDraft = async (showAlert: boolean = false) => {
+  // TODO: fix to not do anything else when update fail
   if (
     (await vm?.$refs.title.validate().length) ||
     pageInfo.value?.title?.length > 100
@@ -291,8 +292,10 @@ const onSaveDraft = async (showAlert: boolean = false) => {
       method: "PATCH",
       body: JSON.stringify(updateFields),
     },
-  );
-  updating.value = false;
+  ).finally(() => {
+    updating.value = false;
+  });
+
   if (response.ok && showAlert) window.alert("Update success");
   else if (!response.ok) window.alert("UPDATE FAIL");
 };
