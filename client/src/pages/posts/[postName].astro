@@ -5,9 +5,6 @@ import fetchLink from 'src/utils/config'
 import ListRelatedPosts from '@/components/ListRelatedPosts'
 import type {GetPostResponse} from '@/types/responses'
 import {IvolunteerPageTagsEnum} from '@/types/enums'
-// TODO
-// import TableOfContents from '@/components/TableOfContents'
-
 
 const {postName} = Astro.params
 const response = await fetch(`${fetchLink}/posts/${postName}`)
@@ -22,7 +19,7 @@ postData = {
 	}
 }
 ---
-<!-- TODO: Table of content, related post -->
+<!-- TODO: related post -->
 <BlogPostV2
 	postData={postData}
 >
@@ -30,9 +27,8 @@ postData = {
 
 		<aside class='md:flex flex-col gap-8 hidden'>
 			<Share />
-			<!-- <div class='sticky top-24 self-start hidden md:block transition-all duration-200'>
-				{headings && headings.length > 0 && <TableOfContents {headings} />}
-			</div> -->
+			<div id="toc" class='sticky top-24 self-start hidden md:block transition-all duration-200'>
+			</div>
 		</aside>
 
 		<!-- post -->
@@ -51,3 +47,39 @@ postData = {
 
 	</div>
 </BlogPostV2>
+
+<script>
+const tocElements = document.getElementsByTagName("h4");
+const toc = [];
+// Get element info and generate id for content heading
+for (const ele of Array.from(tocElements)) {
+	const randomId = (Math.random() + 1).toString(36);
+	ele.id = randomId
+	toc.push({
+		id: randomId,
+		name: ele.textContent,
+		childrent: [],
+	})
+}
+// Add TOC elements into HTML
+const tocComponent = document.getElementById("toc");
+if (tocComponent) {
+	const tocHTMLElements = toc.map((x) => `
+		<li class='flex flex-col'>
+			<a
+				href='#${x.id}'
+				class="bg-slate-200 dark:bg-slate-800 dark:hover:bg-indigo-400 hover:bg-indigo-300 hover:text-white  py-1 px-4 dark:text-white rounded-full mb-2 first-letter:uppercase w-fit line-clamp-2"
+			>
+				${x.name}
+			</a>
+		</li>`
+	)
+	tocComponent.innerHTML = `
+		<nav class='max-w-xs dark:text-black'>
+			<h1 class='font-bold mb-3 text-2xl dark:text-white'>Nội dung</h1>
+			<ul class='[text-wrap:balance] flex flex-col gap-1'>
+				${tocHTMLElements.join('')}
+			</ul>
+		</nav>`
+}
+</script>
