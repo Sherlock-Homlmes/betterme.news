@@ -14,6 +14,7 @@ class DraftPosts(Document):
     source: OriginCrawlPagesEnum
     name: str
     original_data: GetCrawlersIvolunteerDataResponse
+    # TODO: delete this field and link to post field
     draft_data: GetCrawlersIvolunteerDataResponse
     post: Optional[Link[Posts]] = None
     deleted_by: Optional[Link[Users]] = None

@@ -40,6 +40,7 @@ async def new_post(
     background_tasks: BackgroundTasks,
     user: Users = Depends(auth_handler.auth_wrapper),
 ):
+    # TODO: check this in Posts class validation
     is_post_exist = await Posts.find_one(
         Posts.title == payload.title,
     )

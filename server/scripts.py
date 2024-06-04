@@ -1,24 +1,36 @@
-# This file to run pre-deploy commands
-# It is typically used for tasks like running a database migration or uploading assets to a CDN.
+# This file is to run pre-deploy commands
+# Typically used for tasks like running a database migration or uploading assets to a CDN.
 
 import asyncio
+from core.models import Posts, DraftPosts
+from core.event_handler import connect_db
+from beanie import PydanticObjectId
+from beanie.operators import Exists
 
 
-# TODO
-async def change_post_deadline_type_from_str_to_date():
-    pass
-    # post = await Posts.find_one(
-    #     Not(Type(Posts.other_information.deadline, "date"))
-    # )
-    # print(post.id, post.title, post.other_information)
-    # print(str_to_date(post.other_information.deadline))
-    # await Posts.update_all({
-    #     Posts.other_information.deadline:
-    # })
+async def something():
+    draft_posts = await DraftPosts.find(
+        DraftPosts.draft_data.id != None, fetch_links=True
+    ).to_list()
+    original_post_data = [
+        {
+            "draft_post_id": draft_post.id,
+            "post_id": draft_post.draft_data.id,
+            "original_link": draft_post.name,
+        }
+        for draft_post in draft_posts
+    ]
+
+    for x in original_post_data:
+        await Posts.find_one(Posts.id == PydanticObjectId(x["post_id"])).update(
+            {"$set": {Posts.author_link: x["original_link"]}}
+        )
+    await Posts.find(Exists(Posts.author_link, False)).update({"$set": {Posts.author_link: None}})
 
 
 async def main() -> None:
-    # await connect_db()
+    await connect_db()
+    await something()
     pass
 
 

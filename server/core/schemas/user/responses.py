@@ -43,6 +43,7 @@ class GetPostResponse(BaseModel):
     banner_img: Optional[str] = None
     content: str
     author: str
+    author_link: Optional[str] = None
     other_information: Optional[OtherPostInfo] = None
     view: int
     tags: List[str]

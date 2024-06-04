@@ -88,6 +88,7 @@ async def get_post(
     params: Annotated[dict, Depends(GetPostParams)],
     background_tasks: BackgroundTasks,
 ) -> GetPostResponse:
+    # TODO: remove this to get only by id
     post_id: str = post_name.split("_")[-1]
     try:
         post = await Posts.get(post_id)

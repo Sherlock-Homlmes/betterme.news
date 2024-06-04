@@ -141,6 +141,7 @@ async def post_crawler(
             banner_img=banner_img,
             content=current_data.content,
             author="Ivolunteer.vn",
+            author_link=draft_post_data.name,
             # SEO
             keywords=current_data.keywords,
             og_img=banner_img,
