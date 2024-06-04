@@ -34,6 +34,7 @@ export interface GetPostResponse {
 	banner_img?: string
 	content: string
 	author: string
+	author_link?: string
 	other_information?: OtherPostInfo
 	view: number
 	tags: string[]
