@@ -45,7 +45,7 @@ def ivolunteer_crawl(url: str):
             # remove last 3 <p> from content
             content.pop()
             content.pop()
-            content.pop()
+            print(content)
             keywords = response.xpath("//meta[@name='keywords']/@content")[0].get().split(",")
             keywords = [
                 keyword[1:] if keyword[0] == " " else keyword
