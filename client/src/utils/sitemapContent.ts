@@ -15,7 +15,7 @@ export const generateContentSitemap = async (contentType: IvolunteerPageTagsEnum
 					.map((post) => {
 						const url = `${post.slug}_${post.id}`
 						const lastMod = post.updated_at ?? post.created_at
-						return `<url><loc>${siteUrl}${url}/</loc><lastmod>${lastMod}+07:00</lastmod><changefreq>always</changefreq><priority>0.8</priority></url>`
+						return `<url><loc>${siteUrl}posts/${url}/</loc><lastmod>${lastMod}+07:00</lastmod><changefreq>always</changefreq><priority>0.8</priority></url>`
 					})
 					.join('\n')}
         </urlset>
