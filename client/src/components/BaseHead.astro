@@ -23,6 +23,7 @@ const headKeyword = keywords.join(", ")
 const titleSeparator = '•'
 
 const siteTitle = `${title} ${titleSeparator} ${siteConfig.title}`
+const ENVIRONMENT = import.meta.env.ENVIRONMENT
 ---
 
 <!-- ViewTransitions  -->
@@ -35,8 +36,14 @@ const siteTitle = `${title} ${titleSeparator} ${siteConfig.title}`
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 <!-- <link rel="manifest" href="/site.webmanifest"> -->
-<meta name='generator' content={Astro.generator} />
-
+<meta name="generator" content={Astro.generator} />
+{
+	ENVIRONMENT === "DEMO" && (
+		<>
+			<meta name="robots" content="noindex,nofollow">
+		</>
+	)
+}
 <!-- Canonical URL -->
 <link rel='canonical' href={canonicalURL} />
 
