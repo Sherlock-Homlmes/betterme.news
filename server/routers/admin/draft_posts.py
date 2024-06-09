@@ -64,7 +64,7 @@ async def delete_draft_post(
     except Exception:
         pass
 
-    if not draft_post:
+    if not draft_post or draft_post.draft_data.id:
         raise HTTPException(
             status_code=ResponseStatusEnum.NOT_FOUND.value,
             detail="Draft post not found",
