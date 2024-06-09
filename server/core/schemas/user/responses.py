@@ -17,6 +17,7 @@ class GetPostListResponse(BaseModel):
     # custom data
     slug: str
     # info
+    updated_at: Union[datetime.datetime, None]
     created_at: datetime.datetime
     # content
     title: str
