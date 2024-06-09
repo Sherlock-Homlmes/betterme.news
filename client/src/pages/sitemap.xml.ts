@@ -1,20 +1,25 @@
-import { siteConfig } from '@/site-config'
 import fetchLink from 'src/utils/config'
-import type { GetPostListResponse } from '@/types/responses'
-import { IvolunteerPageContentTypeEnum } from '@/types/enums'
+import { IvolunteerPageContentTypeEnum, IvolunteerPageTagsEnum } from '@/types/enums'
 
 export async function GET() {
 	const siteUrl = import.meta.env.SITE
+	// TODO: refactor this
 	const contentTypes = [
 		IvolunteerPageContentTypeEnum.VOLUNTEER,
+		IvolunteerPageContentTypeEnum.COURSE,
 		IvolunteerPageContentTypeEnum.SCHORLARSHIP,
 		IvolunteerPageContentTypeEnum.EVENT,
-		IvolunteerPageContentTypeEnum.COURSE,
+	]
+	const contentTypeTags = [
+		IvolunteerPageTagsEnum.VOLUNTEER,
+		IvolunteerPageTagsEnum.COURSE,
+		IvolunteerPageTagsEnum.SCHORLARSHIP,
+		IvolunteerPageTagsEnum.EVENT,
 	]
 	const getContentTypesSitemapData = async () => {
 		return await Promise.all(
-			contentTypes.map(async (contentType) => {
-				const res = await fetch(`${fetchLink}/posts?per_page=1&match_tags=${contentType}`)
+			contentTypeTags.map(async (tag) => {
+				const res = await fetch(`${fetchLink}/posts?per_page=1&match_tag=${tag}`)
 				return await res.json()
 			}),
 		).then((responses) => {

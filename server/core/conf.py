@@ -77,8 +77,13 @@ app = FastAPI(
 
 allow_origins = (
     ["*"]
-    if settings.ENV == ENVEnum.DEV
-    else ["https://admin.betterme.news", "http://admin.betterme.news"]
+    if settings.ENV == ENVEnum.DEV.value
+    else [
+        "https://betterme.news",
+        "https://admin.betterme.news",
+        "http://betterme.news",
+        "http://admin.betterme.news",
+    ]
 )
 
 app.add_middleware(
