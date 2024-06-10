@@ -1,4 +1,9 @@
-// From export enums.py (2 Enums 5 Values)
+// From export enums.py (3 Enums 7 Values)
+
+export enum AIPromtTypeEnum {
+  TITLE = "title",
+  DESCRIPTION = "description",
+}
 
 export enum CrawlerDataResponseTypeEnum {
   WEB = "html",

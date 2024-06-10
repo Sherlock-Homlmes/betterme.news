@@ -1,17 +1,35 @@
 <template>
   <center class="mt-5 mb-15">
     <div v-if="pageInfo" class="w-75">
-      <v-text-field
-        label="Title"
-        v-model="pageInfo.title"
-        ref="title"
-        :rules="[
-          (val) => val.length >= 1 || `Hãy điền title`,
-          (val) =>
-            val.length <= 100 ||
-            `Chỉnh title ít hơn 100 chữ. Hiện tại: ${val.length} chữ`,
-        ]"
-      ></v-text-field>
+      <div class="d-flex justify-center align-center mb-4">
+        <v-text-field
+          label="Title"
+          v-model="pageInfo.title"
+          ref="title"
+          :rules="[
+            (val) => val.length >= 1 || `Hãy điền title`,
+            (val) =>
+              val.length <= 100 ||
+              `Chỉnh title ít hơn 100 chữ. Hiện tại: ${val.length} chữ`,
+          ]"
+          hide-details
+        ></v-text-field>
+        <v-btn
+          class="ml-4 bg-teal-lighten-1"
+          @click="onAIPromptGenerate(pageInfo.title, AIPromtTypeEnum.TITLE)"
+          :loading="aiPrompt.loading"
+          >AI</v-btn
+        >
+      </div>
+      <v-card
+        v-if="aiPrompt.title"
+        variant="elevated"
+        class="w-75 bg-teal-lighten-1"
+        color="surface-variant"
+        title="Title được đề xuất bởi AI"
+        >{{ aiPrompt.title }}</v-card
+      >
+      <br />
       <img :src="`${fetchLink}/media/${pageInfo?.banner}`" />
       <v-file-input
         clearable
@@ -41,11 +59,33 @@
         multiple
         label="Keyword"
       ></v-combobox>
-      <v-textarea
-        label="Description"
-        variant="solo-filled"
-        v-model="pageInfo.description"
-      ></v-textarea>
+      <div class="d-flex justify-center align-center mb-4">
+        <v-textarea
+          label="Description"
+          variant="solo-filled"
+          v-model="pageInfo.description"
+        ></v-textarea>
+        <v-btn
+          class="ml-4 bg-teal-lighten-1"
+          @click="
+            onAIPromptGenerate(
+              pageInfo.description,
+              AIPromtTypeEnum.DESCRIPTION,
+            )
+          "
+          :loading="aiPrompt.loading"
+          >AI</v-btn
+        >
+      </div>
+      <v-card
+        v-if="aiPrompt.description"
+        variant="elevated"
+        class="w-75 bg-teal-lighten-1"
+        color="surface-variant"
+        title="Description được đề xuất bởi AI"
+        >{{ aiPrompt.description }}</v-card
+      >
+      <br />
       <v-card>
         <editor
           api-key="xidtifz02mui7lrdh7iq49zlrykxh4o1lqbdcrxy9zsfpnwi"
@@ -196,12 +236,14 @@ import type {
   PostCrawlersPreviewDiscordDataPayload,
   PostCrawlersDataPayload,
   PostCrawlersResponse,
+  PostAIPromtPayload,
 } from "~/src/types/responses";
 import {
   CrawlerDataResponseTypeEnum,
   OriginCrawlPagesEnum,
   IvolunteerPageTagsEnum,
   IvolunteerPageContentTypeEnum,
+  AIPromtTypeEnum,
 } from "~/src/types/enums";
 
 const contentTypeMap = {
@@ -224,6 +266,11 @@ const tags = ref<IvolunteerPageTagsEnum[]>(
   Object.values(IvolunteerPageTagsEnum),
 );
 const updating = ref<Boolean>(false);
+const aiPrompt = ref({
+  title: null,
+  description: null,
+  loading: false,
+});
 const isFacebookPreviewed = ref<Boolean>(false);
 const isHtmlPreviewed = ref<Boolean>(false);
 const isDiscordPreviewed = ref<Boolean>(false);
@@ -263,6 +310,7 @@ const getPageInfo = async () => {
   } finally {
     // pass
   }
+  eview;
 };
 
 const onSaveDraft = async (showAlert: boolean = false) => {
@@ -286,18 +334,17 @@ const onSaveDraft = async (showAlert: boolean = false) => {
     updateFields.constructor === Object
   )
     return;
-  const response = await fetchWithAuth(
-    `${fetchLink}/admin/crawlers/${link.value}`,
-    {
+  try {
+    await fetchWithAuth(`${fetchLink}/admin/crawlers/${link.value}`, {
       method: "PATCH",
       body: JSON.stringify(updateFields),
-    },
-  ).finally(() => {
+    });
+    if (showAlert) window.alert("Update success");
+  } catch {
+    window.alert("UPDATE FAIL");
+  } finally {
     updating.value = false;
-  });
-
-  if (response.ok && showAlert) window.alert("Update success");
-  else if (!response.ok) window.alert("UPDATE FAIL");
+  }
 };
 
 const onCreatePost = async () => {
@@ -323,6 +370,27 @@ const onCreatePost = async () => {
     window.alert("CREATE FAIL");
   } finally {
     updating.value = false;
+  }
+};
+
+const onAIPromptGenerate = async (
+  context: string,
+  promtType: AIPromtTypeEnum,
+) => {
+  const body: PostAIPromtPayload = {
+    context,
+    prompt_type: promtType,
+  };
+  try {
+    aiPrompt.value.loading = true;
+    const response = await fetchWithAuth(`${fetchLink}/admin/ai/post_prompts`, {
+      method: "POST",
+      body: JSON.stringify(body),
+    });
+    aiPrompt.value[promtType] = (await response.json()).data;
+  } catch {
+  } finally {
+    aiPrompt.value.loading = false;
   }
 };
 

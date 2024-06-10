@@ -83,6 +83,10 @@ export interface PatchPostPayload {
    */
   keywords?: [string, ...string[]];
 }
+export interface PostAIPromtPayload {
+  prompt_type: string;
+  context: string;
+}
 export interface PostCrawlersDataPayload {
   origin: string;
   post_name: string;
@@ -124,7 +128,7 @@ export interface GetPostListParams {
 export interface GetPostListResponse {
   id: string;
   slug: string;
-  updated_at: string;
+  updated_at?: string;
   created_at: string;
   title: string;
   description: string;

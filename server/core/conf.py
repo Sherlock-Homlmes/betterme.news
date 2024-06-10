@@ -59,6 +59,8 @@ class Settings(BaseSettings):
     FACEBOOK_APP_ID: str
     FACEBOOK_APP_SECRET: str
 
+    GEMINI_AI_API_KEY: str
+
 
 settings = Settings()
 is_dev_env = settings.ENV == ENVEnum.DEV.value

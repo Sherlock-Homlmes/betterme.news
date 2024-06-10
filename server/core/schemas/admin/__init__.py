@@ -57,3 +57,7 @@ class PatchPostPayload(PatchPostPayload):
 
 class GetDraftPostListResponse(GetDraftPostListResponse):
     source: OriginCrawlPagesEnum
+
+
+class PostAIPromtPayload(PostAIPromtPayload):
+    prompt_type: AIPromtTypeEnum

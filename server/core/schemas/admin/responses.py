@@ -122,3 +122,9 @@ class GetDraftPostListResponse(BaseModel):
     original_data: GetCrawlersIvolunteerDataResponse
     draft_data: GetCrawlersIvolunteerDataResponse
     post: Union[str, None]
+
+
+# ai.py
+class PostAIPromtPayload(BaseModel):
+    prompt_type: str
+    context: str = Field(max_length=2000)
