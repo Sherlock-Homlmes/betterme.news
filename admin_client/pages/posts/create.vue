@@ -94,12 +94,9 @@
 // duplicate code
 import { ref, onMounted, watch, computed, getCurrentInstance } from "vue";
 import { useRuntimeConfig } from "nuxt/app";
-import {
-  fetchWithAuth,
-  fetchMultiPartWithAuth,
-} from "~/src/common/betterFetch";
+import { fetchWithAuth, fetchMultiPartWithAuth } from "@utils/betterFetch";
 import Editor from "@tinymce/tinymce-vue";
-import { IvolunteerPageTagsEnum } from "~/src/types/enums";
+import { IvolunteerPageTagsEnum } from "@types/enums";
 
 const config = useRuntimeConfig();
 const { fetchLink, clientLink } = config.public;

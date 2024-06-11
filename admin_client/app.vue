@@ -38,7 +38,7 @@
 <script setup>
 import { getCurrentInstance, onMounted, ref } from "vue";
 import { useRuntimeConfig } from "nuxt/app";
-import { fetchWithAuth } from "~/src/common/betterFetch";
+import { fetchWithAuth } from "@utils/betterFetch";
 
 const config = useRuntimeConfig();
 const { fetchLink } = config.public;

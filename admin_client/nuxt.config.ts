@@ -3,8 +3,10 @@ import vuetify, { transformAssetUrls } from "vite-plugin-vuetify";
 
 export default defineNuxtConfig({
   alias: {
-    "@": "./src",
-    "@components": "./src/components",
+    "@": "/src",
+    "@components": "/src/components",
+    "@types": "/src/types",
+    "@utils": "/src/utils",
   },
   build: {
     transpile: ["vuetify"],

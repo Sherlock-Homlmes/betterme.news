@@ -87,9 +87,10 @@
 <script setup lang="ts">
 import { useRuntimeConfig } from "nuxt/app";
 import { ref, onMounted, watch } from "vue";
-import type {} from "~/src/types/enum";
-import { fetchWithAuth } from "~/src/common/betterFetch";
-import { IvolunteerPageContentTypeEnum } from "~/src/types/enums";
+import type {} from "@types/enum";
+import { fetchWithAuth } from "@utils/betterFetch";
+import { IvolunteerPageContentTypeEnum } from "@types/enums";
+
 const config = useRuntimeConfig();
 const { fetchLink, clientLink } = config.public;
 // const vm = getCurrentInstance().proxy

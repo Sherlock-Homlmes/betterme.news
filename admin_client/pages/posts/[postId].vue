@@ -97,11 +97,11 @@
 // vue use
 import { ref, onMounted, watch, computed, getCurrentInstance } from "vue";
 import { useRuntimeConfig } from "nuxt/app";
-import { changeTracker } from "~/src/func";
-import { fetchWithAuth } from "~/src/common/betterFetch";
+import { changeTracker } from "@utils/func";
+import { fetchWithAuth } from "@utils/betterFetch";
 import Editor from "@tinymce/tinymce-vue";
-import type { GetPostResponse } from "~/src/types/responses";
-import { IvolunteerPageTagsEnum } from "~/src/types/enums";
+import type { GetPostResponse } from "@types/responses";
+import { IvolunteerPageTagsEnum } from "@types/enums";
 
 const config = useRuntimeConfig();
 const { fetchLink, clientLink } = config.public;

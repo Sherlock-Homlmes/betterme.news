@@ -62,8 +62,8 @@
 // filter
 import { useRuntimeConfig } from "nuxt/app";
 import { ref, getCurrentInstance, onMounted } from "vue";
-import type { GetPostListResponse } from "~/src/types/responses";
-import { fetchWithAuth } from "~/src/common/betterFetch";
+import type { GetPostListResponse } from "@types/responses";
+import { fetchWithAuth } from "@utils/betterFetch";
 const config = useRuntimeConfig();
 const { fetchLink, clientLink } = config.public;
 // const vm = getCurrentInstance().proxy

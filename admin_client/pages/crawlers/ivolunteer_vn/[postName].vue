@@ -219,17 +219,10 @@
 // to store - component
 // facebook preview
 // vue use
-import {
-  ref,
-  onMounted,
-  watch,
-  computed,
-  getCurrentInstance,
-  createTextVNode,
-} from "vue";
+import { ref, onMounted, watch, computed, getCurrentInstance } from "vue";
 import { useRuntimeConfig } from "nuxt/app";
-import { changeTracker } from "~/src/func";
-import { fetchWithAuth } from "~/src/common/betterFetch";
+import { changeTracker } from "@utils/func";
+import { fetchWithAuth } from "@utils/betterFetch";
 import Editor from "@tinymce/tinymce-vue";
 import type {
   GetCrawlersIvolunteerDataResponse,
@@ -237,14 +230,14 @@ import type {
   PostCrawlersDataPayload,
   PostCrawlersResponse,
   PostAIPromtPayload,
-} from "~/src/types/responses";
+} from "@types/responses";
 import {
   CrawlerDataResponseTypeEnum,
   OriginCrawlPagesEnum,
   IvolunteerPageTagsEnum,
   IvolunteerPageContentTypeEnum,
   AIPromtTypeEnum,
-} from "~/src/types/enums";
+} from "@types/enums";
 
 const contentTypeMap = {
   // [IvolunteerPageContentTypeEnum.CLUB]: IvolunteerPageTagsEnum.CLUB,
@@ -257,7 +250,7 @@ const contentTypeMap = {
 const config = useRuntimeConfig();
 const { fetchLink, clientLink } = config.public;
 
-const vm = getCurrentInstance().proxy;
+const vm = getCurrentInstance().proxy as any;
 // TODO: snackbar component
 const snackbar = ref<Boolean>(false);
 const link = ref<String>(vm.$route.params.postName);
