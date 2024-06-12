@@ -107,7 +107,10 @@
           output-format="html"
         />
       </v-card>
-      <v-stepper :items="['Step 1', 'Step 2', 'Step 3']" class="mt-10">
+      <v-stepper
+        :items="['Step 1(Optional)', 'Step 2(Optional)', 'Step 3']"
+        class="mt-10"
+      >
         <template v-slot:item.1>
           <v-card title="Chỉnh sửa nội dung" flat></v-card>
           <center class="my-5" :color="'green'">
@@ -116,7 +119,7 @@
               @click="onSaveDraft(true)"
               :disabled="!canSave"
             >
-              <template v-slot:prepend v-if="isHtmlPreviewed">
+              <template v-slot:prepend>
                 <v-icon color="success"></v-icon>
               </template>
               Save draft
@@ -132,7 +135,7 @@
               @click="onHtmlPreview"
               :disabled="true"
             >
-              <template v-slot:prepend v-if="isHtmlPreviewed">
+              <template v-slot:prepend>
                 <v-icon color="success"></v-icon>
               </template>
               TO DO...
@@ -145,7 +148,7 @@
               @click="onFacebookPreview"
               :disabled="true"
             >
-              <template v-slot:prepend v-if="isFacebookPreviewed">
+              <template v-slot:prepend>
                 <v-icon color="success"></v-icon>
               </template>
               TO DO...
@@ -159,11 +162,11 @@
               @click="onDiscordPreview"
               :disabled="!canSave"
             >
-              <template v-slot:prepend v-if="isDiscordPreviewed">
+              <template v-slot:prepend>
                 <v-icon color="success"></v-icon>
               </template>
-              Send</v-btn
-            >
+              Send
+            </v-btn>
           </center>
         </template>
 
@@ -172,7 +175,7 @@
           <center class="my-5">
             <v-btn
               prepend-icon="$vuetify"
-              :disabled="!canCreatePost"
+              :disabled="!canSave"
               :loading="updating"
               @click="onCreatePost"
               >CREATE</v-btn
@@ -254,7 +257,15 @@ const vm = getCurrentInstance().proxy as any;
 // TODO: snackbar component
 const snackbar = ref<Boolean>(false);
 const link = ref<String>(vm.$route.params.postName);
-const pageInfo = ref<GetCrawlersIvolunteerDataResponse>();
+const pageInfo = ref<GetCrawlersIvolunteerDataResponse>({
+  title: "",
+  description: "",
+  banner_img: "",
+  content: "",
+  deadline: "",
+  tags: [],
+  keywords: ["học sinh", "sinh viên"],
+});
 const tags = ref<IvolunteerPageTagsEnum[]>(
   Object.values(IvolunteerPageTagsEnum),
 );
@@ -264,11 +275,7 @@ const aiPrompt = ref({
   description: null,
   loading: false,
 });
-const isFacebookPreviewed = ref<Boolean>(false);
-const isHtmlPreviewed = ref<Boolean>(false);
-const isDiscordPreviewed = ref<Boolean>(false);
 const created = ref<Boolean>(false);
-// TODO: add conditions
 const canSave = computed<Boolean>(
   () =>
     !created.value &&
@@ -279,9 +286,6 @@ const canSave = computed<Boolean>(
     pageInfo.value.description.length &&
     pageInfo.value.content.length &&
     pageInfo.value.tags.length,
-);
-const canCreatePost = computed<Boolean>(
-  () => canSave.value && isDiscordPreviewed.value,
 );
 
 const getPageInfo = async () => {
@@ -303,7 +307,6 @@ const getPageInfo = async () => {
   } finally {
     // pass
   }
-  eview;
 };
 
 const onSaveDraft = async (showAlert: boolean = false) => {
@@ -398,34 +401,39 @@ const onDiscordPreview = async () => {
     method: "POST",
     body: JSON.stringify(body),
   });
-  isDiscordPreviewed.value = true;
   updating.value = false;
 };
 const onHtmlPreview = () => {
   updating.value = true;
   //
-  isHtmlPreviewed.value = true;
   updating.value = false;
 };
 const onFacebookPreview = () => {
   updating.value = true;
   //
-  isFacebookPreviewed.value = true;
   updating.value = false;
 };
 
+// Auto uppercase first letter of every words in title
 watch(
-  () => [
-    pageInfo.value?.description,
-    pageInfo.value?.keywords,
-    pageInfo.value?.tags,
-  ],
-  () => {
-    isDiscordPreviewed.value = false;
-    isHtmlPreviewed.value = false;
-    isFacebookPreviewed.value = false;
+  () => pageInfo.value.title,
+  (newTitle) => {
+    pageInfo.value.title = newTitle
+      .split(" ")
+      .map((ele: string) => ele.charAt(0).toUpperCase() + ele.slice(1))
+      .join(" ");
   },
-  { deep: true },
+);
+
+// No duplicate keywords
+watch(
+  () => pageInfo.value.keywords,
+  (newKeywords) => {
+    const uniqueKeywords = new Set(
+      newKeywords.map((keyword: string) => keyword.toLowerCase()),
+    );
+    pageInfo.value.keywords = Array.from(uniqueKeywords);
+  },
 );
 
 onMounted(async () => {
