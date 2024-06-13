@@ -13,7 +13,6 @@
               `Chỉnh title ít hơn 100 chữ. Hiện tại: ${val.length} chữ`,
           ]"
           @update:model-value="onTitleChanged"
-          hide-details
         ></v-text-field>
         <v-btn
           class="ml-4 bg-teal-lighten-1"

@@ -61,10 +61,6 @@ export const [useProvideCrawlerIvolunteerStore, useCrawlerIvolunteerStore] =
         pageInfo.value.content.length &&
         pageInfo.value.tags.length,
     );
-    const validators = computed(() => ({
-      title: pageInfo.value?.title?.length > 100,
-      tags: false,
-    }));
 
     // actions
     const getPageInfo = async () => {
@@ -86,21 +82,22 @@ export const [useProvideCrawlerIvolunteerStore, useCrawlerIvolunteerStore] =
       }
     };
 
-    // const onValidate = async () => {
-    //   for (const [key, condition] of Object.entries(validators.value)) {
-    //     if (
-    //       (await vm?.$refs[key].validate().length) || condition
-    //     ) {
-    //       window.alert("Invalid title");
-    //       return false
-    //     }
-    //   }
-    //   return true
-
-    // }
+    const onValidate = async () => {
+      const validateElements = [
+        "title",
+        // 'tags'
+      ];
+      for (const ele of validateElements) {
+        if ((await vm.$refs[ele].validate()).length) {
+          window.alert(`Invalid ${ele}`);
+          return false;
+        }
+      }
+      return true;
+    };
 
     const saveDraft = async (showAlert: boolean = false) => {
-      // if(!(await onValidate())) return
+      if (!(await onValidate())) return;
 
       const updateFields = changeTracker.getChange(pageInfo.value);
       if (isEmpty(updateFields)) return;
@@ -110,8 +107,10 @@ export const [useProvideCrawlerIvolunteerStore, useCrawlerIvolunteerStore] =
           body: JSON.stringify(updateFields),
         });
         if (showAlert) window.alert("Update success");
+        return true;
       } catch {
         window.alert("UPDATE FAIL");
+        return false;
       }
     };
 
@@ -122,9 +121,7 @@ export const [useProvideCrawlerIvolunteerStore, useCrawlerIvolunteerStore] =
     };
 
     const onCreatePost = async () => {
-      if (!pageInfo.value) return;
-
-      await saveDraft();
+      if (!(await saveDraft())) return;
       try {
         updating.value = true;
         const result = await fetchWithAuth(`${fetchLink}/admin/crawlers`, {
@@ -167,7 +164,7 @@ export const [useProvideCrawlerIvolunteerStore, useCrawlerIvolunteerStore] =
     };
 
     const onDiscordPreview = async () => {
-      await saveDraft();
+      if (!(await saveDraft())) return;
       updating.value = true;
       await fetchWithAuth(`${fetchLink}/admin/crawlers/${link}/_preview`, {
         method: "POST",
