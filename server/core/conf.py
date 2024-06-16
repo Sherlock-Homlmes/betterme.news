@@ -8,7 +8,6 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.gzip import GZipMiddleware
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import ORJSONResponse
 from pydantic_settings import BaseSettings
 from dotenv import load_dotenv
 
@@ -74,7 +73,7 @@ app = FastAPI(
     # disable docs in user portal
     docs_url="/api/docs" if not is_user_portal else None,
     openapi_url="/openapi.json" if not is_user_portal else None,
-    default_response_class=ORJSONResponse,
+    # default_response_class=ORJSONResponse,
 )
 
 allow_origins = (

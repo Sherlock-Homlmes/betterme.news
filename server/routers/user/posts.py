@@ -79,6 +79,33 @@ async def get_list_post(
 
 
 @router.get(
+    "/posts/_search",
+    tags=["Post"],
+    status_code=ResponseStatusEnum.OK.value,
+)
+async def get_list_post_search(match_keyword: str):
+    posts = (
+        await Posts.find(
+            {},
+            projection_model=PostListProject,
+        )
+        .aggregate(
+            [
+                {
+                    "$search": {
+                        "index": "SearchNews",
+                        "text": {"query": match_keyword, "path": {"wildcard": "*"}},
+                    }
+                }
+            ],
+            projection_model=PostListProject,
+        )
+        .to_list()
+    )
+    return posts
+
+
+@router.get(
     "/posts/{post_name}",
     tags=["Post"],
     status_code=ResponseStatusEnum.OK.value,
