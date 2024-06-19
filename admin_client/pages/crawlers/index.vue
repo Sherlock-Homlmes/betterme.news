@@ -96,12 +96,12 @@ const { fetchLink, clientLink } = config.public;
 // const vm = getCurrentInstance().proxy
 
 const postHeaders = ref([
-  { title: "URL", key: "url", sortable: false },
-  { title: "Original post", key: "original", sortable: false },
+	{ title: "URL", key: "url", sortable: false },
+	{ title: "Original post", key: "original", sortable: false },
 ]);
 const draftPostHeaders = ref([
-  { title: "Name", key: "name", sortable: false },
-  { title: "Actions", key: "actions", sortable: false },
+	{ title: "Name", key: "name", sortable: false },
+	{ title: "Actions", key: "actions", sortable: false },
 ]);
 const posts = ref<string[]>([]);
 const draftPosts = ref([]);
@@ -112,78 +112,78 @@ const contentTypes = [...new Set(Object.values(IvolunteerPageContentTypeEnum))];
 const crawlContentType = ref<IvolunteerPageContentTypeEnum>(contentTypes[0]);
 
 const getDraftPosts = async () => {
-  loadingDraftPosts.value = true;
-  const draftPostsResult = await fetchWithAuth(
-    `${fetchLink}/admin/draft_posts`,
-  );
-  draftPosts.value = (await draftPostsResult.json()).map((draftPost) => {
-    return {
-      id: draftPost.id,
-      title: draftPost.draft_data.title,
-      slug: draftPost.name,
-      source: draftPost.source,
-    };
-  });
-  loadingDraftPosts.value = false;
+	loadingDraftPosts.value = true;
+	const draftPostsResult = await fetchWithAuth(
+		`${fetchLink}/admin/draft_posts`,
+	);
+	draftPosts.value = (await draftPostsResult.json()).map((draftPost) => {
+		return {
+			id: draftPost.id,
+			title: draftPost.draft_data.title,
+			slug: draftPost.name,
+			source: draftPost.source,
+		};
+	});
+	loadingDraftPosts.value = false;
 };
 
 const getPostList = async () => {
-  loadingPosts.value = true;
-  const postsResult = await fetchWithAuth(
-    `${fetchLink}/admin/crawlers?origin=ivolunteer_vn&content_type=${crawlContentType.value}`,
-  );
-  posts.value = (await postsResult.json()) as string[];
-  loadingPosts.value = false;
+	loadingPosts.value = true;
+	const postsResult = await fetchWithAuth(
+		`${fetchLink}/admin/crawlers?origin=ivolunteer_vn&content_type=${crawlContentType.value}`,
+	);
+	posts.value = (await postsResult.json()) as string[];
+	loadingPosts.value = false;
 };
 
 const onClickCreateNewPost = () => {
-  if (newPostUrl.value === "") return;
-  window.open(`/crawlers/ivolunteer_vn/${newPostUrl.value}`, "_blank");
-  newPostUrl.value = "";
+	if (newPostUrl.value === "") return;
+	window.open(`/crawlers/ivolunteer_vn/${newPostUrl.value}`, "_blank");
+	newPostUrl.value = "";
 };
 
 const deleteDraftPost = async (deleteDraftPost, enableAlert = true) => {
-  try {
-    await fetchWithAuth(
-      `${fetchLink}/admin/draft_posts/${deleteDraftPost.id}`,
-      { method: "DELETE" },
-    );
-    draftPosts.value = draftPosts.value.filter(
-      (draftPost) => draftPost.id !== deleteDraftPost.id,
-    );
-    if (enableAlert) window.alert("Delete success");
-  } catch (err) {
-    if (enableAlert) window.alert("Delete fail");
-  }
+	try {
+		await fetchWithAuth(
+			`${fetchLink}/admin/draft_posts/${deleteDraftPost.id}`,
+			{ method: "DELETE" },
+		);
+		draftPosts.value = draftPosts.value.filter(
+			(draftPost) => draftPost.id !== deleteDraftPost.id,
+		);
+		if (enableAlert) window.alert("Delete success");
+	} catch (err) {
+		if (enableAlert) window.alert("Delete fail");
+	}
 };
 
 const deleteAllDraftPost = async () => {
-  await Promise.all(
-    draftPosts.value.map((draftPost) => {
-      return new Promise((resolve, reject) => {
-        resolve(deleteDraftPost(draftPost, false));
-      });
-    }),
-  )
-    .then(() => {
-      window.alert("Delete success");
-      draftPosts.value = [];
-    })
-    .catch(() => {
-      window.alert("Delete fail");
-    });
+	await Promise.all(
+		draftPosts.value.map((draftPost) => {
+			return new Promise((resolve, reject) => {
+				resolve(deleteDraftPost(draftPost, false));
+			});
+		}),
+	)
+		.then(() => {
+			window.alert("Delete success");
+			draftPosts.value = [];
+		})
+		.catch(() => {
+			window.alert("Delete fail");
+		});
 };
 
 watch(
-  crawlContentType,
-  async () => {
-    await getPostList();
-  },
-  { deep: true },
+	crawlContentType,
+	async () => {
+		await getPostList();
+	},
+	{ deep: true },
 );
 
 onMounted(async () => {
-  await getDraftPosts();
-  await getPostList();
+	await getDraftPosts();
+	await getPostList();
 });
 </script>

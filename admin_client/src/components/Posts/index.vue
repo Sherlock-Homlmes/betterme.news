@@ -60,15 +60,15 @@ import { useProvidePostListStore } from "./store.ts";
 const config = useRuntimeConfig();
 const { clientLink } = config.public;
 const headers = ref([
-  { title: "Title", align: "start", key: "title" },
-  { title: "Banner image", key: "banner_img", sortable: false },
-  { title: "Description", key: "description", sortable: false },
-  { title: "View", key: "view" },
-  { title: "Actions", key: "actions", sortable: false },
+	{ title: "Title", align: "start", key: "title" },
+	{ title: "Banner image", key: "banner_img", sortable: false },
+	{ title: "Description", key: "description", sortable: false },
+	{ title: "View", key: "view" },
+	{ title: "Actions", key: "actions", sortable: false },
 ]);
 const { posts, loading, getPostList } = useProvidePostListStore();
 
 onMounted(async () => {
-  await getPostList();
+	await getPostList();
 });
 </script>

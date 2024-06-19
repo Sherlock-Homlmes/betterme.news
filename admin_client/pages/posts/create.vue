@@ -105,65 +105,65 @@ const vm = getCurrentInstance().proxy;
 // TODO: snackbar component
 const snackbar = ref<Boolean>(false);
 const postInfo = ref({
-  title: "",
-  description: "",
-  banner_img: "",
-  content: "",
-  deadline: "",
-  tags: [],
-  keywords: ["học sinh", "sinh viên"],
+	title: "",
+	description: "",
+	banner_img: "",
+	content: "",
+	deadline: "",
+	tags: [],
+	keywords: ["học sinh", "sinh viên"],
 });
 const tags = ref<IvolunteerPageTagsEnum[]>(
-  Object.values(IvolunteerPageTagsEnum),
+	Object.values(IvolunteerPageTagsEnum),
 );
 const updating = ref<Boolean>(false);
 const bannerPreview = ref();
 const previewImage = () => {
-  bannerPreview.value = postInfo.value.banner_img[0]
-    ? URL.createObjectURL(postInfo.value.banner_img[0])
-    : "";
+	bannerPreview.value = postInfo.value.banner_img[0]
+		? URL.createObjectURL(postInfo.value.banner_img[0])
+		: "";
 };
 const onCreatePost = async () => {
-  if (
-    postInfo.value.title === "" ||
-    postInfo.value.description === "" ||
-    postInfo.value.content === "" ||
-    bannerPreview.value === "" ||
-    postInfo.value.deadline === "" ||
-    postInfo.value.keywords.length === 0 ||
-    postInfo.value.tags.length === 0
-  ) {
-    window.alert("Fill all fields before create");
-    return;
-  }
-  updating.value = true;
-  const body = new FormData();
-  body.set("file", postInfo.value.banner_img[0]);
-  body.set("title", postInfo.value.title);
-  const fileResponse = await fetchMultiPartWithAuth(
-    `${fetchLink}/admin/posts/_file`,
-    {
-      method: "POST",
-      body: body,
-    },
-  );
-  if (!fileResponse.ok) {
-    window.alert("CREATE FAIL");
-    updating.value = false;
-    return;
-  }
-  const banner = (await fileResponse.json()).file;
-  delete postInfo.value.banner_img;
-  const response = await fetchWithAuth(`${fetchLink}/admin/posts`, {
-    method: "POST",
-    body: JSON.stringify({
-      ...postInfo.value,
-      banner: banner,
-    }),
-  });
-  if (response.ok) window.alert("Create success");
-  else window.alert("CREATE FAIL");
-  updating.value = false;
+	if (
+		postInfo.value.title === "" ||
+		postInfo.value.description === "" ||
+		postInfo.value.content === "" ||
+		bannerPreview.value === "" ||
+		postInfo.value.deadline === "" ||
+		postInfo.value.keywords.length === 0 ||
+		postInfo.value.tags.length === 0
+	) {
+		window.alert("Fill all fields before create");
+		return;
+	}
+	updating.value = true;
+	const body = new FormData();
+	body.set("file", postInfo.value.banner_img[0]);
+	body.set("title", postInfo.value.title);
+	const fileResponse = await fetchMultiPartWithAuth(
+		`${fetchLink}/admin/posts/_file`,
+		{
+			method: "POST",
+			body: body,
+		},
+	);
+	if (!fileResponse.ok) {
+		window.alert("CREATE FAIL");
+		updating.value = false;
+		return;
+	}
+	const banner = (await fileResponse.json()).file;
+	delete postInfo.value.banner_img;
+	const response = await fetchWithAuth(`${fetchLink}/admin/posts`, {
+		method: "POST",
+		body: JSON.stringify({
+			...postInfo.value,
+			banner: banner,
+		}),
+	});
+	if (response.ok) window.alert("Create success");
+	else window.alert("CREATE FAIL");
+	updating.value = false;
 };
 </script>
 

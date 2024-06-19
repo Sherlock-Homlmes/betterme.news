@@ -1,13 +1,13 @@
 ---
-import { Image } from 'astro:assets'
-import ArrowUp from '@/components/icons/ArrowUp'
-import type {GetPostListResponse} from '@/types/responses'
+import { Image } from "astro:assets";
+import ArrowUp from "@/components/icons/ArrowUp";
+import type { GetPostListResponse } from "@/types/responses";
 
 type Props = {
-	postData: GetPostListResponse,
-	shouldShowExpiredTag: Boolean
-}
-const { postData, shouldShowExpiredTag=false } = Astro.props
+	postData: GetPostListResponse;
+	shouldShowExpiredTag: Boolean;
+};
+const { postData, shouldShowExpiredTag = false } = Astro.props;
 ---
 
 <article class='grid grid-rows-[300px_auto] md:grid-rows-[300px_220px] min-h-full group'>

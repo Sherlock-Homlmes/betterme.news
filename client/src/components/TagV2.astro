@@ -1,13 +1,11 @@
 ---
 // TODO: refactor: multi color
-import { cn } from '@/utils'
+import { cn } from "@/utils";
 
-const { name = 'View All'} = Astro.props
+const { name = "View All" } = Astro.props;
 
-const matchTag = Astro.url.searchParams.get('match_tag')
-const isActive =
-	matchTag === name ||
-	(!matchTag && name === 'View All')
+const matchTag = Astro.url.searchParams.get("match_tag");
+const isActive = matchTag === name || (!matchTag && name === "View All");
 ---
 
 <a

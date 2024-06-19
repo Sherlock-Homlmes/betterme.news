@@ -243,36 +243,36 @@ import parse from "gemini-to-html/parse";
 import render from "gemini-to-html/render";
 
 const props = defineProps({
-  link: {
-    type: String,
-    required: true,
-  },
+	link: {
+		type: String,
+		required: true,
+	},
 });
 const config = useRuntimeConfig();
 const { fetchLink, clientLink } = config.public;
 const {
-  // state
-  pageInfo,
-  updating,
-  aiPrompt,
-  tags,
-  snackbar,
-  // getters
-  canSave,
-  // actions
-  getPageInfo,
-  onSaveDraft,
-  onCreatePost,
-  onAIPromptGenerate,
-  onDiscordPreview,
-  onHtmlPreview,
-  onFacebookPreview,
-  onTitleChanged,
-  onKeywordChanged,
+	// state
+	pageInfo,
+	updating,
+	aiPrompt,
+	tags,
+	snackbar,
+	// getters
+	canSave,
+	// actions
+	getPageInfo,
+	onSaveDraft,
+	onCreatePost,
+	onAIPromptGenerate,
+	onDiscordPreview,
+	onHtmlPreview,
+	onFacebookPreview,
+	onTitleChanged,
+	onKeywordChanged,
 } = useProvideCrawlerIvolunteerStore(props.link);
 
 onMounted(async () => {
-  await getPageInfo();
+	await getPageInfo();
 });
 </script>
 

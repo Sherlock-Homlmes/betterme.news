@@ -115,35 +115,35 @@ const updating = ref<Boolean>(false);
 // TODO: add conditions
 
 const getPostInfo = async () => {
-  const tagsResult = await fetch(`${fetchLink}/tags?origin=ivolunteer_vn`);
-  tags.value = await tagsResult.json();
+	const tagsResult = await fetch(`${fetchLink}/tags?origin=ivolunteer_vn`);
+	tags.value = await tagsResult.json();
 
-  const postResult = await fetchWithAuth(
-    `${fetchLink}/posts/${vm.$route.params.postId}?increase_view=false`,
-  );
-  postInfo.value = (await postResult.json()) as GetPostResponse;
-  changeTracker.track(postInfo.value);
+	const postResult = await fetchWithAuth(
+		`${fetchLink}/posts/${vm.$route.params.postId}?increase_view=false`,
+	);
+	postInfo.value = (await postResult.json()) as GetPostResponse;
+	changeTracker.track(postInfo.value);
 };
 
 const onSavePost = async () => {
-  if (!postInfo.value) return;
-  updating.value = true;
-  const response = await fetchWithAuth(
-    `${fetchLink}/admin/posts/${vm.$route.params.postId}`,
-    {
-      method: "PATCH",
-      body: JSON.stringify(changeTracker.getChange(postInfo.value)),
-    },
-  );
-  if (response.ok) {
-    window.alert("Update success");
-    changeTracker.track(postInfo.value);
-  } else window.alert("UPDATE FAIL");
-  updating.value = false;
+	if (!postInfo.value) return;
+	updating.value = true;
+	const response = await fetchWithAuth(
+		`${fetchLink}/admin/posts/${vm.$route.params.postId}`,
+		{
+			method: "PATCH",
+			body: JSON.stringify(changeTracker.getChange(postInfo.value)),
+		},
+	);
+	if (response.ok) {
+		window.alert("Update success");
+		changeTracker.track(postInfo.value);
+	} else window.alert("UPDATE FAIL");
+	updating.value = false;
 };
 
 onMounted(async () => {
-  await getPostInfo();
+	await getPostInfo();
 });
 </script>
 

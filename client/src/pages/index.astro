@@ -1,36 +1,39 @@
 ---
-import ListTagsV2 from '@/components/ListTagsV2'
-import ListPostsV2 from '@/components/ListPostsV2'
-import TitlePage from '@/components/TitlePage'
-import Pagination from '@/components/Pagination'
-import BaseLayout from '@/layouts/BaseLayout'
-import fetchLink from 'src/utils/config'
-import type {GetPostListResponse} from '@/types/responses'
+import ListTagsV2 from "@/components/ListTagsV2";
+import ListPostsV2 from "@/components/ListPostsV2";
+import TitlePage from "@/components/TitlePage";
+import Pagination from "@/components/Pagination";
+import BaseLayout from "@/layouts/BaseLayout";
+import fetchLink from "src/utils/config";
+import type { GetPostListResponse } from "@/types/responses";
 
-const response = await fetch(`${fetchLink}/posts?per_page=17&` + Astro.url.searchParams)
-let postsData = await response.json() as GetPostListResponse[]
-postsData = postsData.map(postData => {
-return{
-	...postData,
-	deadline: postData.deadline
-	? postData.deadline.split('-').reverse().join('/')
-	: null
-}})
+const response = await fetch(
+	`${fetchLink}/posts?per_page=17&` + Astro.url.searchParams,
+);
+let postsData = (await response.json()) as GetPostListResponse[];
+postsData = postsData.map((postData) => {
+	return {
+		...postData,
+		deadline: postData.deadline
+			? postData.deadline.split("-").reverse().join("/")
+			: null,
+	};
+});
 
 let page = {
 	currentPage: 1,
 	lastPage: 1,
-}
+};
 if (
-	response.headers.get('x-current-page') &&
-	response.headers.get('x-total-count') &&
-	response.headers.get('x-per-page')
-){
-	const totalPosts: number = parseInt(response.headers.get('x-total-count'))
-	const currentPage: number = parseInt(response.headers.get('x-current-page'))
-	const perPage: number = parseInt(response.headers.get('x-per-page'))
-	page.currentPage = currentPage
-	page.lastPage = Math.ceil(totalPosts / perPage)
+	response.headers.get("x-current-page") &&
+	response.headers.get("x-total-count") &&
+	response.headers.get("x-per-page")
+) {
+	const totalPosts: number = parseInt(response.headers.get("x-total-count"));
+	const currentPage: number = parseInt(response.headers.get("x-current-page"));
+	const perPage: number = parseInt(response.headers.get("x-per-page"));
+	page.currentPage = currentPage;
+	page.lastPage = Math.ceil(totalPosts / perPage);
 }
 ---
 
