@@ -41,6 +41,7 @@ export const [useProvideCrawlerIvolunteerStore, useCrawlerIvolunteerStore] =
     const aiPrompt = ref({
       title: null,
       description: null,
+      content: null,
       loading: false,
     });
     const tags = ref<IvolunteerPageTagsEnum[]>(
@@ -142,7 +143,7 @@ export const [useProvideCrawlerIvolunteerStore, useCrawlerIvolunteerStore] =
     };
 
     const onAIPromptGenerate = async (
-      context: "title" | "description",
+      context: "title" | "description" | "content",
       promtType: AIPromtTypeEnum,
     ) => {
       try {

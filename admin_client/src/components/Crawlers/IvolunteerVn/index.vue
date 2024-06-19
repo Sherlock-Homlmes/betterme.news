@@ -108,6 +108,20 @@
           output-format="html"
         />
       </v-card>
+      <!-- <v-btn
+        class="ml-4 bg-teal-lighten-1"
+        @click="onAIPromptGenerate(pageInfo.content, AIPromtTypeEnum.CONTENT)"
+        :loading="aiPrompt.loading"
+        >AI</v-btn
+      >
+      <v-card
+        v-if="aiPrompt.content"
+        variant="elevated"
+        class="w-75 bg-teal-lighten-1"
+        color="surface-variant"
+        title="Content được đề xuất bởi AI"
+        ><span v-html="render(parse(aiPrompt.content))"></span></v-card
+      > -->
       <v-stepper
         :items="['Step 1(Optional)', 'Step 2(Optional)', 'Step 3']"
         class="mt-10"
@@ -225,6 +239,8 @@ import { onMounted } from "vue";
 import Editor from "@tinymce/tinymce-vue";
 import { useProvideCrawlerIvolunteerStore } from "./store.ts";
 import { AIPromtTypeEnum } from "@types/enums";
+import parse from "gemini-to-html/parse";
+import render from "gemini-to-html/render";
 
 const props = defineProps({
   link: {

@@ -26,6 +26,7 @@ model = genai.GenerativeModel("gemini-1.5-flash")
 ai_prompt_data_map = {
     AIPromtTypeEnum.TITLE: "Viết lại title trên ngắn gọn chuẩn SEO trong 1 câu",
     AIPromtTypeEnum.DESCRIPTION: "Viết lại description trên ngắn gọn chuẩn SEO trong 1 đoạn văn",
+    AIPromtTypeEnum.CONTENT: "Viết lại content trên ngắn gọn chuẩn SEO",
 }
 
 

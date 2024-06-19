@@ -20,3 +20,4 @@ class CrawlerDataResponseTypeEnum(Enum):
 class AIPromtTypeEnum(Enum):
     TITLE = "title"
     DESCRIPTION = "description"
+    CONTENT = "content"
