@@ -30,7 +30,7 @@ repos:
         additional_dependencies: ["@biomejs/biome@1.8.1"]
         files: "^client\/.*\\.(jsx?|tsx?|c(js|ts)|m(js|ts)|d\\.(ts|cts|mts)|jsonc?|css|vue|astro)$"
     -   id: biome-format
-        name: " admin client formatter"
+        name: "admin client formatter"
         additional_dependencies: ["@biomejs/biome@1.8.1"]
         files: "^admin_client\/.*\\.(jsx?|tsx?|c(js|ts)|m(js|ts)|d\\.(ts|cts|mts)|jsonc?|css|vue|astro)$"
 
