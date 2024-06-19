@@ -1,24 +1,26 @@
 ---
-import BaseLayout from '@/layouts/BaseLayout'
-import Tag from '@/components/Tag'
-import { Image } from 'astro:assets'
-import type {GetPostResponse} from '@/types/responses'
+import BaseLayout from "@/layouts/BaseLayout";
+import Tag from "@/components/Tag";
+import { Image } from "astro:assets";
+import type { GetPostResponse } from "@/types/responses";
 
 type Props = {
-	postData: GetPostResponse
-}
+	postData: GetPostResponse;
+};
 
-const { postData } = Astro.props
+const { postData } = Astro.props;
 const createdAt = new Date(postData.created_at);
-const articleDate = createdAt.toISOString()
-const currentDate = new Date()
-const isPostExpired = (deadline: string) =>{
-	if(!deadline) return false
-	const dateParts = deadline.split("/")
-	const expiredDate = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0])
-	return expiredDate <= currentDate
-}
-const shouldShowExpiredTag = isPostExpired(postData.other_information?.deadline)
+const articleDate = createdAt.toISOString();
+const currentDate = new Date();
+const isPostExpired = (deadline: string) => {
+	if (!deadline) return false;
+	const dateParts = deadline.split("/");
+	const expiredDate = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]);
+	return expiredDate <= currentDate;
+};
+const shouldShowExpiredTag = isPostExpired(
+	postData.other_information?.deadline,
+);
 ---
 
 <BaseLayout

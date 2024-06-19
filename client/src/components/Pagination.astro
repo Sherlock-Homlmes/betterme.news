@@ -1,13 +1,15 @@
 ---
-import ArrowLeft from './icons/ArrowLeft.astro'
-import ArrowRight from './icons/ArrowRight.astro'
+import ArrowLeft from "./icons/ArrowLeft.astro";
+import ArrowRight from "./icons/ArrowRight.astro";
 
-const { page } = Astro.props
+const { page } = Astro.props;
 // TODO: refactor this
-const perviousPageParams = new URLSearchParams(Astro.url.searchParams.toString())
-perviousPageParams.set("page", (page.currentPage - 1).toString())
-const nextPageParams = new URLSearchParams(Astro.url.searchParams.toString())
-nextPageParams.set("page", (page.currentPage + 1).toString())
+const perviousPageParams = new URLSearchParams(
+	Astro.url.searchParams.toString(),
+);
+perviousPageParams.set("page", (page.currentPage - 1).toString());
+const nextPageParams = new URLSearchParams(Astro.url.searchParams.toString());
+nextPageParams.set("page", (page.currentPage + 1).toString());
 ---
 
 <div class='flex gap-5 md:gap-1 justify-around md:justify-end'>

@@ -9,13 +9,7 @@
 		"type": "git",
 		"url": "https://github.com/danielcgilibert/blog-template"
 	},
-	"keywords": [
-		"astro",
-		"astrojs",
-		"astro-template",
-		"astro-blog",
-		"astro-b"
-	],
+	"keywords": ["astro", "astrojs", "astro-template", "astro-blog", "astro-b"],
 	"bugs": {
 		"url": "https://github.com/danielcgilibert/blog-template/issues"
 	},

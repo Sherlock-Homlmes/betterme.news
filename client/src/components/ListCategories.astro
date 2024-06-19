@@ -1,9 +1,9 @@
 ---
-import { getCategories } from '@/utils'
-import Category from '@/components/Category'
-const categories = await getCategories()
+import { getCategories } from "@/utils";
+import Category from "@/components/Category";
+const categories = await getCategories();
 
-const { activeCategory } = Astro.props
+const { activeCategory } = Astro.props;
 ---
 
 <div class='relative flex flex-wrap min-w-full gap-5'>

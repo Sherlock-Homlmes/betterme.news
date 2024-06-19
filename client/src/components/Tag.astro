@@ -1,8 +1,8 @@
 ---
 export interface Props {
-	tag: string
+	tag: string;
 }
-const { tag } = Astro.props
+const { tag } = Astro.props;
 ---
 
 <a href={`/?match_tag=${tag}`} aria-label={tag}>
