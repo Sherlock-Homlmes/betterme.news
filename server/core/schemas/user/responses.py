@@ -15,7 +15,7 @@ class OtherPostInfo(BaseModel):
 class GetPostListResponse(BaseModel):
     id: str
     # custom data
-    slug: str
+    slug: str = ""
     # info
     updated_at: Union[datetime.datetime, None]
     created_at: datetime.datetime

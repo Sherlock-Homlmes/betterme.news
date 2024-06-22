@@ -128,7 +128,7 @@ export interface GetPostListParams {
 }
 export interface GetPostListResponse {
 	id: string;
-	slug: string;
+	slug?: string;
 	updated_at?: string;
 	created_at: string;
 	title: string;

@@ -3,10 +3,11 @@ from typing import List, Annotated, Optional
 
 # libraries
 from fastapi import APIRouter, HTTPException, Depends, BackgroundTasks
-from fastapi.responses import JSONResponse
+from fastapi.responses import ORJSONResponse
 from beanie import PydanticObjectId
 from beanie.operators import ElemMatch
 from pydantic_core._pydantic_core import ValidationError
+from pydantic import model_validator
 
 # TODO: to error handler
 
@@ -22,7 +23,7 @@ from core.schemas.user import (
     # enums
     ResponseStatusEnum,
 )
-from services.beanie_odm import get_projections_from_model, return_with_pagination
+from utils.beanie_odm import get_projections_from_model, return_with_pagination
 from services.text_convertion import gen_slug_from_title
 
 router = APIRouter(
@@ -42,6 +43,12 @@ class PostListProject(GetPostListResponse):
                 "deadline": "other_information.deadline",
             },
         )
+
+    @model_validator(mode="after")
+    def gen_slug_from_title(cls, values):
+        if not len(values.slug) and values.title:
+            values.slug = gen_slug_from_title(values.title)
+        return values
 
 
 @router.get(
@@ -66,14 +73,11 @@ async def get_list_post(
         .to_list()
     )
 
-    for post in posts:
-        post.slug = gen_slug_from_title(post.title)
-
     # model -> json
     posts = [post.model_dump(mode="json") for post in posts]
 
     # TODO: better pagination solution
-    response = JSONResponse(content=posts)
+    response = ORJSONResponse(content=posts)
     await return_with_pagination(cursor, response, params.page, params.per_page)
     return response
 
@@ -96,7 +100,10 @@ async def get_list_post_search(match_keyword: str):
                         "index": "SearchNews",
                         "text": {"query": match_keyword, "path": {"wildcard": "*"}},
                     }
-                }
+                },
+                {"$skip": 0},
+                {"$limit": 10},
+                {"$sort": {"_id": -1}},
             ],
             projection_model=PostListProject,
         )
