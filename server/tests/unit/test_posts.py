@@ -72,6 +72,7 @@ async def test_get_post_success(client, create_post_data):
     assert response.json() == {
         "id": "65d76b73cbc29b3c618ec673",
         "author": "Ivolunteer.vn",
+        "author_link": None,
         "banner_img": "https://s3.tebi.io/testfiles.betterme.news/6e590aaf_Ban-sao-cua-Kich-thuoc-800x500px_Anh-Dai-Dien-Bai-Dang-Website-iVolunteer-40.png",
         "content": "Some title",
         "created_at": "1111-11-11T11:11:11",

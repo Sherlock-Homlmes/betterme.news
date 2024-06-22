@@ -1,7 +1,8 @@
 # This pre-commit file use for check code style before commit and also use for check code style in CI
+# TODO: seperate ci check in other file(check code only, no format)
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v3.2.0
+    rev: v4.6.0
     hooks:
       - id: trailing-whitespace
       - id: end-of-file-fixer
@@ -21,31 +22,39 @@ repos:
   #       pass_filenames: false
 
   # js
-  - repo: https://github.com/pre-commit/mirrors-prettier
-    rev: "" # Use the sha / tag you want to point at
+  - repo: https://github.com/biomejs/pre-commit
+    rev: "v0.4.0"  # Use the sha / tag you want to point at
     hooks:
-      - id: prettier
-        types_or: [css, javascript, ts, vue, html]
-        additional_dependencies:
-          - prettier@3.2.5
-        args: [--check]
+    -   id: biome-format
+        name: "client formatter"
+        additional_dependencies: ["@biomejs/biome@1.8.1"]
+        files: "^client\/.*\\.(jsx?|tsx?|c(js|ts)|m(js|ts)|d\\.(ts|cts|mts)|jsonc?|css|vue|astro)$"
+    -   id: biome-format
+        name: "admin client formatter"
+        additional_dependencies: ["@biomejs/biome@1.8.1"]
+        files: "^admin_client\/.*\\.(jsx?|tsx?|c(js|ts)|m(js|ts)|d\\.(ts|cts|mts)|jsonc?|css|vue|astro)$"
 
   - repo: https://github.com/haocheng6/mirrors-oxlint
-    rev: v0.2.9
+    rev: v0.4.4
     hooks:
     -   id: oxlint
-        types_or: [css, javascript, ts, vue, html]
+        name: "client linter"
+        files: "^client\/.*\\.(jsx?|tsx?|c(js|ts)|m(js|ts)|d\\.(ts|cts|mts)|jsonc?|css|vue|astro)$"
+    -   id: oxlint
+        name: "admin client linter"
+        files: "^admin_client\/.*\\.(jsx?|tsx?|c(js|ts)|m(js|ts)|d\\.(ts|cts|mts)|jsonc?|css|vue|astro)$"
+
 
   # python
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.4.4
+    rev: v0.4.9
     hooks:
-      # linter
-      - id: ruff
-        name: ruff-linter
-        args: [--fix, --exit-non-zero-on-fix]
-        files: ^server/
       # formatter
       - id: ruff-format
-        name: ruff-formatter
+        name: "server formatter"
+        files: ^server/
+      # linter
+      - id: ruff
+        name: "server linter"
+        args: [--fix, --exit-non-zero-on-fix]
         files: ^server/

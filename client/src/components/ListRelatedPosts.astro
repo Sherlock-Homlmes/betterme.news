@@ -1,19 +1,21 @@
 ---
-import { cn } from '@/utils'
-import { Image } from 'astro:assets'
-import fetchLink from 'src/utils/config'
-import type {GetPostListResponse} from '@/types/responses'
-import {IvolunteerPageTagsEnum} from '@/types/enums'
+import { cn } from "@/utils";
+import { Image } from "astro:assets";
+import fetchLink from "src/utils/config";
+import type { GetPostListResponse } from "@/types/responses";
+import { IvolunteerPageTagsEnum } from "@/types/enums";
 
 type Props = {
-	tags: IvolunteerPageTagsEnum[]
-	currentPostId: string
-}
-const { tags, currentPostId } = Astro.props
+	tags: IvolunteerPageTagsEnum[];
+	currentPostId: string;
+};
+const { tags, currentPostId } = Astro.props;
 
-const match_tag_str = tags.join(",")
-const response = await fetch(`${fetchLink}/posts?per_page=6&match_tag=${match_tag_str}`)
-let posts = await response.json() as GetPostListResponse[]
+const match_tag_str = tags.join(",");
+const response = await fetch(
+	`${fetchLink}/posts?per_page=6&match_tags=${match_tag_str}`,
+);
+let posts = (await response.json()) as GetPostListResponse[];
 ---
 
 <section class={cn(`flex flex-col md:flex-row sm:justify-between gap-8`)}>

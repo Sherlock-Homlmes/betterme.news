@@ -3,10 +3,11 @@ from typing import List, Annotated, Optional
 
 # libraries
 from fastapi import APIRouter, HTTPException, Depends, BackgroundTasks
-from fastapi.responses import JSONResponse
+from fastapi.responses import ORJSONResponse
 from beanie import PydanticObjectId
 from beanie.operators import ElemMatch
 from pydantic_core._pydantic_core import ValidationError
+from pydantic import model_validator
 
 # TODO: to error handler
 
@@ -22,7 +23,7 @@ from core.schemas.user import (
     # enums
     ResponseStatusEnum,
 )
-from services.beanie_odm import get_projections_from_model, return_with_pagination
+from utils.beanie_odm import get_projections_from_model, return_with_pagination
 from services.text_convertion import gen_slug_from_title
 
 router = APIRouter(
@@ -43,6 +44,12 @@ class PostListProject(GetPostListResponse):
             },
         )
 
+    @model_validator(mode="after")
+    def gen_slug_from_title(cls, values):
+        if not len(values.slug) and values.title:
+            values.slug = gen_slug_from_title(values.title)
+        return values
+
 
 @router.get(
     "/posts",
@@ -52,28 +59,13 @@ class PostListProject(GetPostListResponse):
 async def get_list_post(
     params: Annotated[dict, Depends(GetPostListParams)],
 ) -> List[GetPostListResponse]:
-    queries = {}
-    # TODO: better match filter
-    if params.match_tag:
-        match_tags = params.match_tag.split(",")
-        queries = ElemMatch(Posts.tags, {"$in": match_tags})
-    # TODO: refactor change to class method
-    cursor = Posts.find(queries, projection_model=PostListProject)
-    posts = (
-        await cursor.sort(-Posts.id)
-        .skip(params.per_page * (params.page - 1))
-        .limit(params.per_page)
-        .to_list()
-    )
-
-    for post in posts:
-        post.slug = gen_slug_from_title(post.title)
-
-    # model -> json
-    posts = [post.model_dump(mode="json") for post in posts]
+    find_queries, agg_queries = Posts.build_query(params)
+    cursor = Posts.find(find_queries)
+    posts = await cursor.aggregate(agg_queries, projection_model=PostListProject).to_list()
 
     # TODO: better pagination solution
-    response = JSONResponse(content=posts)
+    # BUG: can not count with match search
+    response = ORJSONResponse(content=[post.model_dump(mode="json") for post in posts])
     await return_with_pagination(cursor, response, params.page, params.per_page)
     return response
 

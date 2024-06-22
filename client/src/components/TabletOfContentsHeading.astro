@@ -1,16 +1,16 @@
 ---
-import { cn } from '@/utils'
-const { heading } = Astro.props
+import { cn } from "@/utils";
+const { heading } = Astro.props;
 
 type Heading = {
-	depth: number
-	text: string
-	slug: string
-	subheadings: Heading[]
-}
+	depth: number;
+	text: string;
+	slug: string;
+	subheadings: Heading[];
+};
 
 export interface Props {
-	heading: Heading
+	heading: Heading;
 }
 ---
 

@@ -10,8 +10,8 @@ const config = useRuntimeConfig();
 const { fetchLink } = config.public;
 
 onMounted(async () => {
-  const response = await fetch(`${fetchLink}/auth/oauth-link`);
-  const oauthLinks = await response.json();
-  window.location.replace(oauthLinks.discord_link);
+	const response = await fetch(`${fetchLink}/auth/oauth-link`);
+	const oauthLinks = await response.json();
+	window.location.replace(oauthLinks.discord_link);
 });
 </script>

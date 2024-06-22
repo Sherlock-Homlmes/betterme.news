@@ -38,16 +38,16 @@
 <script setup>
 import { getCurrentInstance, onMounted, ref } from "vue";
 import { useRuntimeConfig } from "nuxt/app";
-import { fetchWithAuth } from "~/src/common/betterFetch";
+import { fetchWithAuth } from "@utils/betterFetch";
 
 const config = useRuntimeConfig();
 const { fetchLink } = config.public;
 const vm = getCurrentInstance().proxy;
 const user = ref({});
 onMounted(async () => {
-  if (vm.$route.name === "auth-discord-oauth") return;
-  const response = await fetchWithAuth(`${fetchLink}/auth/self`);
-  if (!response.ok) vm.$router.push("/");
-  user.value = await response.json();
+	if (vm.$route.name === "auth-discord-oauth") return;
+	const response = await fetchWithAuth(`${fetchLink}/auth/self`);
+	if (!response.ok) vm.$router.push("/");
+	user.value = await response.json();
 });
 </script>

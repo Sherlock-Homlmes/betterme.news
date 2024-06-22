@@ -16,7 +16,7 @@ from core.schemas.admin import (
     ResponseStatusEnum,
 )
 from routers.auth import auth_handler
-from services.beanie_odm import get_projections_from_model
+from utils.beanie_odm import get_projections_from_model
 
 router = APIRouter(
     responses={404: {"description": "Not found"}},

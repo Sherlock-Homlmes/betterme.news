@@ -1,6 +1,6 @@
 # default
 import datetime
-from typing import Optional, List, Union
+from typing import Optional, List, Union, Any, Tuple
 
 
 # libraries
@@ -72,6 +72,41 @@ class Posts(Document):
             status_code=ResponseStatusEnum.BAD_REQUEST.value,
             detail="Thumbnail or banner must be exist",
         )
+
+    # TODO: make this as general model
+    @classmethod
+    def build_query(self, params: BaseModel) -> Tuple[List[Any]]:
+        find_queries = {}
+        agg_queries = []
+        if isinstance(params, BaseModel):
+            param_fields = params.__fields__.keys()
+            for pfield in param_fields:
+                if pfield == "match_search" and params.match_search is not None:
+                    agg_queries.insert(
+                        0,
+                        {
+                            "$search": {
+                                "index": "SearchNews",
+                                "text": {"query": params.match_search, "path": {"wildcard": "*"}},
+                            }
+                        },
+                    )
+                elif pfield.startswith("match_"):
+                    match_values = getattr(params, pfield)
+                    if match_values:
+                        # TODO: fix this
+                        # if len(values := match_values.split(",")) > 1:
+                        find_queries[pfield.replace("match_", "")] = {
+                            "$elemMatch": {"$in": match_values.split(",")}
+                        }
+                        # else:
+                        #     agg_queries.append({pfield.replace("match_", ""): match_values})
+                elif pfield == "page":
+                    agg_queries.append({"$skip": params.per_page * (params.page - 1)})
+                elif pfield == "per_page":
+                    agg_queries.append({"$limit": params.per_page})
+        agg_queries.append({"$sort": {"_id": -1}})
+        return find_queries, agg_queries
 
     ### Method
     async def increase_view(self):

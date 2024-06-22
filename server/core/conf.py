@@ -7,8 +7,8 @@ from functools import lru_cache
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.gzip import GZipMiddleware
-from fastapi.staticfiles import StaticFiles
 from fastapi.responses import ORJSONResponse
+from fastapi.staticfiles import StaticFiles
 from pydantic_settings import BaseSettings
 from dotenv import load_dotenv
 
@@ -58,6 +58,8 @@ class Settings(BaseSettings):
     FACEBOOK_ACCESS_TOKEN: str
     FACEBOOK_APP_ID: str
     FACEBOOK_APP_SECRET: str
+
+    GEMINI_AI_API_KEY: str
 
 
 settings = Settings()

@@ -1,29 +1,37 @@
 ---
-import { siteConfig } from '@/site-config'
-import '../styles/global.css'
-import { ViewTransitions } from 'astro:transitions'
+import { siteConfig } from "@/site-config";
+import "../styles/global.css";
+import { ViewTransitions } from "astro:transitions";
 
 export interface Props {
-	title: string
-	description?: string
-	keywords: string[]
-	ogImage?: string | undefined
-	articleDate?: string | undefined
+	title: string;
+	description?: string;
+	keywords: string[];
+	ogImage?: string | undefined;
+	articleDate?: string | undefined;
 }
 
-const { title, description = siteConfig.description, ogImage, articleDate, keywords = [] } = Astro.props
-let pathName = Astro.url.pathname
+const {
+	title,
+	description = siteConfig.description,
+	ogImage,
+	articleDate,
+	keywords = [],
+} = Astro.props;
+let pathName = Astro.url.pathname;
 // Post url have type "slug_<post_id>"
 // So we will convert canonticalurl to origin post
-if(pathName.startsWith("/posts/") &&  pathName.split('/').length === 4 ) pathName = `/posts/${pathName.split('/')[2].split('_')[1]}/`
-const canonicalURL = new URL(pathName, Astro.site)
-const socialImageURL = new URL(ogImage ? ogImage : '/open-graph.png', Astro.url).href
-const headKeyword = keywords.join(", ")
+if (pathName.startsWith("/posts/") && pathName.split("/").length === 4)
+	pathName = `/posts/${pathName.split("/")[2].split("_")[1]}/`;
+const canonicalURL = new URL(pathName, Astro.site);
+const socialImageURL = new URL(ogImage ? ogImage : "/open-graph.png", Astro.url)
+	.href;
+const headKeyword = keywords.join(", ");
 
-const titleSeparator = '•'
+const titleSeparator = "•";
 
-const siteTitle = `${title} ${titleSeparator} ${siteConfig.title}`
-const ENVIRONMENT = import.meta.env.ENVIRONMENT
+const siteTitle = `${title} ${titleSeparator} ${siteConfig.title}`;
+const ENVIRONMENT = import.meta.env.ENVIRONMENT;
 ---
 
 <!-- ViewTransitions  -->

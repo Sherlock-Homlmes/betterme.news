@@ -1,24 +1,23 @@
 ---
-import BlogPostV2 from '@/layouts/BlogPostV2'
-import Share from '@/components/Share'
-import fetchLink from 'src/utils/config'
-import ListRelatedPosts from '@/components/ListRelatedPosts'
-import type {GetPostResponse} from '@/types/responses'
-import {IvolunteerPageTagsEnum} from '@/types/enums'
+import BlogPostV2 from "@/layouts/BlogPostV2";
+import Share from "@/components/Share";
+import fetchLink from "src/utils/config";
+import ListRelatedPosts from "@/components/ListRelatedPosts";
+import type { GetPostResponse } from "@/types/responses";
+import { IvolunteerPageTagsEnum } from "@/types/enums";
 
-const {postName} = Astro.params
-const response = await fetch(`${fetchLink}/posts/${postName}`)
-let postData = await response.json() as GetPostResponse
+const { postName } = Astro.params;
+const response = await fetch(`${fetchLink}/posts/${postName}`);
+let postData = (await response.json()) as GetPostResponse;
 postData = {
 	...postData,
-	other_information:{
+	other_information: {
 		...postData.other_information,
 		deadline: postData.other_information?.deadline
-		? postData.other_information.deadline.split('-').reverse().join('/')
-		: null
-	}
-}
-
+			? postData.other_information.deadline.split("-").reverse().join("/")
+			: null,
+	},
+};
 ---
 <!-- TODO: related post -->
 <BlogPostV2
