@@ -8,8 +8,8 @@
 export interface GetPostListParams {
 	page?: number;
 	per_page?: number;
-	match_tag?: string;
-	match_keyword?: string;
+	match_tags?: string;
+	match_search?: string;
 }
 export interface GetPostListResponse {
 	id: string;

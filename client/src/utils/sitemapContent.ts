@@ -8,7 +8,7 @@ export const generateContentSitemap = async (
 	const siteUrl = import.meta.env.SITE;
 
 	const response = await fetch(
-		`${fetchLink}/posts?per_page=100000&match_tag=${contentType}`,
+		`${fetchLink}/posts?per_page=100000&match_tags=${contentType}`,
 	);
 	let postsData = (await response.json()) as GetPostListResponse[];
 

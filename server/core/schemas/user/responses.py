@@ -58,8 +58,8 @@ class GetPostResponse(BaseModel):
 class GetPostListParams(BaseModel):
     page: Optional[int] = 1
     per_page: Optional[int] = 10
-    match_tag: Optional[str] = None
-    match_keyword: Optional[str] = None
+    match_tags: Optional[str] = None
+    match_search: Optional[str] = None
 
 
 class GetPostParams(BaseModel):

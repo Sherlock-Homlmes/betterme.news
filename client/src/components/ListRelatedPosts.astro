@@ -13,7 +13,7 @@ const { tags, currentPostId } = Astro.props;
 
 const match_tag_str = tags.join(",");
 const response = await fetch(
-	`${fetchLink}/posts?per_page=6&match_tag=${match_tag_str}`,
+	`${fetchLink}/posts?per_page=6&match_tags=${match_tag_str}`,
 );
 let posts = (await response.json()) as GetPostListResponse[];
 ---

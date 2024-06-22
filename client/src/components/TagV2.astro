@@ -4,12 +4,12 @@ import { cn } from "@/utils";
 
 const { name = "View All" } = Astro.props;
 
-const matchTag = Astro.url.searchParams.get("match_tag");
+const matchTag = Astro.url.searchParams.get("match_tags");
 const isActive = matchTag === name || (!matchTag && name === "View All");
 ---
 
 <a
-	href={name === 'View All' ? '/' : `/?page=1&match_tag=${name}`}
+	href={name === 'View All' ? '/' : `/?page=1&match_tags=${name}`}
 	class={cn(
 		`text-gray-600 dark:text-gray-300  pb-2.5 first-letter:uppercase font-medium hover:text-gray-800 border-b-2 border-opacity-0 dark:border-opacity-0 border-black dark:border-white dark:hover:border-white hover:border-opacity-100 transition-colors duration-150 ease-linear  `,
 		isActive &&

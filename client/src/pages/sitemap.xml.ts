@@ -23,7 +23,7 @@ export async function GET() {
 		return await Promise.all(
 			contentTypeTags.map(async (tag) => {
 				const res = await fetch(
-					`${fetchLink}/posts?per_page=1&match_tag=${tag}`,
+					`${fetchLink}/posts?per_page=1&match_tags=${tag}`,
 				);
 				return await res.json();
 			}),

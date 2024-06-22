@@ -59,57 +59,15 @@ class PostListProject(GetPostListResponse):
 async def get_list_post(
     params: Annotated[dict, Depends(GetPostListParams)],
 ) -> List[GetPostListResponse]:
-    queries = {}
-    # TODO: better match filter
-    if params.match_tag:
-        match_tags = params.match_tag.split(",")
-        queries = ElemMatch(Posts.tags, {"$in": match_tags})
-    # TODO: refactor change to class method
-    cursor = Posts.find(queries, projection_model=PostListProject)
-    posts = (
-        await cursor.sort(-Posts.id)
-        .skip(params.per_page * (params.page - 1))
-        .limit(params.per_page)
-        .to_list()
-    )
-
-    # model -> json
-    posts = [post.model_dump(mode="json") for post in posts]
+    find_queries, agg_queries = Posts.build_query(params)
+    cursor = Posts.find(find_queries)
+    posts = await cursor.aggregate(agg_queries, projection_model=PostListProject).to_list()
 
     # TODO: better pagination solution
-    response = ORJSONResponse(content=posts)
+    # BUG: can not count with match search
+    response = ORJSONResponse(content=[post.model_dump(mode="json") for post in posts])
     await return_with_pagination(cursor, response, params.page, params.per_page)
     return response
-
-
-@router.get(
-    "/posts/_search",
-    tags=["Post"],
-    status_code=ResponseStatusEnum.OK.value,
-)
-async def get_list_post_search(match_keyword: str):
-    posts = (
-        await Posts.find(
-            {},
-            projection_model=PostListProject,
-        )
-        .aggregate(
-            [
-                {
-                    "$search": {
-                        "index": "SearchNews",
-                        "text": {"query": match_keyword, "path": {"wildcard": "*"}},
-                    }
-                },
-                {"$skip": 0},
-                {"$limit": 10},
-                {"$sort": {"_id": -1}},
-            ],
-            projection_model=PostListProject,
-        )
-        .to_list()
-    )
-    return posts
 
 
 @router.get(
