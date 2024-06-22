@@ -18,9 +18,9 @@ const isPostExpired = (deadline: string) => {
 
 <section class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3  gap-8 mt-3  md:[&>*:first-child]:col-span-2">
 	{
-		posts.map(post => {
+		posts.map((post, idx) => {
 			return (
-				<PostCardV2 postData={ post } shouldShowExpiredTag={isPostExpired(post.deadline)} />
+				<PostCardV2 index={ idx } postData={ post } shouldShowExpiredTag={isPostExpired(post.deadline)} />
 			)
 		})
 	}
