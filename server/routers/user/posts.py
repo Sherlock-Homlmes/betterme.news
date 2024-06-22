@@ -60,7 +60,12 @@ async def get_list_post(
     params: Annotated[dict, Depends(GetPostListParams)],
 ) -> List[GetPostListResponse]:
     find_queries, agg_queries = Posts.build_query(params)
-    cursor = Posts.find(find_queries)
+    cursor = Posts.find(
+        find_queries,
+        skip=params.per_page * (params.page - 1),
+        limit=params.per_page,
+        sort=("created_at", -1),
+    )
     posts = await cursor.aggregate(agg_queries, projection_model=PostListProject).to_list()
 
     # TODO: better pagination solution

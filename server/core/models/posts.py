@@ -101,11 +101,6 @@ class Posts(Document):
                         }
                         # else:
                         #     agg_queries.append({pfield.replace("match_", ""): match_values})
-                elif pfield == "page":
-                    agg_queries.append({"$skip": params.per_page * (params.page - 1)})
-                elif pfield == "per_page":
-                    agg_queries.append({"$limit": params.per_page})
-        agg_queries.append({"$sort": {"_id": -1}})
         return find_queries, agg_queries
 
     ### Method
