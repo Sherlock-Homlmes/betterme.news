@@ -69,6 +69,7 @@ export const [useProvideCrawlerIvolunteerStore, useCrawlerIvolunteerStore] =
 				const postResult = await fetchWithAuth(
 					`${fetchLink}/admin/crawlers/${link}?origin=ivolunteer_vn`,
 				);
+				if (!postResult.ok) throw new Error("Crawler fail");
 				pageInfo.value =
 					(await postResult.json()) as GetCrawlersIvolunteerDataResponse;
 				if (pageInfo.value.id) vm.$router.push(`/posts/${pageInfo.value.id}`);
@@ -97,42 +98,44 @@ export const [useProvideCrawlerIvolunteerStore, useCrawlerIvolunteerStore] =
 			return true;
 		};
 
-		const saveDraft = async (showAlert: boolean = false) => {
+		const onSaveDraft = async (showAlert: boolean = false) => {
 			if (!(await onValidate())) return;
 
 			const updateFields = changeTracker.getChange(pageInfo.value);
 			if (isEmpty(updateFields)) return;
 			try {
-				await fetchWithAuth(`${fetchLink}/admin/crawlers/${link}`, {
-					method: "PATCH",
-					body: JSON.stringify(updateFields),
-				});
+				updating.value = true;
+				const response = await fetchWithAuth(
+					`${fetchLink}/admin/crawlers/${link}`,
+					{
+						method: "PATCH",
+						body: JSON.stringify(updateFields),
+					},
+				);
+				if (!response.ok) throw new Error("UPDATE FAIL");
 				if (showAlert) window.alert("Update success");
 				return true;
 			} catch {
 				window.alert("UPDATE FAIL");
 				return false;
+			} finally {
+				updating.value = false;
 			}
 		};
 
-		const onSaveDraft = async (showAlert: boolean = false) => {
-			updating.value = true;
-			await saveDraft(showAlert);
-			updating.value = false;
-		};
-
 		const onCreatePost = async () => {
-			if (!(await saveDraft())) return;
+			if (!(await onSaveDraft())) return;
 			try {
 				updating.value = true;
-				const result = await fetchWithAuth(`${fetchLink}/admin/crawlers`, {
+				const response = await fetchWithAuth(`${fetchLink}/admin/crawlers`, {
 					method: "POST",
 					body: JSON.stringify({
 						origin: OriginCrawlPagesEnum.IVOLUNTEER_VN,
 						post_name: link.toString(),
 					} as PostCrawlersDataPayload),
 				});
-				const response_data = (await result.json()) as PostCrawlersResponse;
+				if (!response.ok) throw new Error("CREATE FAIL");
+				const response_data = (await response.json()) as PostCrawlersResponse;
 				pageInfo.value.id = response_data["id"];
 				snackbar.value = true;
 			} catch {
@@ -165,7 +168,7 @@ export const [useProvideCrawlerIvolunteerStore, useCrawlerIvolunteerStore] =
 		};
 
 		const onDiscordPreview = async () => {
-			if (!(await saveDraft())) return;
+			if (!(await onSaveDraft())) return;
 			updating.value = true;
 			await fetchWithAuth(`${fetchLink}/admin/crawlers/${link}/_preview`, {
 				method: "POST",
