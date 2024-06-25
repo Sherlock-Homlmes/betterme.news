@@ -76,17 +76,15 @@ async def get_list_post(
 
 
 @router.get(
-    "/posts/{post_name}",
+    "/posts/{post_id}",
     tags=["Post"],
     status_code=ResponseStatusEnum.OK.value,
 )
 async def get_post(
-    post_name: str,
+    post_id: str,
     params: Annotated[dict, Depends(GetPostParams)],
     background_tasks: BackgroundTasks,
 ) -> GetPostResponse:
-    # TODO: remove this to get only by id
-    post_id: str = post_name.split("_")[-1]
     try:
         post = await Posts.get(post_id)
         post.id = str(post.id)

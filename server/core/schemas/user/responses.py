@@ -39,6 +39,7 @@ class GetPostResponse(BaseModel):
 
     # content
     title: str
+    slug: str = ""
     description: str
     thumbnail_img: Optional[str] = None
     banner_img: Optional[str] = None

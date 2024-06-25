@@ -146,6 +146,7 @@ export interface GetPostResponse {
 	id: string;
 	created_at: string;
 	title: string;
+	slug?: string;
 	description: string;
 	thumbnail_img?: string;
 	banner_img?: string;

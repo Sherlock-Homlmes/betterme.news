@@ -67,7 +67,7 @@ async def test_get_post_success(client, create_post_data):
     """
     await create_post_data
 
-    response = client.get("/api/posts/some-slug-here_65d76b73cbc29b3c618ec673")
+    response = client.get("/api/posts/65d76b73cbc29b3c618ec673")
     assert response.status_code == 200
     assert response.json() == {
         "id": "65d76b73cbc29b3c618ec673",
@@ -97,7 +97,7 @@ async def test_get_post_with_not_exist(client, create_post_data):
     """
     await create_post_data
 
-    response = client.get("/api/posts/slug-here_1111111111111111111")
+    response = client.get("/api/posts/1111111111111111111")
     assert response.status_code == 404
     assert response.json()["detail"] == "Post not found"
 
@@ -113,10 +113,10 @@ async def test_get_post_increase_view(client, create_post_data):
     """
     await create_post_data
 
-    response = client.get("/api/posts/some-slug-here_65d76b73cbc29b3c618ec673")
+    response = client.get("/api/posts/65d76b73cbc29b3c618ec673")
     assert response.status_code == 200
     assert response.json()["view"] == 1
-    response = client.get("/api/posts/some-slug-here_65d76b73cbc29b3c618ec673")
+    response = client.get("/api/posts/65d76b73cbc29b3c618ec673")
     assert response.status_code == 200
     assert response.json()["view"] == 2
 
@@ -132,9 +132,7 @@ async def test_get_post_not_increase_view(client, create_post_data):
     """
     await create_post_data
 
-    response = client.get(
-        "/api/posts/some-slug-here_65d76b73cbc29b3c618ec673", params={"increase_view": False}
-    )
+    response = client.get("/api/posts/65d76b73cbc29b3c618ec673", params={"increase_view": False})
     assert response.status_code == 200
     assert response.json()["view"] == 1
     response = client.get("/api/posts/some-slug-here_65d76b73cbc29b3c618ec673")
