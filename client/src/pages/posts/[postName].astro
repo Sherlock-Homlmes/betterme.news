@@ -7,7 +7,10 @@ import type { GetPostResponse } from "@/types/responses";
 import { IvolunteerPageTagsEnum } from "@/types/enums";
 
 const { postName } = Astro.params;
-const postId = postName?.split("_")[1];
+const postNameElement = postName?.split("_");
+const postId = postNameElement.length === 1
+? postNameElement[0]
+: postNameElement[1];
 const response = await fetch(`${fetchLink}/posts/${postId}`);
 let postData = (await response.json()) as GetPostResponse;
 const postSlug = `${postData.slug}_${postData.id}`;
