@@ -83,6 +83,7 @@ async def test_get_post_success(client, create_post_data):
         "tags": ["Câu lạc bộ", "Tình nguyện"],
         "thumbnail_img": None,
         "title": "Some title",
+        "slug": "some-title",
         "view": 1,
     }
 
@@ -135,6 +136,6 @@ async def test_get_post_not_increase_view(client, create_post_data):
     response = client.get("/api/posts/65d76b73cbc29b3c618ec673", params={"increase_view": False})
     assert response.status_code == 200
     assert response.json()["view"] == 1
-    response = client.get("/api/posts/some-slug-here_65d76b73cbc29b3c618ec673")
+    response = client.get("/api/posts/65d76b73cbc29b3c618ec673")
     assert response.status_code == 200
     assert response.json()["view"] == 1
