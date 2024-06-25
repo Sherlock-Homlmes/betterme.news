@@ -123,13 +123,22 @@ def save_crawler_data(post_name: str, data: PatchCrawlersDataPayload) -> None:
 
 def image_process(image: str) -> None:
     # Opens a image
-    frame_img = Image.open("scrap/media/betterme_news.png")
     img = Image.open(f"scrap/data/media/{image}")
-    if img.size != (800, 500):
-        raise HTTPException(
-            status_code=ResponseStatusEnum.BAD_REQUEST.value,
-            detail="Make sure image size is 800x500px",
+    if img.size == (800, 500):
+        frame_img = Image.open("scrap/media/betterme_news.png")
+    elif img.size != (800, 500):
+        image_ratio = img.size[0] / img.size[1]
+        if image_ratio < 1.55 or image_ratio > 1.75:
+            raise HTTPException(
+                status_code=ResponseStatusEnum.BAD_REQUEST.value,
+                detail="Make sure image ratio is 8/5",
+            )
+        frame_img = Image.open("scrap/media/betterme_news_big.png")
+        resized_image = frame_img.resize(
+            img.size,
         )
+        resized_image.save("scrap/media/betterme_news_abc.png", "PNG")
+        frame_img = Image.open("scrap/media/betterme_news_abc.png")
 
     # Add foreground
     img.paste(frame_img, (0, 0), frame_img)
