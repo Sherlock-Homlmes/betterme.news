@@ -14,7 +14,7 @@ const postId = postNameElement.length === 1
 const response = await fetch(`${fetchLink}/posts/${postId}`);
 let postData = (await response.json()) as GetPostResponse;
 const postSlug = `${postData.slug}_${postData.id}`;
-if (postSlug !== postName || !Astro.url.pathname.endsWith("")) {
+if (postSlug !== postName || !Astro.url.pathname.endsWith("/")) {
 	return Astro.redirect(`/posts/${postSlug}/`);
 }
 postData = {
