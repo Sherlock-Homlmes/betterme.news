@@ -37,29 +37,29 @@ class ENVEnum(Enum):
 
 class Settings(BaseSettings):
     # TODO: change this to ENVEnum when lib support
-    ENV: str
+    ENV: str = ENVEnum.USER.value
 
-    SECRET_KEY: str
+    SECRET_KEY: str = "NoNeed"
 
     DATABASE_URL: str
 
-    AWS_ACCESS_KEY_ID: str
-    AWS_ACCESS_ACCESS_KEY: str
-    AWS_BUCKET: str
+    AWS_ACCESS_KEY_ID: str = "NoNeed"
+    AWS_ACCESS_ACCESS_KEY: str = "NoNeed"
+    AWS_BUCKET: str = "NoNeed"
 
-    TINY_PNG_API_KEY: str
+    TINY_PNG_API_KEY: str = "NoNeed"
 
-    DISCORD_BOT_TOKEN: str
-    DISCORD_OAUTH_URL: str
-    DISCORD_CLIENT_ID: str
-    DISCORD_CLIENT_SECRET: str
-    DISCORD_REDIRECT_URL: str
+    DISCORD_BOT_TOKEN: str = "NoNeed"
+    DISCORD_OAUTH_URL: str = "NoNeed"
+    DISCORD_CLIENT_ID: str = "NoNeed"
+    DISCORD_CLIENT_SECRET: str = "NoNeed"
+    DISCORD_REDIRECT_URL: str = "NoNeed"
 
-    FACEBOOK_ACCESS_TOKEN: str
-    FACEBOOK_APP_ID: str
-    FACEBOOK_APP_SECRET: str
+    FACEBOOK_APP_ID: str = "NoNeed"
+    FACEBOOK_ACCESS_TOKEN: str = "NoNeed"
+    FACEBOOK_APP_SECRET: str = "NoNeed"
 
-    GEMINI_AI_API_KEY: str
+    GEMINI_AI_API_KEY: str = "NoNeed"
 
 
 settings = Settings()
