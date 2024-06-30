@@ -9,6 +9,7 @@ from core.conf import app, settings, is_user_portal, is_test_env
 from core.models import document_models
 from core.database.mongodb import client
 from services.discord_bot.conf import bot
+from services.facebook_bot.conf import connect_to_facebook_api
 
 
 running = True
@@ -57,6 +58,9 @@ async def startup():
     # RUN BOT
     if not is_user_portal:
         asyncio.create_task(runner.run_discord_bot())
+
+    # CONNECT FACEBOOK API
+    await connect_to_facebook_api()
 
     print("Start up done")
 

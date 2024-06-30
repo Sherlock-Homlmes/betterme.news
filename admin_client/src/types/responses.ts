@@ -90,6 +90,7 @@ export interface PostAIPromtPayload {
 export interface PostCrawlersDataPayload {
 	origin: string;
 	post_name: string;
+	should_create_facebook_post?: boolean;
 }
 export interface PostCrawlersPreviewDiscordDataPayload {
 	origin: string;

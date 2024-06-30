@@ -40,6 +40,7 @@ class Settings(BaseSettings):
     ENV: str = ENVEnum.USER.value
 
     SECRET_KEY: str = "NoNeed"
+    ENCRYPT_KEY: str = "NoNeed"
 
     DATABASE_URL: str
 

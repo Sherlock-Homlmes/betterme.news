@@ -6,7 +6,7 @@ import discord
 # local
 from .conf import server_info, is_dev_env
 from core.schemas.admin import GetCrawlersIvolunteerDataResponse, IvolunteerPageTagsEnum
-from services.text_convertion import gen_slug_from_title
+from services.text_convertion import gen_slug
 
 
 # TODO:
@@ -60,7 +60,7 @@ def create_embed(
     if is_testing is False and post_id is not None:
         embed.add_field(
             name="Xem thêm",
-            value=f"https://betterme.news/posts/{gen_slug_from_title(name=data.title)}_{post_id}",
+            value=f"https://betterme.news/posts/{gen_slug(data.title)}_{post_id}",
             inline=False,
         )
 

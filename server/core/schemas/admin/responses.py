@@ -39,6 +39,7 @@ class CrawlersListDataParams(BaseModel):
 class PostCrawlersDataPayload(BaseModel):
     origin: str
     post_name: str
+    should_create_facebook_post: bool = False
 
 
 class PatchCrawlersDataPayload(BaseModel):

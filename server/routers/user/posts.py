@@ -24,7 +24,7 @@ from core.schemas.user import (
     ResponseStatusEnum,
 )
 from utils.beanie_odm import get_projections_from_model, return_with_pagination
-from services.text_convertion import gen_slug_from_title
+from services.text_convertion import gen_slug
 
 router = APIRouter(
     responses={404: {"description": "Not found"}},
@@ -45,9 +45,9 @@ class PostListProject(GetPostListResponse):
         )
 
     @model_validator(mode="after")
-    def gen_slug_from_title(cls, values):
+    def gen_slug(cls, values):
         if not len(values.slug) and values.title:
-            values.slug = gen_slug_from_title(values.title)
+            values.slug = gen_slug(values.title)
         return values
 
 

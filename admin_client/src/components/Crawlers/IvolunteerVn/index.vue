@@ -187,7 +187,13 @@
 
         <template v-slot:item.3>
           <v-card title="Tạo bài viết mới" flat></v-card>
+
+
           <div class="d-flex justify-center my-5">
+          <v-row>
+            <v-checkbox label="Create Facebook post" v-model="shouldCreateFacebookPost"></v-checkbox>
+          </v-row>
+          <v-row>
             <v-btn
               prepend-icon="$vuetify"
               type="submit"
@@ -196,6 +202,7 @@
               @click="onCreatePost"
               >CREATE</v-btn
             >
+          </v-row>
           </div>
         </template>
       </v-stepper>
@@ -253,6 +260,7 @@ const { fetchLink, clientLink } = config.public;
 const {
 	// state
 	pageInfo,
+	shouldCreateFacebookPost,
 	updating,
 	aiPrompt,
 	tags,

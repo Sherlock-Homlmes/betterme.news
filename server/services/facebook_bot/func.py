@@ -4,7 +4,7 @@ from typing import List, Optional
 
 # local
 from core.models import FacebookPostInfo
-from .conf import fb_client
+from services.text_convertion import gen_camel_case
 
 
 def post_to_fb(
@@ -14,10 +14,12 @@ def post_to_fb(
     hashtags: Optional[List[str]] = [],
     image_name: Optional[str] = None,
 ) -> FacebookPostInfo:
+    from .conf import fb_client
+
     # add hashtag(s)
     content += "'\n"
     for hashtag in hashtags:
-        content += "#" + hashtag + " "
+        content += "#" + gen_camel_case(hashtag) + " "
 
     # create facebook post
     if image_name:

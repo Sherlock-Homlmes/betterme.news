@@ -4,14 +4,26 @@ from typing import Optional, List, Union, Any, Tuple
 
 
 # libraries
-from beanie import Document, Link
-from fastapi import HTTPException
+from beanie import Document, Link, Insert, after_event, before_event
+from fastapi import HTTPException, BackgroundTasks
 from pydantic import BaseModel, Field, field_validator
 
 # locals
+from core.schemas.admin import (
+    # params
+    # payload
+    PostCrawlersDataPayload,
+    # responses
+    # enums
+    OriginCrawlPagesEnum,
+    ResponseStatusEnum,
+)
 from core.conf import settings, ENVEnum
 from .users import Users
-from core.schemas.admin import ResponseStatusEnum
+from services.time_modules import Time, date_to_str
+from services.discord_bot.news import send_news, send_noti_to_subcribers
+from services.tebi import upload_image
+from services.text_convertion import gen_slug
 
 
 class FacebookPostInfo(BaseModel):
@@ -27,7 +39,7 @@ class OtherPostInfo(BaseModel):
 # TODO: after create process: change title, insert to search engine, caching
 class Posts(Document):
     # info
-    created_at: datetime.datetime
+    created_at: Optional[datetime.datetime] = None
     # TODO: remove optional and None
     created_by: Optional[Link[Users]] = None
     updated_at: Optional[datetime.datetime] = None
@@ -58,7 +70,7 @@ class Posts(Document):
         validate_on_save = True
         # only use cache in user api
         use_cache = True if settings.ENV == ENVEnum.USER.value else False
-        cache_expiration_time = datetime.timedelta(seconds=30)
+        cache_expiration_time = datetime.timedelta(seconds=60)
         cache_capacity = 100
 
     ### Validate
@@ -103,12 +115,93 @@ class Posts(Document):
                         #     agg_queries.append({pfield.replace("match_", ""): match_values})
         return find_queries, agg_queries
 
-    ### Method
+    ### Methods
     async def increase_view(self):
         self.view += 1
         await self.save()
 
-    ### Event
-    # TODO: social posts to this func
-    async def after_create(self):
+    @staticmethod
+    async def create_post(
+        payload: PostCrawlersDataPayload, background_tasks: BackgroundTasks, user: Users
+    ):
+        from .draft_posts import DraftPosts
+        from services.facebook_bot.func import post_to_fb
+
+        draft_post_data = await DraftPosts.find_one(
+            DraftPosts.name == payload.post_name,
+            DraftPosts.source == payload.origin,
+        )
+        if not draft_post_data:
+            raise HTTPException(
+                status_code=ResponseStatusEnum.BAD_REQUEST.value, detail="Not found post"
+            )
+        elif draft_post_data.draft_data.id:
+            raise HTTPException(
+                status_code=ResponseStatusEnum.BAD_REQUEST.value, detail="Post already exist"
+            )
+        current_data = draft_post_data.draft_data
+        banner_img = None
+        if current_data.banner is not None:
+            banner_img = upload_image(current_data.banner)
+        if payload.origin == OriginCrawlPagesEnum.IVOLUNTEER_VN:
+            # TODO: remove date_to_str when lib support
+            other_info = OtherPostInfo()
+            other_info.deadline = (
+                date_to_str(current_data.deadline) if current_data.deadline else None
+            )
+            post = Posts(
+                # info
+                created_by=await Users.get(user["id"]),
+                raw_data=None,
+                # other service
+                # facebook_post=facebook_post,
+                discord_post_id=0,
+                # content
+                title=current_data.title,
+                description=current_data.description,
+                tags=current_data.tags,
+                other_information=other_info,
+                banner_img=banner_img,
+                content=current_data.content,
+                author="Ivolunteer.vn",
+                author_link=draft_post_data.name,
+                # SEO
+                keywords=current_data.keywords,
+                og_img=banner_img,
+            )
+        else:
+            pass
+        await post.insert()
+        # save id to draft post
+        await draft_post_data.set({DraftPosts.draft_data.id: str(post.id)})
+
+        # create discord post
+        discord_post_id = await send_news(data=current_data, is_testing=False, post_id=post.id)
+        # discord_post_id to draft_post
+        post.discord_post_id = discord_post_id
+        await post.save()
+        background_tasks.add_task(send_noti_to_subcribers, current_data, False, post.id)
+
+        # create facebook post
+        if payload.should_create_facebook_post:
+            facebook_post = post_to_fb(
+                origin="Ivolunteer.vn",
+                content="*" + current_data.title + "*" + "\n" + current_data.description,
+                comment=f"Xem thêm thông tin tại: https://betterme.news/posts/{gen_slug(post.title)}_{post.id}",
+                hashtags=current_data.keywords,
+                image_name=f"scrap/data/media/{current_data.banner}",
+            )
+            post.facebook_post = facebook_post
+            await post.save()
+
+        return post
+
+    ### Events
+    @before_event(Insert)
+    async def set_created_at(self):
+        now = Time().now
+        self.created_at = now
+
+    @after_event(Insert)
+    async def save_id_to_draft_post(self):
         pass

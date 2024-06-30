@@ -7,7 +7,7 @@ from fastapi import APIRouter, Depends, HTTPException, BackgroundTasks
 from pydantic import BaseModel
 
 # local
-from core.models import Posts, OtherPostInfo, Users, DraftPosts
+from core.models import Posts, Users, DraftPosts
 from core.schemas.admin import (
     # params
     CrawlersDataParams,
@@ -21,16 +21,13 @@ from core.schemas.admin import (
     GetCrawlersKhoahocTvDataResponse,
     PostCrawlersResponse,
     # enums
-    OriginCrawlPagesEnum,
     ResponseStatusEnum,
     CrawlerDataResponseTypeEnum,
 )
 from routers.auth import auth_handler
 from scrap.func import scrap_post_data, scrap_page_data
-from services.discord_bot.news import send_news, send_noti_to_subcribers
+from services.discord_bot.news import send_news
 from services.facebook_bot.func import post_to_fb
-from services.tebi import upload_image
-from services.time_modules import Time, date_to_str
 
 router = APIRouter(
     responses={404: {"description": "Not found"}},
@@ -89,74 +86,11 @@ async def get_crawler(
     status_code=ResponseStatusEnum.OK.value,
 )
 async def post_crawler(
-    body: PostCrawlersDataPayload,
+    payload: PostCrawlersDataPayload,
     background_tasks: BackgroundTasks,
     user: Users = Depends(auth_handler.auth_wrapper),
 ):
-    draft_post_data = await DraftPosts.find_one(
-        DraftPosts.name == body.post_name,
-        DraftPosts.source == body.origin,
-    )
-    if not draft_post_data:
-        raise HTTPException(
-            status_code=ResponseStatusEnum.BAD_REQUEST.value, detail="Not found post"
-        )
-    elif draft_post_data.draft_data.id:
-        raise HTTPException(
-            status_code=ResponseStatusEnum.BAD_REQUEST.value, detail="Post already exist"
-        )
-    current_data = draft_post_data.draft_data
-    banner_img = None
-    if current_data.banner is not None:
-        banner_img = upload_image(current_data.banner)
-    # all_fields = current_data.__fields__.keys()
-    # thumbnail_img = None
-    # if "thumbnail" in all_fields and current_data.thumbnail is not None:
-    #     thumbnail_img = upload_image(current_data.thumbnail)
-    now = Time().now
-    # facebook_post = post_to_fb(
-    #     origin=body.origin,
-    #     content=current_data.discord.title,
-    #     comment="test comment",
-    #     hashtags=["hashtag1", "hashtag2"],
-    # )
-    # TODO: fix html data -> fix this data
-    if body.origin == OriginCrawlPagesEnum.IVOLUNTEER_VN:
-        # TODO: remove date_to_str when lib support
-        other_info = OtherPostInfo()
-        other_info.deadline = date_to_str(current_data.deadline) if current_data.deadline else None
-        post = Posts(
-            # info
-            created_at=now,
-            created_by=await Users.get(user["id"]),
-            raw_data=None,
-            # other service
-            # facebook_post=facebook_post,
-            discord_post_id=0,
-            # content
-            title=current_data.title,
-            description=current_data.description,
-            tags=current_data.tags,
-            other_information=other_info,
-            banner_img=banner_img,
-            content=current_data.content,
-            author="Ivolunteer.vn",
-            author_link=draft_post_data.name,
-            # SEO
-            keywords=current_data.keywords,
-            og_img=banner_img,
-        )
-    else:
-        pass
-    await post.insert()
-    # save id to draft post
-    await draft_post_data.set({DraftPosts.draft_data.id: str(post.id)})
-    # create discord post
-    discord_post_id = await send_news(data=current_data, is_testing=False, post_id=post.id)
-    # discord_post_id to draft_post
-    post.discord_post_id = discord_post_id
-    await post.save()
-    background_tasks.add_task(send_noti_to_subcribers, current_data, False, post.id)
+    post = await Posts.create_post(payload=payload, background_tasks=background_tasks, user=user)
     return PostCrawlersResponse(id=str(post.id))
 
 
@@ -168,18 +102,18 @@ async def post_crawler(
 )
 async def patch_crawler(
     post_name: str,
-    body: PatchCrawlersDataPayload,
+    payload: PatchCrawlersDataPayload,
 ):
     draft_post_data = await DraftPosts.find_one(
         DraftPosts.name == post_name,
         # TODO: add this condition(low priority)
-        # DraftPosts.source == body.origin,
+        # DraftPosts.source == payload.origin,
     )
     if not draft_post_data:
         raise HTTPException(
             status_code=ResponseStatusEnum.BAD_REQUEST.value, detail="Not found post"
         )
-    original_update_fields = body.model_dump(mode="json", exclude_unset=True)
+    original_update_fields = payload.model_dump(mode="json", exclude_unset=True)
     # TODO: refactor this
     update_fields = {}
     for key, value in original_update_fields.items():
@@ -197,7 +131,7 @@ async def patch_crawler(
 )
 async def post_crawler_preview(
     post_name: str,
-    body: PostCrawlersPreviewDiscordDataPayload,
+    payload: PostCrawlersPreviewDiscordDataPayload,
     user: Users = Depends(auth_handler.auth_wrapper),
 ):
     draft_post_data = await DraftPosts.find_one(DraftPosts.name == post_name)
@@ -207,16 +141,16 @@ async def post_crawler_preview(
             status_code=ResponseStatusEnum.BAD_REQUEST.value, detail="Not found post"
         )
     current_data = draft_post_data.draft_data
-    if CrawlerDataResponseTypeEnum.DISCORD in body.preview_source:
+    if CrawlerDataResponseTypeEnum.DISCORD in payload.preview_source:
         await send_news(data=current_data, is_testing=True)
-    elif CrawlerDataResponseTypeEnum.FACEBOOK in body.preview_source:
+    elif CrawlerDataResponseTypeEnum.FACEBOOK in payload.preview_source:
         post_to_fb(
-            origin=body.origin,
+            origin=payload.origin,
             content=current_data.discord.title,
             comment="test comment",
             hashtags=["hashtag1", "hashtag2"],
         )
-    elif CrawlerDataResponseTypeEnum.WEB in body.preview_source:
+    elif CrawlerDataResponseTypeEnum.WEB in payload.preview_source:
         pass
 
     return

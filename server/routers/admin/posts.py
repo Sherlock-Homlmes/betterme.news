@@ -20,7 +20,7 @@ from routers.auth import auth_handler
 from scrap.func import image_process
 from services.tebi import delete_image
 from services.discord_bot.news import delete_news, send_news, send_noti_to_subcribers
-from services.text_convertion import gen_slug_from_title
+from services.text_convertion import gen_slug
 from services.tebi import upload_image
 from services.time_modules import Time, date_to_str
 
@@ -99,7 +99,7 @@ async def new_post_file(
     file: UploadFile = File(...),
     title: str = Form(...),
 ):
-    img_name = gen_slug_from_title(title) + ".png"
+    img_name = gen_slug(title) + ".png"
     f = await aiofiles.open(f"scrap/data/media/{img_name}", mode="wb")
     await f.write(await file.read())
     await f.close()

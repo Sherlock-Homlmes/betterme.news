@@ -71,8 +71,25 @@ vietnamese_name_convertions = {
 }
 
 
-def generate_slug(s: str) -> str:
+def convert_text_to_standard_type(string: str) -> str:
+    global vietnamese_name_convertions
+
+    # lower name
+    string = string.lower()
+    # convert to non-operator string
+    string = "".join(
+        [
+            vietnamese_name_convertions[x] if x in vietnamese_name_convertions.keys() else x
+            for x in string
+        ]
+    )
+
+    return string
+
+
+def gen_slug(s: str) -> str:
     """Generates a slug from the given text, handling various cases."""
+    s = convert_text_to_standard_type(s)
     s = s.lower().strip()
     s = re.sub(r"[^\w\s-]", "", s)
     s = re.sub(r"[\s_-]+", "-", s)
@@ -80,18 +97,6 @@ def generate_slug(s: str) -> str:
     return s
 
 
-def gen_slug_from_title(name: str) -> str:
-    global vietnamese_name_convertions
-
-    # lower name
-    name = name.lower()
-    # convert to non-operator string
-    name = "".join(
-        [
-            vietnamese_name_convertions[x] if x in vietnamese_name_convertions.keys() else x
-            for x in name
-        ]
-    )
-    # remove special charactors
-    name = generate_slug(name)
-    return name
+def gen_camel_case(s: str) -> str:
+    s = convert_text_to_standard_type(s)
+    return "".join(word.capitalize() for word in s.split())
