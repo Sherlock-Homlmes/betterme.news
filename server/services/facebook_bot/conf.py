@@ -1,6 +1,5 @@
 # libraries
 import facebook
-from beanie.odm.operators.update.general import Set
 
 
 # local
@@ -16,17 +15,16 @@ async def extend_expiration_time() -> str:
         fb_client.extend_access_token(settings.FACEBOOK_APP_ID, settings.FACEBOOK_APP_SECRET)
     )["access_token"]
 
-    secret_key = await SecretKeys.find_one(
-        SecretKeys.key_name == KeyTypeEnum.FACEBOOK_ACCESS_TOKEN
-    ).upsert(
-        Set({SecretKeys.value: extended_token}),
-        on_insert=SecretKeys(
+    secret = await SecretKeys.find_one(SecretKeys.key_name == KeyTypeEnum.FACEBOOK_ACCESS_TOKEN)
+    if secret:
+        secret.value = extended_token
+        secret.encode_value_on_save()
+        await secret.save()
+    else:
+        await SecretKeys(
             key_name=KeyTypeEnum.FACEBOOK_ACCESS_TOKEN,
             value=extended_token,
-        ),
-    )
-    secret_key.value = extended_token
-    await secret_key.save()
+        ).insert()
 
     return extended_token
 

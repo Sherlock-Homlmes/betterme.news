@@ -3,7 +3,7 @@ from enum import Enum
 import base64
 
 # libraries
-from beanie import Document, Insert, Replace, before_event
+from beanie import Document, Insert, Replace, Update, SaveChanges, before_event
 from cryptography.fernet import Fernet
 
 # local
@@ -23,7 +23,7 @@ class SecretKeys(Document):
         # use_cache = True
         # cache_expiration_time = datetime.timedelta(seconds=60)
 
-    @before_event(Insert, Replace)
+    @before_event(Insert, Replace, Update, SaveChanges)
     def encode_value_on_save(self):
         sample_string_bytes = self.value.encode("ascii")
         base64_bytes = base64.b64encode(sample_string_bytes)
