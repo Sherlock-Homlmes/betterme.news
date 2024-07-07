@@ -26,10 +26,6 @@ export default defineConfig({
 		locales: ["en", "vi"],
 		routing: {
 			prefixDefaultLocale: false,
-		},
-		domains: {
-			en: "https://scholarships.betterme.news",
-			vi: "https://betterme.news",
-		},
+		}
 	},
 });
