@@ -3,13 +3,16 @@ import { siteConfig } from "@/data/site.config";
 import TwitterColorIcon from "./icons/TwitterColorIcon.astro";
 import LinkedinIcon from "./icons/linkedinIcon.astro";
 import FacebookIcon from "./icons/FacebookIcon.astro";
+import { translation } from "@/utils";
+
+const t = translation(Astro.url);
 const message = siteConfig.shareMessage;
 
 const URL = Astro.url.href;
 ---
 
 <div class='flex flex-col gap-2'>
-	<span class='mb-1 font-bold text-2xl'>Share</span>
+	<span class='mb-1 font-bold text-2xl'>{t("post.share")}</span>
 	<ul class='flex gap-3 text-black dark:text-white'>
 		<li>
 			<a

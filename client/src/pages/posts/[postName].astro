@@ -5,12 +5,13 @@ import fetchLink from "src/utils/config";
 import ListRelatedPosts from "@/components/ListRelatedPosts";
 import type { GetPostResponse } from "@/types/responses";
 import { IvolunteerPageTagsEnum } from "@/types/enums";
+import { translation } from "@/utils";
 
+const t = translation(Astro.url);
 const { postName } = Astro.params;
 const postNameElement = postName?.split("_");
-const postId = postNameElement.length === 1
-? postNameElement[0]
-: postNameElement[1];
+const postId =
+	postNameElement.length === 1 ? postNameElement[0] : postNameElement[1];
 const response = await fetch(`${fetchLink}/posts/${postId}`);
 let postData = (await response.json()) as GetPostResponse;
 const postSlug = `${postData.slug}_${postData.id}`;
@@ -27,7 +28,6 @@ postData = {
 	},
 };
 ---
-<!-- TODO: related post -->
 <BlogPostV2
 	postData={postData}
 >
@@ -68,7 +68,7 @@ postData = {
 
 			<!-- related posts -->
 			<footer class="mt-4">
-				<h2 class='flex justify-center font-bold text-lg dark:text-white mb-2'>-------Bài viết liên quan -------</h2>
+				<h2 class='flex justify-center font-bold text-lg dark:text-white mb-2'>-------{t("post.related_posts")}-------</h2>
 				<ListRelatedPosts tags={postData.tags as IvolunteerPageTagsEnum[]} currentPostId={postData.id} />
 			</footer>
 		</article>
@@ -104,7 +104,7 @@ if (tocComponent) {
 	)
 	tocComponent.innerHTML = `
 		<nav class='max-w-xs dark:text-black'>
-			<h1 class='font-bold mb-3 text-2xl dark:text-white'>Nội dung</h1>
+			<h1 class='font-bold mb-3 text-2xl dark:text-white'>Table of content</h1>
 			<ul class='[text-wrap:balance] flex flex-col gap-1'>
 				${tocHTMLElements.join('')}
 			</ul>

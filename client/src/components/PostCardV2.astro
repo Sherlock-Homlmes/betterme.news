@@ -2,7 +2,9 @@
 import { Image } from "astro:assets";
 import ArrowUp from "@/components/icons/ArrowUp";
 import type { GetPostListResponse } from "@/types/responses";
+import { translation } from "@/utils";
 
+const t = translation(Astro.url);
 type Props = {
 	index: Number;
 	postData: GetPostListResponse;
@@ -72,7 +74,7 @@ const { index, postData, shouldShowExpiredTag = false } = Astro.props;
 				class='flex justify-center items-center dark:text-white rounded-full hover:translate-x-1 transition-transform duration-150 ease-in-out font-semibold gap-1 group'
 				aria-label={`go to ${postData.title}`}
 			>
-				Đọc bài <span
+				{t("home.read_post")}<span
 					class='mt-[1px] group-hover:rotate-45 transition-transform duration-250 ease-in-out'
 					><ArrowUp width='18' height='18' /></span
 				>

@@ -21,4 +21,15 @@ export default defineConfig({
 		tailwind(),
 		// partytown()
 	],
+	i18n: {
+		defaultLocale: "vi",
+		locales: ["en", "vi"],
+		routing: {
+			prefixDefaultLocale: false,
+		},
+		domains: {
+			en: "https://scholarship.betterme.news",
+			vi: "https://betterme.news",
+		},
+	},
 });

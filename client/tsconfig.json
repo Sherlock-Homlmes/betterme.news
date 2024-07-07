@@ -5,6 +5,7 @@
 		"baseUrl": ".",
 		"verbatimModuleSyntax": true,
 		"paths": {
+			"@/pages/*": ["src/pages/*.astro"],
 			"@/components/*": ["src/components/*.astro"],
 			"@/layouts/*": ["src/layouts/*.astro"],
 			"@/types/*": ["src/types/*"],

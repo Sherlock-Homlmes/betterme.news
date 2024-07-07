@@ -6,7 +6,9 @@ import Pagination from "@/components/Pagination";
 import BaseLayout from "@/layouts/BaseLayout";
 import fetchLink from "src/utils/config";
 import type { GetPostListResponse } from "@/types/responses";
+import { translation } from "@/utils";
 
+const t = translation(Astro.url);
 const response = await fetch(
 	`${fetchLink}/posts?per_page=17&` + Astro.url.searchParams,
 );
@@ -39,10 +41,12 @@ if (
 
 <BaseLayout title='Home'>
 	<TitlePage title='BetterMe-Better everyday' />
-	<ListTagsV2 />
+	<slot name="list-tags" >
+		<ListTagsV2 />
+	</slot>
 
 	<div>
-		<h2 class='text-lg font-medium tracking-wide text-end'>Bài viết mới nhất</h2>
+		<h2 class='text-lg font-medium tracking-wide text-end'>{t("home.latest_post")}</h2>
 		<ListPostsV2 posts={postsData} />
 	</div>
 	<div>

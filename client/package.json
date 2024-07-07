@@ -24,11 +24,10 @@
 		"@astrojs/cloudflare": "^8.1.0",
 		"@astrojs/partytown": "^2.1.0",
 		"@astrojs/rss": "3.0.0",
-		"astro": "3.5.3"
+		"@astrojs/tailwind": "^5.1.0",
+		"astro": "^4.11.5"
 	},
 	"devDependencies": {
-		"@astrojs/mdx": "1.1.1",
-		"@astrojs/tailwind": "5.0.1",
 		"@pagefind/default-ui": "^1.0.3",
 		"@tailwindcss/typography": "0.5.10",
 		"clsx": "2.0.0",
