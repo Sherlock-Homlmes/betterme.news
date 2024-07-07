@@ -28,7 +28,7 @@ export default defineConfig({
 			prefixDefaultLocale: false,
 		},
 		domains: {
-			en: "https://scholarship.betterme.news",
+			en: "https://scholarships.betterme.news",
 			vi: "https://betterme.news",
 		},
 	},
