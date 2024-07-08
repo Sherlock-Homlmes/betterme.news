@@ -39,3 +39,8 @@ class IvolunteerPageContentTypeEnum(Enum):
 class KhoahocTvPageTagsEnum(Enum):
     SOMETHING1 = "something1"
     SOMETHING2 = "something2"
+
+
+class PageOrigin(Enum):
+    BETTERME_NEWS = "betterme.news"
+    SCHOLARSHIP_BETTERME_NEWS = "scholarship.betterme.news"

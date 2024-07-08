@@ -8,9 +8,11 @@ from .responses import *
 from .enums import *
 from services.text_convertion import gen_slug
 
+
 # TODO
-# class GetPostListParams(GetPostListParams):
 #     match_tag: Optional[Union[IvolunteerPageTagsEnum, KhoahocTvPageTagsEnum]] = None
+class GetPostListParams(GetPostListParams):
+    from_page_origin: Optional[PageOrigin] = PageOrigin.BETTERME_NEWS
 
 
 class GetPostResponse(GetPostResponse):

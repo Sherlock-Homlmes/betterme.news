@@ -1,3 +1,4 @@
+import { defaultLang } from "src/i18n/ui";
 interface SiteConfig {
 	author: string;
 	title: string;
@@ -13,7 +14,7 @@ export const siteConfig: SiteConfig = {
 	title: "Betterme.news", // Site title.
 	description:
 		"Betterme-Better everyday. Trang thông tin về Câu lạc bộ, tình nguyện, học bổng dành cho học sinh, sinh viên tìm kiếm cơ hội để phát triển bản thân tốt hơn mỗi ngày.", // Description to display in the meta tags lang: 'vi',
-	ogLocale: "vi",
+	ogLocale: defaultLang,
 	shareMessage: "Share this post", // Message to share a post on social media
 	paginationSize: 6, // Number of posts per page
 };

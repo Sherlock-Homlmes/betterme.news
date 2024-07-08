@@ -61,6 +61,7 @@ class GetPostListParams(BaseModel):
     per_page: Optional[int] = 10
     match_tags: Optional[str] = None
     match_search: Optional[str] = None
+    from_page_origin: Optional[str] = "betterme.news"
 
 
 class GetPostParams(BaseModel):

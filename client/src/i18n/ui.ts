@@ -3,7 +3,12 @@ export const languages = {
 	vi: "VietNam",
 };
 
-export const defaultLang = "vi";
+const defaultLangMap = {
+	original: "vi",
+	scholarship: "en",
+};
+const origin = import.meta.env.ORIGIN ?? "original";
+export const defaultLang = defaultLangMap[origin];
 
 export const ui = {
 	en: {
