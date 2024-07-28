@@ -1,7 +1,9 @@
 ---
 import { siteConfig } from "@/site-config";
-import "../styles/global.css";
 import { ViewTransitions } from "astro:transitions";
+import { getLangFromUrl } from "@/utils";
+import { localeMap } from "../i18n/ui";
+import "../styles/global.css";
 
 export interface Props {
 	title: string;
@@ -27,6 +29,7 @@ const headKeyword = keywords.join(", ");
 const titleSeparator = "•";
 
 const siteTitle = `${title} ${titleSeparator} ${siteConfig.title}`;
+const currentLanguage = getLangFromUrl(Astro.url);
 const ENVIRONMENT = import.meta.env.ENVIRONMENT;
 ---
 
@@ -49,6 +52,7 @@ const ENVIRONMENT = import.meta.env.ENVIRONMENT;
 }
 <!-- Canonical URL -->
 <link rel='canonical' href={canonicalURL} />
+<meta http-equiv="content-language" content={currentLanguage}>
 
 <!-- SEO -->
 <meta name='title' content={siteTitle} />
@@ -70,6 +74,7 @@ const ENVIRONMENT = import.meta.env.ENVIRONMENT;
 		</>
 	)
 }
+<meta property="og:locale" content={localeMap[currentLanguage]} />
 
 <!-- Twitter -->
 <meta property='twitter:card' content='summary_large_image' />

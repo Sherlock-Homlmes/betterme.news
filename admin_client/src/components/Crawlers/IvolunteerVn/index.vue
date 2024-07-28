@@ -191,7 +191,7 @@
 
           <div class="d-flex justify-center my-5">
           <v-row>
-            <v-checkbox label="Create Facebook post" v-model="shouldCreateFacebookPost"></v-checkbox>
+            <v-checkbox label="Create Facebook post" v-model="shouldCreateSocialMediaPost"></v-checkbox>
           </v-row>
           <v-row>
             <v-btn
@@ -260,7 +260,7 @@ const { fetchLink, clientLink } = config.public;
 const {
 	// state
 	pageInfo,
-	shouldCreateFacebookPost,
+	shouldCreateSocialMediaPost,
 	updating,
 	aiPrompt,
 	tags,

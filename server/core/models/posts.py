@@ -13,8 +13,6 @@ from core.schemas.admin import (
     # params
     # payload
     PostCrawlersDataPayload,
-    # responses
-    # enums
     OriginCrawlPagesEnum,
     ResponseStatusEnum,
 )
@@ -186,7 +184,7 @@ class Posts(Document):
         if payload.should_create_facebook_post:
             facebook_post = post_to_fb(
                 origin="Ivolunteer.vn",
-                content="*" + current_data.title + "*" + "\n" + current_data.description,
+                content="😍 " + current_data.title + "\n" + "😍 " + current_data.description + "\n",
                 comment=f"Xem thêm thông tin tại: https://betterme.news/posts/{gen_slug(post.title)}_{post.id}",
                 hashtags=current_data.keywords,
                 image_name=f"scrap/data/media/{current_data.banner}",

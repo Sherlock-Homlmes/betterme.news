@@ -2,6 +2,10 @@ export const languages = {
 	en: "English",
 	vi: "VietNam",
 };
+export const localeMap = {
+	en: "en_US",
+	vi: "vi_VN",
+};
 
 const defaultLangMap = {
 	original: "vi",

@@ -37,7 +37,7 @@ export const [useProvideCrawlerIvolunteerStore, useCrawlerIvolunteerStore] =
 
 		// state
 		const pageInfo = ref<GetCrawlersIvolunteerDataResponse>();
-		const shouldCreateFacebookPost = ref<boolean>(false);
+		const shouldCreateSocialMediaPost = ref<boolean>(true);
 		const updating = ref<Boolean>(false);
 		const aiPrompt = ref({
 			title: null,
@@ -133,7 +133,7 @@ export const [useProvideCrawlerIvolunteerStore, useCrawlerIvolunteerStore] =
 					body: JSON.stringify({
 						origin: OriginCrawlPagesEnum.IVOLUNTEER_VN,
 						post_name: link.toString(),
-						should_create_facebook_post: shouldCreateFacebookPost.value,
+						should_create_facebook_post: shouldCreateSocialMediaPost.value,
 					} as PostCrawlersDataPayload),
 				});
 				if (!response.ok) throw new Error("CREATE FAIL");
@@ -209,7 +209,7 @@ export const [useProvideCrawlerIvolunteerStore, useCrawlerIvolunteerStore] =
 		return {
 			// state
 			pageInfo,
-			shouldCreateFacebookPost,
+			shouldCreateSocialMediaPost,
 			updating,
 			aiPrompt,
 			tags,

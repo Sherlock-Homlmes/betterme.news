@@ -126,6 +126,7 @@ export interface GetPostListParams {
 	per_page?: number;
 	match_tags?: string;
 	match_search?: string;
+	from_page_origin?: string;
 }
 export interface GetPostListResponse {
 	id: string;
