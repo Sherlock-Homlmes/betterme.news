@@ -1,5 +1,3 @@
-import re
-
 vietnamese_name_convertions = {
     "ă": "a",
     "â": "a",
@@ -85,18 +83,3 @@ def convert_text_to_standard_type(string: str) -> str:
     )
 
     return string
-
-
-def gen_slug(s: str) -> str:
-    """Generates a slug from the given text, handling various cases."""
-    s = convert_text_to_standard_type(s)
-    s = s.lower().strip()
-    s = re.sub(r"[^\w\s-]", "", s)
-    s = re.sub(r"[\s_-]+", "-", s)
-    s = re.sub(r"^-+|-+$", "", s)
-    return s
-
-
-def gen_camel_case(s: str) -> str:
-    s = convert_text_to_standard_type(s)
-    return "".join(word.capitalize() for word in s.split())

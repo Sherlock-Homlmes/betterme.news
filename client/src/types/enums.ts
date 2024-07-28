@@ -1,4 +1,4 @@
-// From export enums.py (4 Enums 12 Values)
+// From export enums.py (5 Enums 14 Values)
 
 export enum IvolunteerPageContentTypeEnum {
 	CLUB = "tinh-nguyen",
@@ -19,6 +19,11 @@ export enum IvolunteerPageTagsEnum {
 export enum KhoahocTvPageTagsEnum {
 	SOMETHING1 = "something1",
 	SOMETHING2 = "something2",
+}
+
+export enum PageOrigin {
+	BETTERME_NEWS = "betterme.news",
+	SCHOLARSHIP_BETTERME_NEWS = "scholarship.betterme.news",
 }
 
 export enum ResponseStatusEnum {}

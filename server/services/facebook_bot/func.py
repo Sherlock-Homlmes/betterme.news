@@ -17,7 +17,7 @@ def post_to_fb(
     from .conf import fb_client
 
     # add hashtag(s)
-    content += "'\n"
+    content += "\n"
     for hashtag in hashtags:
         content += "#" + gen_camel_case(hashtag) + " "
 
