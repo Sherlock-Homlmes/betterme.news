@@ -1,3 +1,3 @@
 export { cn } from "./cn";
 export { generateContentSitemap } from "./sitemapContent";
-export { translation } from "./i18n";
+export { translation, getLangFromUrl } from "./i18n";
