@@ -23,7 +23,7 @@ const {
 let pathName = Astro.url.pathname;
 const canonicalURL = new URL(pathName, Astro.site);
 const pageSearchParam = Astro.url.searchParams.get("page");
-if (pageSearchParam >== 2 && pathName === "/")
+if (parseInt(pageSearchParam) >== 2 && pathName === "/")
 	canonicalURL.searchParams.set("page", pageSearchParam);
 const socialImageURL = new URL(ogImage ? ogImage : "/open-graph.png", Astro.url)
 	.href;
