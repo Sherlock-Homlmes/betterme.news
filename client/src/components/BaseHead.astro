@@ -22,6 +22,9 @@ const {
 } = Astro.props;
 let pathName = Astro.url.pathname;
 const canonicalURL = new URL(pathName, Astro.site);
+const pageSearchParam = Astro.url.searchParams.get("page");
+if (pageSearchParam && pathName === "/")
+	canonicalURL.searchParams.set("page", pageSearchParam);
 const socialImageURL = new URL(ogImage ? ogImage : "/open-graph.png", Astro.url)
 	.href;
 const headKeyword = keywords.join(", ");
