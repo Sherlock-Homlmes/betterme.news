@@ -37,7 +37,7 @@ export const [useProvideCrawlerIvolunteerStore, useCrawlerIvolunteerStore] =
 
 		// state
 		const pageInfo = ref<GetCrawlersIvolunteerDataResponse>();
-		const shouldCreateSocialMediaPost = ref<boolean>(true);
+		const shouldCreateSocialMediaPost = ref<boolean>(false);
 		const updating = ref<Boolean>(false);
 		const aiPrompt = ref({
 			title: null,
