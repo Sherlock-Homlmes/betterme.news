@@ -17,6 +17,9 @@ if (
 	return Astro.redirect(`/en/`);
 
 const t = translation(Astro.url);
+const currentPage = Astro.url.searchParams.get("page");
+if (!currentPage || !parseInt(currentPage))
+	Astro.url.searchParams.set("page", "1");
 const response = await fetch(
 	`${fetchLink}/posts?per_page=17&` + Astro.url.searchParams,
 );
