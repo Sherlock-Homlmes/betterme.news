@@ -11,6 +11,8 @@ export interface Props {
 	keywords: string[];
 	ogImage?: string | undefined;
 	articleDate?: string | undefined;
+	createdAt: string;
+	updatedAt: string | null;
 }
 
 const {
@@ -19,21 +21,48 @@ const {
 	ogImage,
 	articleDate,
 	keywords = [],
+	createdAt,
+	updatedAt,
 } = Astro.props;
+
+const ENVIRONMENT = import.meta.env.ENVIRONMENT;
+
+//* SEO *//
+// Canontical
 let pathName = Astro.url.pathname;
 const canonicalURL = new URL(pathName, Astro.site);
 const pageSearchParam = Astro.url.searchParams.get("page") ?? "0";
 if (parseInt(pageSearchParam) >= 2 && pathName === "/")
 	canonicalURL.searchParams.set("page", pageSearchParam);
+
+// Media tag
 const socialImageURL = new URL(ogImage ? ogImage : "/open-graph.png", Astro.url)
 	.href;
 const headKeyword = keywords.join(", ");
-
-const titleSeparator = "•";
-
-const siteTitle = `${title} ${titleSeparator} ${siteConfig.title}`;
+const siteTitle = `${title} • ${siteConfig.title}`;
 const currentLanguage = getLangFromUrl(Astro.url);
-const ENVIRONMENT = import.meta.env.ENVIRONMENT;
+
+// Schema
+let schemaElement = null;
+if (pathName.startsWith("/posts/")) {
+	console.log(updatedAt, createdAt);
+	const schema = {
+		"@context": "https://schema.org",
+		"@type": "NewsArticle",
+		headline: title,
+		image: [socialImageURL],
+		datePublished: createdAt,
+		dateModified: updatedAt ?? createdAt,
+		author: [
+			{
+				"@type": "Person",
+				name: "Tạ Minh Khôi",
+				url: "https://muctim.tuoitre.vn/nam-sinh-gen-z-thanh-lap-cong-dong-ho-tro-hoc-tap-cho-nguoi-tre-64910.htm",
+			},
+		],
+	};
+	schemaElement = `<script type="application/ld+json" is:raw> ${JSON.stringify(schema, undefined, 4)} </script>`;
+}
 ---
 
 <!-- ViewTransitions  -->
@@ -58,11 +87,15 @@ const ENVIRONMENT = import.meta.env.ENVIRONMENT;
 <link rel='canonical' href={canonicalURL} />
 <meta http-equiv="content-language" content={currentLanguage}>
 
-<!-- SEO -->
+<!-- Meta tag -->
 <meta name='title' content={siteTitle} />
 <meta name='description' content={description} />
 <meta name='author' content={siteConfig.author} />
 <meta name='keywords' content={headKeyword} />
+
+<!-- Schema -->
+<Fragment set:html={schemaElement} />
+
 
 <!-- Open Graph / Facebook -->
 <meta property='og:type' content={articleDate ? 'article' : 'website'} />
@@ -89,7 +122,9 @@ const ENVIRONMENT = import.meta.env.ENVIRONMENT;
 
 <!-- Sitemap -->
 <link rel="sitemap" href="/sitemap.xml" />
+
 <!-- RSS auto-discovery -->
 <link rel='alternate' type='application/rss+xml' title={siteConfig.title} href='/rss.xml' />
+
 <!-- Primary Meta Tags -->
 <title>{siteTitle}</title>

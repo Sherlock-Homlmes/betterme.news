@@ -10,6 +10,7 @@ type Props = {
 
 const { postData } = Astro.props;
 const createdAt = new Date(postData.created_at);
+const updatedAt = postData.updated_at ? new Date(postData.updated_at) : null;
 const articleDate = createdAt.toISOString();
 const currentDate = new Date();
 const isPostExpired = (deadline: string) => {
@@ -29,6 +30,8 @@ const shouldShowExpiredTag = isPostExpired(
 	image={postData.banner_img}
 	keywords={postData.keywords}
 	articleDate={articleDate}
+	createdAt={createdAt}
+	updatedAt={updatedAt}
 >
 	<article class='min-w-full md:py-4 sm:max-w-none md:max-w-none'>
 		<header class='mb-3 flex flex-col justify-center items-center gap-6'>

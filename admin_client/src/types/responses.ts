@@ -126,7 +126,6 @@ export interface GetPostListParams {
 	per_page?: number;
 	match_tags?: string;
 	match_search?: string;
-	from_page_origin?: string;
 }
 export interface GetPostListResponse {
 	id: string;
@@ -147,6 +146,7 @@ export interface GetPostParams {
 export interface GetPostResponse {
 	id: string;
 	created_at: string;
+	updated_at: string;
 	title: string;
 	slug?: string;
 	description: string;

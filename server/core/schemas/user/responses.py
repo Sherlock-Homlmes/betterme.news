@@ -36,6 +36,7 @@ class GetPostResponse(BaseModel):
     id: str
     # info
     created_at: datetime.datetime
+    updated_at: Optional[str] = None
 
     # content
     title: str
