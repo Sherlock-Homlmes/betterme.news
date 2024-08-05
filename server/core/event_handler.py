@@ -55,12 +55,11 @@ async def startup():
     if is_test_env:
         return
 
-    # RUN BOT
     if not is_user_portal:
+        # RUN BOT
         asyncio.create_task(runner.run_discord_bot())
-
-    # CONNECT FACEBOOK API
-    await connect_to_facebook_api()
+        # CONNECT FACEBOOK API
+        await connect_to_facebook_api()
 
     print("Start up done")
 
