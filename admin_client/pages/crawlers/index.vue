@@ -8,6 +8,7 @@
         label="Content type"
         :items="contentTypes"
         variant="outlined"
+        @update:model-value="onContentTypeChange"
       ></v-select>
       <div class="d-flex justify-center align-center w-25">
         <v-text-field
@@ -93,7 +94,7 @@ import { IvolunteerPageContentTypeEnum } from "@types/enums";
 
 const config = useRuntimeConfig();
 const { fetchLink, clientLink } = config.public;
-// const vm = getCurrentInstance().proxy
+const vm = getCurrentInstance().proxy as any;
 
 const postHeaders = ref([
 	{ title: "URL", key: "url", sortable: false },
@@ -109,7 +110,9 @@ const newPostUrl = ref<string>("");
 const loadingDraftPosts = ref(false);
 const loadingPosts = ref(false);
 const contentTypes = [...new Set(Object.values(IvolunteerPageContentTypeEnum))];
-const crawlContentType = ref<IvolunteerPageContentTypeEnum>(contentTypes[0]);
+const crawlContentType = ref<IvolunteerPageContentTypeEnum>(
+	vm.$route.query.contentType ?? contentTypes[0],
+);
 
 const getDraftPosts = async () => {
 	loadingDraftPosts.value = true;
@@ -140,6 +143,10 @@ const onClickCreateNewPost = () => {
 	if (newPostUrl.value === "") return;
 	window.open(`/crawlers/ivolunteer_vn/${newPostUrl.value}`, "_blank");
 	newPostUrl.value = "";
+};
+
+const onContentTypeChange = () => {
+	vm.$router.push({ query: { contentType: crawlContentType.value } });
 };
 
 const deleteDraftPost = async (deleteDraftPost, enableAlert = true) => {
