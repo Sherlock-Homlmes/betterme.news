@@ -4,6 +4,8 @@ import tailwind from "@astrojs/tailwind";
 
 // import partytown from "@astrojs/partytown";
 
+import partytown from "@astrojs/partytown";
+
 // https://astro.build/config
 export default defineConfig({
 	output: "server",
@@ -17,15 +19,12 @@ export default defineConfig({
 			wrap: true,
 		},
 	},
-	integrations: [
-		tailwind(),
-		// partytown()
-	],
+	integrations: [tailwind(), partytown()],
 	i18n: {
 		defaultLocale: "vi",
 		locales: ["en", "vi"],
 		routing: {
 			prefixDefaultLocale: false,
-		}
+		},
 	},
 });
