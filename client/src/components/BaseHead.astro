@@ -44,9 +44,9 @@ const currentLanguage = getLangFromUrl(Astro.url);
 
 // Schema
 let schemaElement = null;
+let schema = null;
 if (pathName.startsWith("/posts/")) {
-	console.log(updatedAt, createdAt);
-	const schema = {
+	schema = {
 		"@context": "https://schema.org",
 		"@type": "NewsArticle",
 		headline: title,
@@ -61,8 +61,35 @@ if (pathName.startsWith("/posts/")) {
 			},
 		],
 	};
-	schemaElement = `<script type="application/ld+json" is:raw>${JSON.stringify(schema, undefined, 4)}</script>`;
+} else {
+	schema = {
+		"@context": "https://schema.org",
+		"@type": "Organization",
+		image: "https://betterme.news/apple-touch-icon.png",
+		url: "https://betterme.news",
+		logo: "https://betterme.news/apple-touch-icon.png",
+		name: title,
+		description: description,
+		email: "contact@betterme.news",
+		telephone: "+84-332-731-520",
+		address: {
+			"@type": "PostalAddress",
+			streetAddress: "26 ngõ 84 Yên Hòa - Cầu Giấy",
+			addressLocality: "Hà Nội",
+			addressCountry: "VI",
+			addressRegion: "Hà Nội-Việt Nam",
+			postalCode: "11300",
+		},
+		contactPoint: {
+			"@type": "ContactPoint",
+			email: "contact@betterme.news",
+			telephone: "+84-332-731-520",
+		},
+		vatID: "8702475760",
+	};
 }
+if (schema)
+	schemaElement = `<script type="application/ld+json" is:raw>${JSON.stringify(schema, undefined, 4)}</script>`;
 ---
 
 <!-- ViewTransitions  -->
