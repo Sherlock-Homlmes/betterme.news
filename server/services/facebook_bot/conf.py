@@ -32,8 +32,9 @@ async def extend_expiration_time() -> str:
 async def connect_to_facebook_api():
     global fb_client
 
-    settings.FACEBOOK_ACCESS_TOKEN = (
-        await SecretKeys.find_one(SecretKeys.key_name == KeyTypeEnum.FACEBOOK_ACCESS_TOKEN)
-    ).get_value()
+    if not settings.FACEBOOK_ACCESS_TOKEN:
+        settings.FACEBOOK_ACCESS_TOKEN = (
+            await SecretKeys.find_one(SecretKeys.key_name == KeyTypeEnum.FACEBOOK_ACCESS_TOKEN)
+        ).get_value()
     fb_client = facebook.GraphAPI(settings.FACEBOOK_ACCESS_TOKEN)
     await extend_expiration_time()
