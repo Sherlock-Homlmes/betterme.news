@@ -32,7 +32,7 @@ export default defineNuxtConfig({
 		public: {
 			fetchLink: process.env.DEV
 				? "http://localhost:8080/api"
-				: "https://api.admin.betterme.news/api",
+				: process.env.FETCH_LINK ?? "https://api.admin.betterme.news/api",
 			clientLink: process.env.DEV
 				? "http://localhost"
 				: "https://betterme.news",
