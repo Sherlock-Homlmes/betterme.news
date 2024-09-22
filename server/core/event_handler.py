@@ -59,6 +59,7 @@ async def startup():
         # RUN BOT
         asyncio.create_task(runner.run_discord_bot())
         # CONNECT FACEBOOK API
+        # await encode_new_fb_access_key()
         await connect_to_facebook_api()
 
     print("Start up done")

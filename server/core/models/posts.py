@@ -123,7 +123,7 @@ class Posts(Document):
         payload: PostCrawlersDataPayload, background_tasks: BackgroundTasks, user: Users
     ):
         from .draft_posts import DraftPosts
-        from services.facebook_bot.func import post_to_fb
+        from services.facebook_bot.func import post_to_fb, is_facebook_service_ready
 
         draft_post_data = await DraftPosts.find_one(
             DraftPosts.name == payload.post_name,
@@ -181,7 +181,7 @@ class Posts(Document):
         background_tasks.add_task(send_noti_to_subcribers, current_data, False, post.id)
 
         # create facebook post
-        if payload.should_create_facebook_post:
+        if is_facebook_service_ready() and payload.should_create_facebook_post:
             facebook_post = post_to_fb(
                 origin="Ivolunteer.vn",
                 content="😍 " + current_data.title + "\n" + "😍 " + current_data.description + "\n",

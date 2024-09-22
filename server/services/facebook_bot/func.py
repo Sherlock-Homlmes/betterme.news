@@ -7,6 +7,12 @@ from core.models import FacebookPostInfo
 from services.text_convertion import gen_camel_case
 
 
+def is_facebook_service_ready() -> bool:
+    from .conf import fb_client
+
+    return bool(fb_client)
+
+
 def post_to_fb(
     origin: str,
     content: str,

@@ -36,5 +36,21 @@ async def connect_to_facebook_api():
         settings.FACEBOOK_ACCESS_TOKEN = (
             await SecretKeys.find_one(SecretKeys.key_name == KeyTypeEnum.FACEBOOK_ACCESS_TOKEN)
         ).get_value()
-    fb_client = facebook.GraphAPI(settings.FACEBOOK_ACCESS_TOKEN)
+    try:
+        fb_client = facebook.GraphAPI(settings.FACEBOOK_ACCESS_TOKEN)
+    except Exception:
+        print("Failed to connect to facebook")
     await extend_expiration_time()
+
+
+async def encode_new_fb_access_key() -> None:
+    fb_client = facebook.GraphAPI(settings.FACEBOOK_ACCESS_TOKEN)
+    extended_token = (
+        fb_client.extend_access_token(settings.FACEBOOK_APP_ID, settings.FACEBOOK_APP_SECRET)
+    )["access_token"]
+
+    print(extended_token)
+    secret = await SecretKeys.find_one(SecretKeys.key_name == KeyTypeEnum.FACEBOOK_ACCESS_TOKEN)
+    secret.value = extended_token
+    secret.encode_value_on_save()
+    await secret.save()
