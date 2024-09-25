@@ -84,6 +84,7 @@ async def test_get_post_success(client, create_post_data):
         "thumbnail_img": None,
         "title": "Some title",
         "slug": "some-title",
+        "updated_at": None,
         "view": 1,
     }
 

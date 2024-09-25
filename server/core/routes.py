@@ -5,13 +5,13 @@ from fastapi import APIRouter, Depends
 from .conf import settings, ENVEnum
 from routers.auth import auth, discord_oauth, auth_handler
 from routers.admin import crawlers, posts as admin_posts, draft_posts, ai
-from routers.user import posts as user_posts, tags
+from routers.user import posts as user_posts
 
 # create all api routers
 api_router = APIRouter()
 auth_routers = (auth, discord_oauth)
 admin_routers = (crawlers, admin_posts, draft_posts, ai)
-user_routers = (user_posts, tags)
+user_routers = (user_posts,)
 
 
 def include_auth_routers():
