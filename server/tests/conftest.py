@@ -35,13 +35,13 @@ def auth_client(mocker):
     return TestClient(app, headers={"Authorization": "Bearer aaa"})
 
 
-@pytest.fixture(scope="function", autouse=True)
+@pytest.fixture(scope="function")
 async def init_db():
     db_client = AsyncMongoMockClient()
     await beanie.init_beanie(database=db_client.betterme_news, document_models=document_models)
 
 
-@pytest.fixture(scope="function", autouse=True)
+@pytest.fixture(scope="function")
 async def clean_db(init_db):
     await init_db
     models = document_models

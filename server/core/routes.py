@@ -2,7 +2,7 @@
 from fastapi import APIRouter, Depends
 
 # local
-from .conf import settings, ENVEnum
+from .conf import settings, ENVEnum, is_test_env
 from routers.auth import auth, discord_oauth, auth_handler
 from routers.admin import crawlers, posts as admin_posts, draft_posts, ai
 from routers.user import posts as user_posts
@@ -57,3 +57,10 @@ elif settings.ENV == ENVEnum.ADMIN.value:
     include_user_routers()
 elif settings.ENV == ENVEnum.USER.value:
     include_user_routers()
+elif is_test_env:
+    include_admin_routers()
+    include_user_routers()
+
+# List all routers
+# for route in api_router.routes:
+#     print(route.path, route.name)

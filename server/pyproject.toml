@@ -50,6 +50,11 @@ line-length = 100
 [tool.pytest.ini_options]
 addopts = "--disable-warnings"
 
+[tool.coverage.run]
+omit = [
+    "./scrap/khoahoc_tv/*",
+]
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"

@@ -128,4 +128,4 @@ class GetDraftPostListResponse(BaseModel):
 # ai.py
 class PostAIPromtPayload(BaseModel):
     prompt_type: str
-    context: str = Field(max_length=6000)
+    context: str = Field(min_length=1, max_length=6000)
