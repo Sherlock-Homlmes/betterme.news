@@ -1,6 +1,6 @@
 import rss from "@astrojs/rss";
 import { siteConfig } from "@/site-config";
-import fetchLink from "src/utils/config";
+import { fetchLink } from "src/utils/config";
 import type { GetPostListResponse } from "@/types/responses";
 
 export async function get() {

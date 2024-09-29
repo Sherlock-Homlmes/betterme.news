@@ -32,7 +32,7 @@ class DraftPostListProject(GetDraftPostListResponse):
         )
 
 
-# TODO: projection, pagination
+# TODO: pagination
 @router.get(
     "/draft_posts",
     tags=["Admin-draft-posts"],

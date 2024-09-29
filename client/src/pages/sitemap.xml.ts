@@ -1,4 +1,4 @@
-import fetchLink from "src/utils/config";
+import { fetchLink } from "src/utils/config";
 import {
 	IvolunteerPageContentTypeEnum,
 	IvolunteerPageTagsEnum,

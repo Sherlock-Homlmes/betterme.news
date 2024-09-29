@@ -1,4 +1,4 @@
-import fetchLink from "src/utils/config";
+import { fetchLink } from "src/utils/config";
 import type { GetPostListResponse } from "@/types/responses";
 import { IvolunteerPageTagsEnum } from "@/types/enums";
 

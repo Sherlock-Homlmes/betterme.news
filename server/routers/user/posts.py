@@ -64,7 +64,7 @@ async def get_list_post(
         find_queries,
         skip=params.per_page * (params.page - 1),
         limit=params.per_page,
-        sort=("_id", -1),
+        sort=None if params.match_search else ("_id", -1),
     )
     posts = await cursor.aggregate(agg_queries, projection_model=PostListProject).to_list()
 

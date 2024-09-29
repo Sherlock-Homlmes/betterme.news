@@ -38,9 +38,9 @@ async def connect_to_facebook_api():
         ).get_value()
     try:
         fb_client = facebook.GraphAPI(settings.FACEBOOK_ACCESS_TOKEN)
+        await extend_expiration_time()
     except Exception:
         print("Failed to connect to facebook")
-    await extend_expiration_time()
 
 
 async def encode_new_fb_access_key() -> None:

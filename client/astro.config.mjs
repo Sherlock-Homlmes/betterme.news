@@ -6,6 +6,8 @@ import tailwind from "@astrojs/tailwind";
 
 import partytown from "@astrojs/partytown";
 
+import svelte from "@astrojs/svelte";
+
 // https://astro.build/config
 export default defineConfig({
 	output: "server",
@@ -19,7 +21,7 @@ export default defineConfig({
 			wrap: true,
 		},
 	},
-	integrations: [tailwind(), partytown()],
+	integrations: [tailwind(), partytown(), svelte()],
 	i18n: {
 		defaultLocale: "vi",
 		locales: ["en", "vi"],
