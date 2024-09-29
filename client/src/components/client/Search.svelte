@@ -29,7 +29,6 @@
 	on:click={() => (showModal = true)}
 >
 	<SearchIcon />
-	<span class="md:hidden text-2xl"> Search</span>
 </button>
 
 <Modal bind:showModal>
