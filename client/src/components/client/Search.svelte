@@ -9,16 +9,22 @@
 	let loading: boolean = false
 	let results: GetPostListResponse[] = []
 	let searchContext: string = ''
+	let previousSearchContext: string = ''
 
 	const searchPosts = async () => {
 		if (!searchContext.length) {
 			results = []
 			return
 		}
+		if (searchContext.trim() === previousSearchContext.trim()) {
+			loading = false
+			return
+		}
 		try {
 			const res = await fetch(`${clientFetchLink}/posts?match_search=${searchContext}&per_page=50`)
 			if (!res.ok) new Error('aaa')
 			const posts = await res.json()
+			previousSearchContext = searchContext
 			results = posts
 		} catch (e) {
 			console.log(e)
