@@ -11,6 +11,10 @@
 	let searchContext: string = ''
 
 	const searchPosts = async () => {
+		if (!searchContext.length) {
+			results = []
+			return
+		}
 		try {
 			const res = await fetch(`${clientFetchLink}/posts?match_search=${searchContext}&per_page=50`)
 			if (!res.ok) new Error('aaa')
