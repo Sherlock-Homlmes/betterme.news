@@ -8,6 +8,17 @@ import { fetchLink } from "src/utils/config";
 import type { GetPostListResponse } from "@/types/responses";
 import { translation } from "@/utils";
 
+export interface Props {
+	// custom_query?: object;
+	custom_title?: string;
+	custom_head_title?: string;
+}
+const {
+	// custom_query = {},
+	custom_title = "BetterMe-Better everyday",
+	custom_head_title = "Home",
+} = Astro.props;
+
 if (
 	["betterme-news-scholarship.pages.dev", "scholarship.betterme.news"].includes(
 		Astro.url.host,
@@ -17,21 +28,22 @@ if (
 	return Astro.redirect(`/en/`);
 
 const t = translation(Astro.url);
+
 const currentPage = Astro.url.searchParams.get("page");
 if (!currentPage || !parseInt(currentPage))
 	Astro.url.searchParams.set("page", "1");
-const response = await fetch(
-	`${fetchLink}/posts?per_page=17&` + Astro.url.searchParams,
+Astro.url.searchParams.set("per_page", "17");
+const response = await fetch(`${fetchLink}/posts?` + Astro.url.searchParams);
+const postsData = ((await response.json()) as GetPostListResponse[]).map(
+	(postData) => {
+		return {
+			...postData,
+			deadline: postData.deadline
+				? postData.deadline.split("-").reverse().join("/")
+				: null,
+		};
+	},
 );
-let postsData = (await response.json()) as GetPostListResponse[];
-postsData = postsData.map((postData) => {
-	return {
-		...postData,
-		deadline: postData.deadline
-			? postData.deadline.split("-").reverse().join("/")
-			: null,
-	};
-});
 
 let page = {
 	currentPage: 1,
@@ -50,8 +62,8 @@ if (
 }
 ---
 
-<BaseLayout title='Home'>
-	<TitlePage title='BetterMe-Better everyday' />
+<BaseLayout title={custom_head_title}>
+	<TitlePage title={custom_title} />
 	<slot name="list-tags" >
 		<ListTagsV2 />
 	</slot>

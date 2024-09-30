@@ -17,9 +17,8 @@
 	<div on:click|stopPropagation>
 		<div class="flex justify-end">
 			<button
-				class="bg-black text-white p-3 rounded-full mb-4 dark:text-black dark:bg-white"
-				autofocus
-				on:click={() => dialog.close()}>Close</button
+				class="bg-black text-white p-3 rounded-full mb-4 dark:text-black dark:bg-white hover:scale-105"
+				on:click={() => dialog.close()}>Đóng</button
 			>
 		</div>
 		<!-- <slot name="header" /> -->
@@ -35,7 +34,7 @@
 		background: rgba(0, 0, 0, 0.3);
 	}
 	dialog > div {
-		padding: 1em;
+		padding: 1em 1em 0 1em;
 	}
 	dialog[open] {
 		animation: zoom 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
