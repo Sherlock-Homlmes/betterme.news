@@ -115,8 +115,7 @@ const updating = ref<Boolean>(false);
 // TODO: add conditions
 
 const getPostInfo = async () => {
-	const tagsResult = await fetch(`${fetchLink}/tags?origin=ivolunteer_vn`);
-	tags.value = await tagsResult.json();
+	tags.value = Object.values(IvolunteerPageTagsEnum);
 
 	const postResult = await fetchWithAuth(
 		`${fetchLink}/posts/${vm.$route.params.postId}?increase_view=false`,
