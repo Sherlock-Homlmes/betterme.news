@@ -30,7 +30,13 @@ const ENVIRONMENT = import.meta.env.ENVIRONMENT;
 //* SEO *//
 // Canontical
 let pathName = Astro.url.pathname;
-const canonicalURL = new URL(pathName, Astro.site);
+const canonicalPathNameMap: Record<string, string> = {
+	"/search": "/",
+};
+const canonicalURL = new URL(
+	canonicalPathNameMap[pathName] ?? pathName,
+	Astro.site,
+);
 const pageSearchParam = Astro.url.searchParams.get("page") ?? "0";
 if (parseInt(pageSearchParam) >= 2 && pathName === "/")
 	canonicalURL.searchParams.set("page", pageSearchParam);
