@@ -3,6 +3,7 @@ from typing import List, Optional, Dict
 
 # libraries
 from pydantic import BaseModel
+from beanie.odm.queries.aggregation import AggregationQuery
 
 
 def get_projections_from_model(
@@ -31,7 +32,13 @@ async def return_with_pagination(
     page: int,
     per_page: int,
 ):
-    total_count = await cursor.count()
+    if isinstance(cursor, AggregationQuery):
+        cursor.aggregation_pipeline.append({"$count": "count"})
+        cursor.projection_model = None
+        total_count = (await cursor.to_list())[0]["count"]
+    else:
+        total_count = await cursor.count()
+
     response.headers["x-total-count"] = str(total_count)
     response.headers["x-current-page"] = str(page)
     response.headers["x-per-page"] = str(per_page)

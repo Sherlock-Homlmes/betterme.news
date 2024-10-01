@@ -67,7 +67,8 @@ async def get_list_post(
         sort=None if params.match_search else ("_id", -1),
         ignore_cache=bool(params.match_search),
     )
-    posts = await cursor.aggregate(agg_queries, projection_model=PostListProject).to_list()
+    cursor = cursor.aggregate(agg_queries, projection_model=PostListProject)
+    posts = await cursor.to_list()
 
     # TODO: better pagination solution
     # BUG: can not count with match search
