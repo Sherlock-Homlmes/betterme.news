@@ -71,9 +71,9 @@ if (pathName.startsWith("/posts/")) {
 	schema = {
 		"@context": "https://schema.org",
 		"@type": "Organization",
-		image: "https://betterme.news/apple-touch-icon.png",
+		image: "https://betterme.news/favicon-180x180.png",
 		url: "https://betterme.news",
-		logo: "https://betterme.news/apple-touch-icon.png",
+		logo: "https://betterme.news/favicon-180x180.png",
 		name: "Betterme.news",
 		description: description,
 		email: "contact@betterme.news",
@@ -104,21 +104,21 @@ if (schema)
 <!-- Global Metadata -->
 <meta charset='utf-8' />
 <meta name='viewport' content='width=device-width,initial-scale=1' />
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-iscon.png">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel='apple-touch-icon' sizes='180x180' href='/favicon-180x180.png' />
+<link rel='icon' type='image/png' sizes='32x32' href='/favicon-32x32.png' />
+<link rel='icon' type='image/png' sizes='16x16' href='/favicon-16x16.png' />
 <!-- <link rel="manifest" href="/site.webmanifest"> -->
-<meta name="generator" content={Astro.generator} />
+<meta name='generator' content={Astro.generator} />
 {
-	ENVIRONMENT === "DEMO" && (
+	ENVIRONMENT === 'DEMO' && (
 		<>
-			<meta name="robots" content="noindex,nofollow">
+			<meta name='robots' content='noindex,nofollow' />
 		</>
 	)
 }
 <!-- Canonical URL -->
 <link rel='canonical' href={canonicalURL} />
-<meta http-equiv="content-language" content={currentLanguage}>
+<meta http-equiv='content-language' content={currentLanguage} />
 
 <!-- Meta tag -->
 <meta name='title' content={siteTitle} />
@@ -128,7 +128,6 @@ if (schema)
 
 <!-- Schema -->
 <Fragment set:html={schemaElement} />
-
 
 <!-- Open Graph / Facebook -->
 <meta property='og:type' content={articleDate ? 'article' : 'website'} />
@@ -144,7 +143,7 @@ if (schema)
 		</>
 	)
 }
-<meta property="og:locale" content={localeMap[currentLanguage]} />
+<meta property='og:locale' content={localeMap[currentLanguage]} />
 
 <!-- Twitter -->
 <meta property='twitter:card' content='summary_large_image' />
@@ -154,7 +153,7 @@ if (schema)
 <meta property='twitter:image' content={socialImageURL} />
 
 <!-- Sitemap -->
-<link rel="sitemap" href="/sitemap.xml" />
+<link rel='sitemap' href='/sitemap.xml' />
 
 <!-- RSS auto-discovery -->
 <link rel='alternate' type='application/rss+xml' title={siteConfig.title} href='/rss.xml' />
