@@ -41,6 +41,9 @@
       <v-chip variant="flat" color="primary" size="x-large" class="mb-5">
         Deadline: {{ pageInfo.deadline || "ASAP" }}
       </v-chip>
+      <v-chip variant="flat" color="error" size="x-large" class="ml-2 mb-5" v-if="pageInfo.deadline && new Date(pageInfo.deadline)  < Date.now()">
+        Expired
+      </v-chip>
       <v-autocomplete
         v-model="pageInfo.tags"
         class="w-50"
