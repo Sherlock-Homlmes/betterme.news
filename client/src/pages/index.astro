@@ -32,7 +32,7 @@ const t = translation(Astro.url);
 const currentPage = Astro.url.searchParams.get("page");
 if (!currentPage || !parseInt(currentPage))
 	Astro.url.searchParams.set("page", "1");
-Astro.url.searchParams.set("per_page", "17");
+Astro.url.searchParams.set("per_page", "23");
 const response = await fetch(`${fetchLink}/posts?` + Astro.url.searchParams);
 const postsData = ((await response.json()) as GetPostListResponse[]).map(
 	(postData) => {
@@ -64,15 +64,15 @@ if (
 
 <BaseLayout title={custom_head_title}>
 	<TitlePage title={custom_title} />
-	<slot name="list-tags" >
+	<slot name='list-tags'>
 		<ListTagsV2 />
 	</slot>
 
 	<div>
-		<h2 class='text-lg font-medium tracking-wide text-end'>{t("home.latest_post")}</h2>
+		<h2 class='text-lg font-medium tracking-wide text-end'>{t('home.latest_post')}</h2>
 		<ListPostsV2 posts={postsData} />
 	</div>
 	<div>
-		<Pagination page={ page }></Pagination>
+		<Pagination page={page} />
 	</div>
 </BaseLayout>
