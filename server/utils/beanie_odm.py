@@ -35,7 +35,13 @@ async def return_with_pagination(
     if isinstance(cursor, AggregationQuery):
         cursor.aggregation_pipeline.append({"$count": "count"})
         cursor.projection_model = None
+        cursor.aggregation_pipeline = [
+            query
+            for query in cursor.aggregation_pipeline
+            if not isinstance(query.get("$limit"), int)
+        ]
         total_count = (await cursor.to_list())[0]["count"]
+
     else:
         total_count = await cursor.count()
 
