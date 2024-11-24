@@ -40,7 +40,8 @@ async def return_with_pagination(
             for query in cursor.aggregation_pipeline
             if not isinstance(query.get("$limit"), int)
         ]
-        total_count = (await cursor.to_list())[0]["count"]
+        result = await cursor.to_list()
+        total_count = (await cursor.to_list())[0]["count"] if len(result) else 0
 
     else:
         total_count = await cursor.count()
