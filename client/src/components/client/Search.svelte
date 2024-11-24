@@ -4,6 +4,19 @@
 	import { clientFetchLink } from 'src/utils/config'
 	import { debounce } from 'src/utils/minLodash'
 	import type { GetPostListResponse } from '@/types/responses'
+	import { IvolunteerPageTagsEnum } from '@/types/enums'
+
+	interface IOption {
+		id: any
+		value: string
+	}
+	const tagsData = Object.values(IvolunteerPageTagsEnum)
+	let options: IOption[] = [
+		{ id: null, text: 'Tất cả' },
+		...tagsData.map((tag) => ({ id: tag, text: tag })),
+	]
+	let selected: IOption
+	let previousSelected: IOption
 
 	let showModal: boolean = false
 	let loading: boolean = false
@@ -18,15 +31,23 @@
 			results = []
 			return
 		}
-		if (searchContext === previousSearchContext) {
+		if (searchContext === previousSearchContext && selected === previousSelected) {
 			loading = false
 			return
 		}
+
+		const searchParams = {
+			per_page: 20,
+			match_search: searchContext,
+		}
+		if (selected && selected.id) searchParams.match_tags = selected.id
+
 		try {
-			const res = await fetch(`${clientFetchLink}/posts?match_search=${searchContext}&per_page=20`)
+			const res = await fetch(`${clientFetchLink}/posts?${new URLSearchParams(searchParams)}`)
 			if (!res.ok) new Error('API error')
 			const posts = await res.json()
 			previousSearchContext = searchContext
+			previousSelected = selected
 			results = posts
 			if (results.length >= 20) shouldShowMoreButton = true
 			// TODO: fail to check header
@@ -48,18 +69,38 @@
 </button>
 
 <Modal bind:showModal>
-	<input
-		autofocus
-		class="h-12 w-full px-4 border-2 border-black rounded-md"
-		type="text"
-		placeholder="Search"
-		bind:value={searchContextModel}
-		on:input={debounce(searchPosts, 850)}
-		on:input={() => {
-			if (searchContext.length) loading = true
-			else results = []
-		}}
-	/>
+	<div class="flex">
+		<select
+			id="states"
+			class="max-w-fit bg-gray-200 border border-2 border-black text-gray-900 text-sm rounded-s-lg dark:border-s-gray-700 focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+			bind:value={selected}
+			on:change={debounce(searchPosts, 850)}
+		>
+			{#each options as option}
+				<option
+					value={option}
+					class="inline-flex w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white"
+				>
+					{option.text}
+				</option>
+			{/each}
+		</select>
+		<input
+			autofocus
+			class="h-12 w-full px-4 border-2 border-l-0 rounded-e-lg border-black"
+			type="text"
+			placeholder="Search"
+			bind:value={searchContextModel}
+			on:input={debounce(searchPosts, 850)}
+			on:input={() => {
+				if (searchContext.length) loading = true
+				else {
+					results = []
+					loading = false
+				}
+			}}
+		/>
+	</div>
 	{#if loading}
 		<h3 class="my-4 pl-2">Tìm kiếm kết quả cho "{searchContext}"...</h3>
 	{:else if !loading && !results.length && searchContext.length}
