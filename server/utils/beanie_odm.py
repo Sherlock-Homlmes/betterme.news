@@ -49,3 +49,16 @@ async def return_with_pagination(
     response.headers["x-total-count"] = str(total_count)
     response.headers["x-current-page"] = str(page)
     response.headers["x-per-page"] = str(per_page)
+
+
+def cursor_pipeline_rearrange(cursor):
+    # Find the index of the $search stage
+    search_index = next(
+        (i for i, stage in enumerate(cursor.aggregation_pipeline) if "$search" in stage), None
+    )
+
+    if search_index is not None:
+        # Move the $search stage to the beginning
+        cursor.aggregation_pipeline.insert(0, cursor.aggregation_pipeline.pop(search_index))
+
+    return cursor

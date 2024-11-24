@@ -23,7 +23,11 @@ from core.schemas.user import (
     # enums
     ResponseStatusEnum,
 )
-from utils.beanie_odm import get_projections_from_model, return_with_pagination
+from utils.beanie_odm import (
+    get_projections_from_model,
+    return_with_pagination,
+    cursor_pipeline_rearrange,
+)
 from services.text_convertion import gen_slug
 
 router = APIRouter(
@@ -66,8 +70,8 @@ async def get_list_post(
         limit=params.per_page,
         sort=None if params.match_search else ("_id", -1),
         ignore_cache=bool(params.match_search),
-    )
-    cursor = cursor.aggregate(agg_queries, projection_model=PostListProject)
+    ).aggregate(agg_queries, projection_model=PostListProject)
+    cursor = cursor_pipeline_rearrange(cursor)
     posts = await cursor.to_list()
 
     # TODO: better pagination solution
