@@ -20,7 +20,7 @@ from routers.auth import auth_handler
 from scrap.func import image_process
 from services.tebi import delete_image
 from services.discord_bot.news import delete_news, send_news, send_noti_to_subcribers
-from services.text_convertion import gen_slug
+from utils.text_convertion import gen_slug
 from services.tebi import upload_image
 from services.time_modules import Time, date_to_str
 

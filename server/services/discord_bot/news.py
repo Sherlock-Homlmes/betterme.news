@@ -6,7 +6,7 @@ import discord
 # local
 from .conf import server_info, is_dev_env
 from core.schemas.admin import GetCrawlersIvolunteerDataResponse, IvolunteerPageTagsEnum
-from services.text_convertion import gen_slug
+from utils.text_convertion import gen_slug
 
 
 # TODO:

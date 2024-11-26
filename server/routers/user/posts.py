@@ -28,7 +28,7 @@ from utils.beanie_odm import (
     return_with_pagination,
     cursor_pipeline_rearrange,
 )
-from services.text_convertion import gen_slug
+from utils.text_convertion import gen_slug
 
 router = APIRouter(
     responses={404: {"description": "Not found"}},

@@ -6,7 +6,7 @@ from pydantic import model_validator
 # local
 from .responses import *
 from .enums import *
-from services.text_convertion import gen_slug
+from utils.text_convertion import gen_slug
 
 # TODO
 # class GetPostListParams(GetPostListParams):

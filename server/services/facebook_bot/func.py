@@ -4,7 +4,7 @@ from typing import List, Optional
 
 # local
 from core.models import FacebookPostInfo
-from services.text_convertion import gen_camel_case
+from utils.text_convertion import gen_camel_case
 
 
 def is_facebook_service_ready() -> bool:

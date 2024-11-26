@@ -21,7 +21,7 @@ from .users import Users
 from services.time_modules import Time, date_to_str
 from services.discord_bot.news import send_news, send_noti_to_subcribers
 from services.tebi import upload_image
-from services.text_convertion import gen_slug
+from utils.text_convertion import gen_slug
 
 
 class FacebookPostInfo(BaseModel):
