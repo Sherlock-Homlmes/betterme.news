@@ -39,12 +39,16 @@ def ivolunteer_crawl(url: str):
             if deadline in ["ASAP", "All year round", ""] or remove_empty_string(deadline) == "":
                 deadline = None
             banner = response.css("#mvp-content-main").css("img::attr(data-src)").get()
+            og_img = response.xpath("//meta[@property='og:image']/@content")[0].extract()
+            banner = banner if banner else og_img
             if banner is not None:
                 banner = asyncio.run(save_image(banner))
                 if banner is not None:
                     banner = banner.split("/")[-1]
                 else:
                     raise ValueError("No banner image")
+            else:
+                raise ValueError("No banner image")
             content = response.css("#mvp-content-main").css("h4, p, ul")
             content.pop(0)
             # remove last 3 <p> from content
